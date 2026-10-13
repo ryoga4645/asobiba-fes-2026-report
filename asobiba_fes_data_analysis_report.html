@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASOBIBA FES 2026 - データ分析総合ダッシュボード</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F0F9FF',
+              100: '#E0F2FE',
+              500: '#0EA5E9',
+              600: '#0284C7',
+              700: '#0369A1',
+              900: '#0C4A6E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+    }
+    .tab-btn.active {
+      background-color: #0284C7;
+      color: #FFFFFF;
+      box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2), 0 2px 4px -2px rgba(2, 132, 199, 0.2);
+    }
+    @media print {
+      .no-print { display: none !important; }
+      .tab-content { display: block !important; page-break-after: always; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen antialiased">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800">
+              ASOBIBA FES 2026
+            </span>
+            <span class="text-xs text-slate-500 font-medium">開催日: 2026年10月10日 (土)</span>
+          </div>
+          <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+            データ分析総合報告ダッシュボード
+          </h1>
+          <p class="text-sm text-slate-500 mt-0.5">
+            集客・事前面談施策・参加者属性から読み解く歩留まり構造と次回改善提言
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-xs text-slate-400">データ母集団</div>
+            <div class="text-sm font-bold text-slate-700">有効エントリー 96名</div>
+          </div>
+          <button onclick="window.print()" class="no-print inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            PDF / 印刷
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI Overview Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      
+      <!-- Total -->
+      <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+        <div class="text-xs font-semibold text-slate-500 mb-1">総エントリー数</div>
+        <div class="text-3xl font-extrabold text-slate-900">96<span class="text-sm font-normal text-slate-500 ml-1">名</span></div>
+        <div class="text-xs text-slate-400 mt-1">集客チーム全体</div>
+      </div>
+
+      <!-- Attended -->
+      <div class="bg-white rounded-xl p-4 border border-emerald-200 bg-emerald-50/20 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-emerald-700">当日参加者</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">59.4%</span>
+        </div>
+        <div class="text-3xl font-extrabold text-emerald-600 mt-1">57<span class="text-sm font-normal text-emerald-700 ml-1">名</span></div>
+        <div class="text-xs text-slate-500 mt-1">完走 49名 / 早期帰宅 8名</div>
+      </div>
+
+      <!-- No Show -->
+      <div class="bg-white rounded-xl p-4 border border-rose-200 bg-rose-50/20 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-rose-700">無断欠席（ドタキャン）</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">27.1%</span>
+        </div>
+        <div class="text-3xl font-extrabold text-rose-600 mt-1">26<span class="text-sm font-normal text-rose-700 ml-1">名</span></div>
+        <div class="text-xs text-rose-600 font-medium mt-1">⚠️ 最大の改善レバー</div>
+      </div>
+
+      <!-- Prior Cancel -->
+      <div class="bg-white rounded-xl p-4 border border-amber-200 bg-amber-50/20 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-amber-700">事前連絡あり欠席</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">13.5%</span>
+        </div>
+        <div class="text-3xl font-extrabold text-amber-600 mt-1">13<span class="text-sm font-normal text-amber-700 ml-1">名</span></div>
+        <div class="text-xs text-slate-500 mt-1">事前にキャンセルの連絡あり</div>
+      </div>
+
+      <!-- Early Leavers -->
+      <div class="bg-white rounded-xl p-4 border border-purple-200 bg-purple-50/20 shadow-sm col-span-2 md:col-span-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold text-purple-700">早期帰宅者</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">14.0%*</span>
+        </div>
+        <div class="text-3xl font-extrabold text-purple-600 mt-1">8<span class="text-sm font-normal text-purple-700 ml-1">名</span></div>
+        <div class="text-xs text-slate-500 mt-1">*参加者57名に対する比率</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Navigation Tabs -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 no-print">
+    <div class="flex overflow-x-auto gap-1 p-1 bg-slate-200/80 rounded-xl text-xs sm:text-sm font-semibold text-slate-600">
+      <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn active px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        📌 総合サマリー
+      </button>
+      <button onclick="switchTab('recruit')" id="tab-btn-recruit" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        1. 集客の評価
+      </button>
+      <button onclick="switchTab('measures')" id="tab-btn-measures" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        2. 施策の評価（再集計）
+      </button>
+      <button onclick="switchTab('status')" id="tab-btn-status" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        3. ステータス別行動
+      </button>
+      <button onclick="switchTab('grade')" id="tab-btn-grade" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        4. 学年別行動
+      </button>
+      <button onclick="switchTab('univ')" id="tab-btn-univ" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap">
+        5. 大学別行動
+      </button>
+      <button onclick="switchTab('action')" id="tab-btn-action" class="tab-btn px-3.5 py-2 rounded-lg transition whitespace-nowrap text-sky-700 hover:text-sky-900">
+        💡 次回アクション提言
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- TAB 1: 総合サマリー -->
+    <div id="tab-summary" class="tab-content space-y-6">
+      
+      <!-- Summary Chart and Highlights -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Donut Chart -->
+        <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-800 mb-1">参加結果の全体内訳</h3>
+            <p class="text-xs text-slate-500 mb-4">総エントリー96名の結果構成</p>
+            <div class="relative w-48 h-48 mx-auto">
+              <canvas id="overallDonutChart"></canvas>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-3 text-center gap-2 text-xs">
+            <div>
+              <div class="font-bold text-emerald-600 text-base">59.4%</div>
+              <div class="text-slate-500">当日参加</div>
+            </div>
+            <div>
+              <div class="font-bold text-rose-600 text-base">27.1%</div>
+              <div class="text-slate-500">無断欠席</div>
+            </div>
+            <div>
+              <div class="font-bold text-amber-600 text-base">13.5%</div>
+              <div class="text-slate-500">事前欠席</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Big Insights -->
+        <div class="lg:col-span-2 bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+              データから読み解く最重要インサイト（3大発見）
+            </h3>
+            
+            <div class="space-y-4">
+              <!-- Insight 1 -->
+              <div class="p-3.5 rounded-lg bg-emerald-50/60 border border-emerald-200/60">
+                <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm mb-1">
+                  <span>1. 「直前30分面談」は無断欠席を100%防止（最強の施策）</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  直前に30分面談を実施した学生11名は<strong>無断欠席率0.0%（参加率81.8%）</strong>を記録。1対1の会話で不安や疑問を解消することが、当日の出席コミットメントを劇的に高めることが実証されました。
+                </p>
+              </div>
+
+              <!-- Insight 2 -->
+              <div class="p-3.5 rounded-lg bg-rose-50/60 border border-rose-200/60">
+                <div class="flex items-center gap-2 text-rose-800 font-bold text-sm mb-1">
+                  <span>2. 「2日間返信なし」は無断欠席率54.2%の危険シグナル</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  案内に対して返信が2日途絶えた学生24名のうち、<strong>過半数の13名が無断欠席、6名が事前辞退</strong>となり、参加できたのはわずか5名（20.8%）。返信なしを放置せず、即座に紹介者等から別チャネルで再フォローする運用が必須です。
+                </p>
+              </div>
+
+              <!-- Insight 3 -->
+              <div class="p-3.5 rounded-lg bg-sky-50/60 border border-sky-200/60">
+                <div class="flex items-center gap-2 text-sky-800 font-bold text-sm mb-1">
+                  <span>3. 学年・大学ごとの行動格差：2・3年生に無断欠席が集中</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong>1年生</strong>は参加率81.0%と最高水準のコミットメントを発揮した一方、<strong>2・3年生</strong>に全無断欠席の76.9%（20名）が集中。大学別では<strong>国公立（75%参加）</strong>が高く、<strong>近畿大学（無断欠席40.6%）</strong>に課題が集約しています。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span>※詳細は各タブの個別分析をご覧ください</span>
+            <button onclick="switchTab('action')" class="font-bold text-sky-600 hover:text-sky-800">次回改善プランを見る →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: 集客の評価 -->
+    <div id="tab-recruit" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">1. 集客の評価（メイン集客者別パフォーマンス）</h3>
+            <p class="text-xs text-slate-500">※メイン集客者6名（おゆづ、岩田琉我、りょうわさくや、佐藤秀明、岸田宗介、小國）および孫紹介を統合して集計</p>
+          </div>
+          <div class="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg">
+            集約ルール: メイン集客者が招待した人が招待した人を親にカウント
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="mb-6 h-64">
+          <canvas id="recruiterBarChart"></canvas>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100/80 text-slate-700 border-b border-slate-200 font-bold">
+                <th class="py-3 px-4">集客担当者</th>
+                <th class="py-3 px-3 text-center">総数</th>
+                <th class="py-3 px-3 text-center">当日参加者（率）</th>
+                <th class="py-3 px-3 text-center">事前欠席（率）</th>
+                <th class="py-3 px-3 text-center">無断欠席（率）</th>
+                <th class="py-3 px-3 text-center">早期帰宅（参加者比）</th>
+                <th class="py-3 px-4">特徴・インサイト</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>おゆづ
+                </td>
+                <td class="py-3 px-3 text-center font-bold">20人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">14人 (70.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">6人 (30.0%)</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-100/40">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🏆 <strong>無断欠席ゼロ</strong>。欠席者も全員事前連絡あり。フォロー力最優秀。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-sky-500"></span>岩田琉我
+                </td>
+                <td class="py-3 px-3 text-center font-bold">23人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">15人 (65.2%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">4人 (17.4%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">4人 (17.4%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🌟 孫紹介を多数生み出すハブ。規模と参加率が共に高水準。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-rose-500"></span>りょうわさくや
+                </td>
+                <td class="py-3 px-3 text-center font-bold">25人</td>
+                <td class="py-3 px-3 text-center text-slate-700">7人 (28.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">18人 (72.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">⚠️ 母集団最多だが無断欠席が72%。声掛け後の動機付けに課題。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-purple-500"></span>佐藤秀明
+                </td>
+                <td class="py-3 px-3 text-center font-bold">13人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">11人 (84.6%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">2人 (15.4%)</td>
+                <td class="py-3 px-3 text-center font-bold text-purple-600 bg-purple-50/50">8人 (72.7%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">👥 参加率は85%と極めて高いが、早期帰宅がこのグループに集中。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span>岸田宗介
+                </td>
+                <td class="py-3 px-3 text-center font-bold">2人</td>
+                <td class="py-3 px-3 text-center text-slate-700">1人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">参加1名、事前連絡欠席1名。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-400"></span>小國
+                </td>
+                <td class="py-3 px-3 text-center font-bold">4人</td>
+                <td class="py-3 px-3 text-center text-slate-700">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">2人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">4名中、事前欠席2名、無断欠席2名。</td>
+              </tr>
+              <tr class="hover:bg-slate-50 bg-slate-50/30">
+                <td class="py-3 px-4 text-slate-600">その他・不明</td>
+                <td class="py-3 px-3 text-center font-bold">9人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600">9人 (100.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">アム様紹介の関大生5名、まさたか様2名など全員参加。</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300">
+                <td class="py-3 px-4">全体合計</td>
+                <td class="py-3 px-3 text-center">96人</td>
+                <td class="py-3 px-3 text-center text-emerald-600">57人 (59.4%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">13人 (13.5%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">26人 (27.1%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">8人 (14.0%)</td>
+                <td class="py-3 px-4">-</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: 施策の評価 -->
+    <div id="tab-measures" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-slate-800">2. 施策の評価（再集計結果）</h3>
+          <p class="text-xs text-slate-500">
+            ※メンター制度のうち一度も返信が返ってこなかった3名（植村玲子様、柿田理乃様、藤中歩未様）を除外し、「実質的に個別接触できたか」で再集計
+          </p>
+        </div>
+
+        <!-- Grid Cards for Measures -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          
+          <!-- Mentor -->
+          <div class="border border-sky-200 rounded-xl p-4 bg-sky-50/30">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-800">早期申込・伴走型</span>
+              <span class="text-xs text-slate-500">計18名</span>
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1">メンター制度（実質接触層）</h4>
+            <div class="text-2xl font-black text-sky-700 my-2">参加率 72.2%</div>
+            <div class="text-xs text-slate-600 space-y-1">
+              <div class="flex justify-between"><span>当日参加:</span><span class="font-bold text-emerald-600">13名</span></div>
+              <div class="flex justify-between"><span>事前欠席:</span><span class="font-bold text-amber-600">3名 (16.7%)</span></div>
+              <div class="flex justify-between"><span>無断欠席:</span><span class="font-bold text-slate-700">2名 (11.1%)</span></div>
+              <div class="flex justify-between"><span>早期帰宅:</span><span class="font-bold text-slate-500">0名 (0.0%)</span></div>
+            </div>
+          </div>
+
+          <!-- 30min -->
+          <div class="border border-emerald-300 rounded-xl p-4 bg-emerald-50/40 relative overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-16 h-16 bg-emerald-200/50 rounded-full"></div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">直前1on1面談</span>
+              <span class="text-xs text-slate-500">計11名</span>
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1">30分面談</h4>
+            <div class="text-2xl font-black text-emerald-600 my-2">無断欠席 0.0%</div>
+            <div class="text-xs text-slate-600 space-y-1">
+              <div class="flex justify-between"><span>当日参加:</span><span class="font-bold text-emerald-600">9名 (81.8%)</span></div>
+              <div class="flex justify-between"><span>事前欠席:</span><span class="font-bold text-amber-600">2名 (18.2%)</span></div>
+              <div class="flex justify-between"><span>無断欠席:</span><span class="font-bold text-emerald-700">0名 (0.0%)</span></div>
+              <div class="flex justify-between"><span>早期帰宅:</span><span class="font-bold text-slate-500">0名 (0.0%)</span></div>
+            </div>
+          </div>
+
+          <!-- No approach -->
+          <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700">面談未実施</span>
+              <span class="text-xs text-slate-500">計67名</span>
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1">個別アプローチなし</h4>
+            <div class="text-2xl font-black text-rose-600 my-2">無断欠席 35.8%</div>
+            <div class="text-xs text-slate-600 space-y-1">
+              <div class="flex justify-between"><span>当日参加:</span><span class="font-bold text-slate-700">35名 (52.2%)</span></div>
+              <div class="flex justify-between"><span>事前欠席:</span><span class="font-bold text-amber-600">8名 (11.9%)</span></div>
+              <div class="flex justify-between"><span>無断欠席:</span><span class="font-bold text-rose-600">24名 (35.8%)</span></div>
+              <div class="flex justify-between"><span>早期帰宅:</span><span class="font-bold text-purple-600">8名 (22.9%)</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Comparative Chart -->
+        <div class="h-60 mb-6">
+          <canvas id="measureBarChart"></canvas>
+        </div>
+
+        <!-- Key Takeaway -->
+        <div class="p-4 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+          <span class="font-bold text-slate-900">💡 施策比較の核心インサイト:</span><br>
+          「一度でも個別面談（メンター面談または30分面談）を実施できた学生」は<strong>計29名中22名が当日参加（75.9%）し、無断欠席はわずか2名（6.9%）</strong>に抑えられました。全体の無断欠席26名中24名（92.3%）が個別アプローチなし層から発生しているため、<strong>『全エントリー者へ直前10〜15分でも面談接続すること』</strong>が最大の改善レバーとなります。
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 4: ステータス別行動 -->
+    <div id="tab-status" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-slate-800">3. ステータス別の行動パターン（面談回数・返信状況）</h3>
+          <p class="text-xs text-slate-500">面談の実施回数や学生の反応ステータスが、当日の出欠に与えた影響を分析</p>
+        </div>
+
+        <!-- Chart -->
+        <div class="h-64 mb-6">
+          <canvas id="statusBarChart"></canvas>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100/80 text-slate-700 border-b border-slate-200 font-bold">
+                <th class="py-3 px-4">ステータス区分</th>
+                <th class="py-3 px-3 text-center">総数</th>
+                <th class="py-3 px-3 text-center">当日参加者（率）</th>
+                <th class="py-3 px-3 text-center">事前欠席（率）</th>
+                <th class="py-3 px-3 text-center">無断欠席（率）</th>
+                <th class="py-3 px-3 text-center">早期帰宅（参加者比）</th>
+                <th class="py-3 px-4">行動特性と危険度判定</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">2度実施済み</td>
+                <td class="py-3 px-3 text-center font-bold">12人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">10人 (83.3%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (16.7%)</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-100/40">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🟢 <strong>安全層</strong>: ドタキャン率0%。極めて高い信頼関係。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">1度実施済み</td>
+                <td class="py-3 px-3 text-center font-bold">11人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">9人 (81.8%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (18.2%)</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-100/40">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🟢 <strong>安全層</strong>: 30分面談実施者。ドタキャンゼロで高歩留まり。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">面談なし（不要と回答）</td>
+                <td class="py-3 px-3 text-center font-bold">22人</td>
+                <td class="py-3 px-3 text-center text-slate-700">11人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (4.5%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">10人 (45.5%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">⚠️ <strong>警戒層</strong>: 「面談不要」は熱量低下のシグナル。半数がドタキャン。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">2日間返信なし</td>
+                <td class="py-3 px-3 text-center font-bold">24人</td>
+                <td class="py-3 px-3 text-center text-rose-600">5人 (20.8%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">6人 (25.0%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-700 bg-rose-100/40">13人 (54.2%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🚨 <strong>最危険層</strong>: 約8割が脱落。早期アラート発動基準に最適。</td>
+              </tr>
+              <tr class="hover:bg-slate-50 bg-slate-50/30">
+                <td class="py-3 px-4 text-slate-600">メッセージ未送信</td>
+                <td class="py-3 px-3 text-center font-bold">27人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600">22人 (81.5%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (7.4%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">3人 (11.1%)</td>
+                <td class="py-3 px-3 text-center font-bold text-purple-600">8人 (36.4%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">友人紹介・直前エントリー組。早期帰宅者が集中。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 5: 学年別行動 -->
+    <div id="tab-grade" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-slate-800">4. 学年別の行動パターン</h3>
+          <p class="text-xs text-slate-500">学年ごとの心理特性、コミットメント、早期帰宅傾向の比較</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="h-64">
+            <canvas id="gradeBarChart"></canvas>
+          </div>
+          <div class="h-64">
+            <canvas id="gradeRadarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100/80 text-slate-700 border-b border-slate-200 font-bold">
+                <th class="py-3 px-4">学年</th>
+                <th class="py-3 px-3 text-center">総数</th>
+                <th class="py-3 px-3 text-center">当日参加者（率）</th>
+                <th class="py-3 px-3 text-center">事前欠席（率）</th>
+                <th class="py-3 px-3 text-center">無断欠席（率）</th>
+                <th class="py-3 px-3 text-center">早期帰宅（参加者比）</th>
+                <th class="py-3 px-4">学年別の示唆</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>1年生
+                </td>
+                <td class="py-3 px-3 text-center font-bold">21人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">17人 (81.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (9.5%)</td>
+                <td class="py-3 px-3 text-center text-slate-600">2人 (9.5%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">✨ 参加率81%、早期帰宅0名。最もロイヤルティが高く完走率抜群。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-500"></span>2年生
+                </td>
+                <td class="py-3 px-3 text-center font-bold">27人</td>
+                <td class="py-3 px-3 text-center text-slate-700">13人 (48.1%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">5人 (18.5%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">9人 (33.3%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">⚠️ 参加率48%に低迷。学業やインターン選考の優先度調整で離脱。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-rose-500"></span>3年生
+                </td>
+                <td class="py-3 px-3 text-center font-bold">29人</td>
+                <td class="py-3 px-3 text-center text-slate-700">15人 (51.7%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">3人 (10.3%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">11人 (37.9%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">1人 (6.7%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">⚠️ 無断欠席最多（11名）。就活本番期ゆえの他予定とのバッティング。</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-purple-500"></span>4年生
+                </td>
+                <td class="py-3 px-3 text-center font-bold">15人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">11人 (73.3%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (13.3%)</td>
+                <td class="py-3 px-3 text-center text-slate-600">2人 (13.3%)</td>
+                <td class="py-3 px-3 text-center font-bold text-purple-600 bg-purple-50/50">7人 (63.6%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">🚪 参加率73%だが早期帰宅が過半数。卒論・内定後の時間制約あり。</td>
+              </tr>
+              <tr class="hover:bg-slate-50 bg-slate-50/30">
+                <td class="py-3 px-4 text-slate-600">不明</td>
+                <td class="py-3 px-3 text-center font-bold">4人</td>
+                <td class="py-3 px-3 text-center text-slate-700">1人 (25.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (25.0%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">2人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-4 text-slate-600 text-[11px]">休学・フォーム不備等。属性不明層は離脱率高め。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 6: 大学別行動 -->
+    <div id="tab-univ" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-slate-800">5. 大学別の行動パターン</h3>
+          <p class="text-xs text-slate-500">大学群および主要大学ごとの参加傾向と無断欠席率の比較</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div class="h-64">
+            <canvas id="univGroupChart"></canvas>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center text-xs space-y-3">
+            <h4 class="font-bold text-slate-800 text-sm">大学群別の特徴サマリー</h4>
+            <div class="flex items-start gap-2">
+              <span class="font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded">国公立大学 (24名)</span>
+              <span class="text-slate-600">参加率 <strong>75.0%</strong>、無断欠席わずか12.5%。神戸大（85.7%・無断欠席ゼロ）、大阪公立大（72.7%）など極めて誠実。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">近畿大学 (32名)</span>
+              <span class="text-slate-600">最大母集団だが、無断欠席が <strong>40.6%（13名）</strong>。全体のドタキャンの半数を占めており、最大のテコ入れ対象。</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded">関関同立 (20名)</span>
+              <span class="text-slate-600">参加率 <strong>60.0%</strong>（無断欠席25.0%）。関大（80%）が高い一方、同志社・立命館に早期帰宅や欠席が分散。</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100/80 text-slate-700 border-b border-slate-200 font-bold">
+                <th class="py-3 px-4">大学名</th>
+                <th class="py-3 px-3 text-center">総数</th>
+                <th class="py-3 px-3 text-center">当日参加者（率）</th>
+                <th class="py-3 px-3 text-center">事前欠席（率）</th>
+                <th class="py-3 px-3 text-center">無断欠席（率）</th>
+                <th class="py-3 px-3 text-center">早期帰宅（参加者比）</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">近畿大学</td>
+                <td class="py-3 px-3 text-center font-bold">32人</td>
+                <td class="py-3 px-3 text-center font-bold text-slate-800">16人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">3人 (9.4%)</td>
+                <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">13人 (40.6%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">3人 (18.8%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">大阪公立大学</td>
+                <td class="py-3 px-3 text-center font-bold">11人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">8人 (72.7%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (9.1%)</td>
+                <td class="py-3 px-3 text-center text-slate-600">2人 (18.2%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">神戸大学</td>
+                <td class="py-3 px-3 text-center font-bold">7人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">6人 (85.7%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (14.3%)</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-100/40">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">同志社大学</td>
+                <td class="py-3 px-3 text-center font-bold">6人</td>
+                <td class="py-3 px-3 text-center text-slate-700">3人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">1人 (16.7%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">2人 (33.3%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">1人 (33.3%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">関西学院大学</td>
+                <td class="py-3 px-3 text-center font-bold">5人</td>
+                <td class="py-3 px-3 text-center text-slate-700">3人 (60.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">2人 (40.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">関西大学</td>
+                <td class="py-3 px-3 text-center font-bold">5人</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">4人 (80.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-600">1人 (20.0%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">立命館大学</td>
+                <td class="py-3 px-3 text-center font-bold">4人</td>
+                <td class="py-3 px-3 text-center text-slate-700">2人 (50.0%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">2人 (50.0%)</td>
+                <td class="py-3 px-3 text-center font-bold text-emerald-700">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">2人 (100.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="py-3 px-4 font-bold text-slate-900">大阪大学</td>
+                <td class="py-3 px-3 text-center font-bold">3人</td>
+                <td class="py-3 px-3 text-center text-slate-700">2人 (66.7%)</td>
+                <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+                <td class="py-3 px-3 text-center text-rose-600">1人 (33.3%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">1人 (50.0%)</td>
+              </tr>
+              <tr class="hover:bg-slate-50 bg-slate-50/30">
+                <td class="py-3 px-4 text-slate-600">その他私立・国公立（14校）</td>
+                <td class="py-3 px-3 text-center font-bold">23人</td>
+                <td class="py-3 px-3 text-center font-bold text-slate-800">13人 (56.5%)</td>
+                <td class="py-3 px-3 text-center text-amber-600">5人 (21.7%)</td>
+                <td class="py-3 px-3 text-center text-slate-600">5人 (21.7%)</td>
+                <td class="py-3 px-3 text-center text-purple-600">1人 (7.7%)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 7: 次回アクション提言 -->
+    <div id="tab-action" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div class="mb-6">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800 mb-2">
+            Action Plan for Next FES
+          </span>
+          <h3 class="text-xl font-extrabold text-slate-900">次回フェスに向けた歩留まり最大化ロードマップ</h3>
+          <p class="text-xs text-slate-500 mt-1">当日参加率 59.4% ➔ 80.0% 以上達成のための具体的施策パッケージ</p>
+        </div>
+
+        <!-- Target KPI Box -->
+        <div class="p-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white mb-6 shadow-md">
+          <div class="text-xs font-semibold text-sky-100 mb-1">次回目標KPI設計（エントリー100名規模）</div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+            <div>
+              <div class="text-xs text-sky-200">当日参加率</div>
+              <div class="text-2xl font-black">80% <span class="text-xs font-normal text-sky-100">(80名)</span></div>
+            </div>
+            <div>
+              <div class="text-xs text-sky-200">無断欠席率</div>
+              <div class="text-2xl font-black text-rose-200">10%以下 <span class="text-xs font-normal text-rose-100">(&le;10名)</span></div>
+            </div>
+            <div>
+              <div class="text-xs text-sky-200">事前欠席率</div>
+              <div class="text-2xl font-black">10% <span class="text-xs font-normal text-sky-100">(10名)</span></div>
+            </div>
+            <div>
+              <div class="text-xs text-sky-200">面談接続率</div>
+              <div class="text-2xl font-black text-emerald-200">90%以上 <span class="text-xs font-normal text-emerald-100">(90名)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Actions Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="border border-slate-200 rounded-xl p-5 bg-white shadow-sm hover:border-sky-300 transition">
+            <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-sm mb-3">01</div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1.5">「直前10〜15分 Zoom確認」の標準プロセス化</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              今回30分面談で実証された「無断欠席ゼロ効果」を再現。ハードルを下げるため「事前マッチング診断結果の解説・当日ブース回り方ガイド」として、開催前3〜7日に全学生へ10〜15分のオンライン接続を必須プロセス化する。
+            </p>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-5 bg-white shadow-sm hover:border-rose-300 transition">
+            <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm mb-3">02</div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1.5">「返信なし2日」の早期アラート＆リカバリー運用</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              返信が2日途絶えた学生（ドタキャン率54%）を自動で「危険リスト」に振り分け。公式LINEの単なるリマインドではなく、紹介者本人や別のリーダーから別ルートで個別連絡し、離脱を未然に防ぐ。
+            </p>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-5 bg-white shadow-sm hover:border-amber-300 transition">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm mb-3">03</div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1.5">2・3年生に特化した「参加インセンティブ」設計</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              ドタキャンが集中する2・3年生（無断欠席の77%）に対し、学業や他社選考よりも優先したくなる「特別スカウト枠」「人事直結ミッション」などの限定価値を訴求し、参加プライオリティを引き上げる。
+            </p>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-5 bg-white shadow-sm hover:border-purple-300 transition">
+            <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm mb-3">04</div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1.5">4年生向け「サポーター／短時間枠」の正式導入</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              早期帰宅率63.6%の4年生に対し、フルタイム参加を前提とせず、「午前or午後のみの短時間枠」や「後輩の就活相談に乗るメンター枠」として最初から位置付けることで、満足度とコミットメントを両立させる。
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Script for Tabs and Chart.js -->
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      const target = document.getElementById('tab-' + tabId);
+      const btn = document.getElementById('tab-btn-' + tabId);
+      if (target) target.classList.remove('hidden');
+      if (btn) btn.classList.add('active');
+    }
+
+    // Chart.js Instances
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Overall Donut
+      new Chart(document.getElementById('overallDonutChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['当日参加（完走）', '早期帰宅', '事前欠席', '無断欠席'],
+          datasets: [{
+            data: [49, 8, 13, 26],
+            backgroundColor: ['#10B981', '#8B5CF6', '#F59E0B', '#EF4444'],
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          cutout: '68%'
+        }
+      });
+
+      // 2. Recruiter Bar
+      new Chart(document.getElementById('recruiterBarChart'), {
+        type: 'bar',
+        data: {
+          labels: ['おゆづ', '岩田琉我', 'りょうわさくや', '佐藤秀明', '小國', 'その他・不明'],
+          datasets: [
+            { label: '当日参加', data: [14, 15, 7, 11, 0, 9], backgroundColor: '#10B981' },
+            { label: '事前欠席', data: [6, 4, 0, 0, 2, 0], backgroundColor: '#F59E0B' },
+            { label: '無断欠席', data: [0, 4, 18, 2, 2, 0], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, grid: { color: '#F1F5F9' } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+      // 3. Measure Bar
+      new Chart(document.getElementById('measureBarChart'), {
+        type: 'bar',
+        data: {
+          labels: ['メンター制度 (18名)', '30分面談 (11名)', '個別アプローチなし (67名)'],
+          datasets: [
+            { label: '参加率 (%)', data: [72.2, 81.8, 52.2], backgroundColor: '#10B981' },
+            { label: '無断欠席率 (%)', data: [11.1, 0.0, 35.8], backgroundColor: '#EF4444' },
+            { label: '事前欠席率 (%)', data: [16.7, 18.2, 11.9], backgroundColor: '#F59E0B' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#F1F5F9' } },
+            x: { grid: { display: false } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+      // 4. Status Bar
+      new Chart(document.getElementById('statusBarChart'), {
+        type: 'bar',
+        data: {
+          labels: ['2度実施済み', '1度実施済み', '面談なし(不要)', '2日間返信なし', '未送信'],
+          datasets: [
+            { label: '当日参加', data: [10, 9, 11, 5, 22], backgroundColor: '#10B981' },
+            { label: '事前欠席', data: [2, 2, 1, 6, 2], backgroundColor: '#F59E0B' },
+            { label: '無断欠席', data: [0, 0, 10, 13, 3], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, grid: { color: '#F1F5F9' } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+      // 5. Grade Bar
+      new Chart(document.getElementById('gradeBarChart'), {
+        type: 'bar',
+        data: {
+          labels: ['1年生 (21名)', '2年生 (27名)', '3年生 (29名)', '4年生 (15名)'],
+          datasets: [
+            { label: '参加率 (%)', data: [81.0, 48.1, 51.7, 73.3], backgroundColor: '#10B981' },
+            { label: '無断欠席率 (%)', data: [9.5, 33.3, 37.9, 13.3], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#F1F5F9' } },
+            x: { grid: { display: false } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+      // 6. Grade Radar (Characteristics)
+      new Chart(document.getElementById('gradeRadarChart'), {
+        type: 'radar',
+        data: {
+          labels: ['参加意欲', '事前連絡遵守', '早期帰宅率', '無断欠席リスク', '母集団規模'],
+          datasets: [
+            {
+              label: '1年生',
+              data: [85, 90, 5, 10, 70],
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              borderWidth: 2
+            },
+            {
+              label: '3年生',
+              data: [50, 60, 10, 80, 95],
+              borderColor: '#EF4444',
+              backgroundColor: 'rgba(239, 68, 68, 0.15)',
+              borderWidth: 2
+            },
+            {
+              label: '4年生',
+              data: [75, 80, 85, 20, 50],
+              borderColor: '#8B5CF6',
+              backgroundColor: 'rgba(139, 92, 246, 0.15)',
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: { beginAtZero: true, max: 100, ticks: { display: false } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+      // 7. Univ Group Bar
+      new Chart(document.getElementById('univGroupChart'), {
+        type: 'bar',
+        data: {
+          labels: ['国公立大学 (24名)', '近畿大学 (32名)', '関関同立 (20名)', 'その他私立 (19名)'],
+          datasets: [
+            { label: '参加率 (%)', data: [75.0, 50.0, 60.0, 57.9], backgroundColor: '#0284C7' },
+            { label: '無断欠席率 (%)', data: [12.5, 40.6, 25.0, 26.3], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#F1F5F9' } },
+            x: { grid: { display: false } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

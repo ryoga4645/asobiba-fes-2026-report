@@ -1,0 +1,39 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Credentials & API Keys (Strictly Forbidden to commit)
+goog_api/
+*.json
+token.json
+client_secret*.json
+
+# Personal Data / Internal raw logs (Strictly Forbidden to commit)
+*.csv
+*.xlsx
+*.txt
+LINE_*.jpg
+うみぞら映画祭_*.xlsx
+WILLOOP採用イベント_*.xlsx
+
+# Backups
+*.bak
+*.tmp
+.chrome_tmp/
+
+# Development / Agent config
+.agents/
+_agents/
+scripts/
+research_*.md
+operation_*.md
+timetable.html
+educational_*.html
+educational_*.png
+asobiba_fes_slide.*
+asobiba_fes_infographic.*
+infographic.*
+ASOBIBA_FES_*.jpg
+
+# Scratch
+scratch/
