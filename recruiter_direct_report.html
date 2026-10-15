@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASOBIBA FES 2026 - 集客担当者別（直接紹介・統合なし）分析レポート</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen antialiased">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800">
+            ASOBIBA FES 2026
+          </span>
+          <span class="text-xs text-slate-500 font-medium">開催日: 2026年10月10日 (土)</span>
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900">
+          集客担当者別（直接紹介・統合なし）分析レポート
+        </h1>
+        <p class="text-sm text-slate-500 mt-0.5">
+          孫紹介を統合せず、各紹介者が直接招待した学生の出欠結果を個別に評価（全17名）
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3.5 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition">
+          ← 総合ダッシュボードへ戻る
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+        <div class="text-xs font-semibold text-slate-500 mb-1">総エントリー数</div>
+        <div class="text-3xl font-extrabold text-slate-900">96<span class="text-sm font-normal text-slate-500 ml-1">名</span></div>
+        <div class="text-xs text-slate-400 mt-1">直接紹介者: 全17名</div>
+      </div>
+      <div class="bg-white rounded-xl p-4 border border-emerald-200 bg-emerald-50/20 shadow-sm">
+        <div class="text-xs font-semibold text-emerald-700 mb-1">当日参加者数</div>
+        <div class="text-3xl font-extrabold text-emerald-600">57<span class="text-sm font-normal text-emerald-700 ml-1">名</span></div>
+        <div class="text-xs text-slate-500 mt-1">参加率: 59.4%</div>
+      </div>
+      <div class="bg-white rounded-xl p-4 border border-rose-200 bg-rose-50/20 shadow-sm">
+        <div class="text-xs font-semibold text-rose-700 mb-1">無断欠席（ドタキャン）</div>
+        <div class="text-3xl font-extrabold text-rose-600">25<span class="text-sm font-normal text-rose-700 ml-1">名</span></div>
+        <div class="text-xs text-rose-600 font-medium mt-1">ドタキャン率: 26.0%</div>
+      </div>
+      <div class="bg-white rounded-xl p-4 border border-amber-200 bg-amber-50/20 shadow-sm">
+        <div class="text-xs font-semibold text-amber-700 mb-1">事前連絡あり欠席</div>
+        <div class="text-3xl font-extrabold text-amber-600">14<span class="text-sm font-normal text-amber-700 ml-1">名</span></div>
+        <div class="text-xs text-slate-500 mt-1">事前欠席率: 14.6%</div>
+      </div>
+    </div>
+
+    <!-- 3 Big Insights -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 shadow-sm">
+        <div class="font-bold text-rose-800 text-sm mb-1.5 flex items-center gap-1.5">
+          <span>⚠️ 土屋正太郎様: 6名全員が無断欠席</span>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          りょうわさくや様グループの無断欠席（18名）のうち、<strong>6名が土屋正太郎様の直接紹介者</strong>でした。直接集客した学生へのフォロー体制が途絶えていたことが離脱の最大原因となっています。
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 shadow-sm">
+        <div class="font-bold text-emerald-800 text-sm mb-1.5 flex items-center gap-1.5">
+          <span>🌟 参加率100%を達成したキーパーソン</span>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          <strong>アム様 (5名)</strong>、<strong>狭霧優様 (2名)</strong>、<strong>福井久輝様 (2名)</strong>、<strong>まさたか様 (2名)</strong> が直接招待した学生は、<strong>全員が当日参加（脱落0名）</strong>を達成。強い信頼関係が窺えます。
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-sky-50 border border-sky-200 shadow-sm">
+        <div class="font-bold text-sky-800 text-sm mb-1.5 flex items-center gap-1.5">
+          <span>🏆 おゆづ様: 直接19名でもドタキャンゼロ</span>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          直接集客数最多の19名（石島様含む）に対し、当日参加13名・事前欠席6名で、<strong>直接集客でも無断欠席は0名（0.0%）</strong>。個々の学生に対するきめ細やかな伴走力が実証されました。
+        </p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+      <h3 class="text-base font-bold text-slate-800 mb-1">直接集客担当者別 出欠内訳（上位10名＋その他）</h3>
+      <p class="text-xs text-slate-500 mb-4">当日参加（緑）・事前欠席（黄）・無断欠席（赤）の積み上げ内訳</p>
+      <div class="h-64">
+        <canvas id="directRecruiterChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+      <h3 class="text-base font-bold text-slate-800 mb-1">集客担当者（直接紹介・統合なし）全17名 実績一覧表</h3>
+      <p class="text-xs text-slate-500 mb-4">総数降順ソート</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold">
+              <th class="py-3 px-4">集客担当者</th>
+              <th class="py-3 px-3 text-center">総数</th>
+              <th class="py-3 px-3 text-center">当日参加者（率）</th>
+              <th class="py-3 px-3 text-center">事前欠席（率）</th>
+              <th class="py-3 px-3 text-center">無断欠席（率）</th>
+              <th class="py-3 px-3 text-center">早期帰宅（参加者比）</th>
+              <th class="py-3 px-4">個別パフォーマンス分析</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-medium">
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">おゆづ</td>
+              <td class="py-3 px-3 text-center font-bold">19人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">13人 (68.4%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">6人 (31.6%)</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-700 bg-emerald-100/40">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">🏆 直接19名でも<strong>無断欠席ゼロ</strong>。石島様含む。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">りょうわさくや</td>
+              <td class="py-3 px-3 text-center font-bold">18人</td>
+              <td class="py-3 px-3 text-center text-slate-700">7人 (38.9%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center font-bold text-rose-600 bg-rose-50/50">11人 (61.1%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">直接集客分でも11名が無断欠席。フォロー期間の短縮が影響。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">岩田琉我</td>
+              <td class="py-3 px-3 text-center font-bold">17人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">11人 (64.7%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">5人 (29.4%)</td>
+              <td class="py-3 px-3 text-center text-slate-700">1人 (5.9%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">直接紹介でも無断欠席わずか1名（野田様）。高水準。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">佐藤秀明</td>
+              <td class="py-3 px-3 text-center font-bold">12人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">10人 (83.3%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-700">2人 (16.7%)</td>
+              <td class="py-3 px-3 text-center font-bold text-purple-600 bg-purple-50/50">7人 (70.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">参加率は83%と高いが、早期帰宅が7名発生。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">土屋正太郎</td>
+              <td class="py-3 px-3 text-center font-bold">6人</td>
+              <td class="py-3 px-3 text-center text-slate-700">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center font-bold text-rose-700 bg-rose-100/50">6人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">⚠️ <strong>6名全員が無断欠席</strong>。早期離脱のボトルネック。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">アム</td>
+              <td class="py-3 px-3 text-center font-bold">5人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600 bg-emerald-50/50">5人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">🌟 関大データサイエンス学科生など<strong>5名全員参加</strong>。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">小國</td>
+              <td class="py-3 px-3 text-center font-bold">4人</td>
+              <td class="py-3 px-3 text-center text-slate-700">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">2人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-rose-600">2人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">参加者なし。事前欠席2名、無断欠席2名。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">狭霧優</td>
+              <td class="py-3 px-3 text-center font-bold">2人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">2人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">柴戸千縁様・池田稟央様 2名とも当日参加。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">福井久輝</td>
+              <td class="py-3 px-3 text-center font-bold">2人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">2人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">吉岡孝大様・清水彩雲様 2名とも当日参加。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">まさたか</td>
+              <td class="py-3 px-3 text-center font-bold">2人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">2人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">高橋翔太様・河村凌矢様 2名とも当日参加。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">鈴木佳帆</td>
+              <td class="py-3 px-3 text-center font-bold">2人</td>
+              <td class="py-3 px-3 text-center text-slate-700">1人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-rose-600">1人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">澁谷様参加、宮田様無断欠席。</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="py-3 px-4 font-bold text-slate-900">岸田宗介</td>
+              <td class="py-3 px-3 text-center font-bold">2人</td>
+              <td class="py-3 px-3 text-center text-slate-700">1人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">1人 (50.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">古川様参加、あおい様事前欠席。</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/30">
+              <td class="py-3 px-4 text-slate-600">古里真優</td>
+              <td class="py-3 px-3 text-center font-bold">1人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">1人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">広川聡美様 参加。</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/30">
+              <td class="py-3 px-4 text-slate-600">木下颯</td>
+              <td class="py-3 px-3 text-center font-bold">1人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">1人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center font-bold text-purple-600">1人 (100.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">高橋亜希良様 参加（早期帰宅）。</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/30">
+              <td class="py-3 px-4 text-slate-600">山本風花</td>
+              <td class="py-3 px-3 text-center font-bold">1人</td>
+              <td class="py-3 px-3 text-center font-bold text-emerald-600">1人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">岸田宗介様 参加。</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/30">
+              <td class="py-3 px-4 text-slate-600">野田詩央里</td>
+              <td class="py-3 px-3 text-center font-bold">1人</td>
+              <td class="py-3 px-3 text-center text-slate-700">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-rose-600">1人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">利川紗也様 無断欠席。</td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-slate-50/30">
+              <td class="py-3 px-4 text-slate-600">堯舜太</td>
+              <td class="py-3 px-3 text-center font-bold">1人</td>
+              <td class="py-3 px-3 text-center font-bold text-slate-700">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-3 text-center text-rose-600">1人 (100.0%)</td>
+              <td class="py-3 px-3 text-center text-slate-500">0人 (0.0%)</td>
+              <td class="py-3 px-4 text-slate-600 text-[11px]">加藤大翔様 無断欠席。</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-300">
+              <td class="py-3 px-4">全体合計</td>
+              <td class="py-3 px-3 text-center">96人</td>
+              <td class="py-3 px-3 text-center text-emerald-600">57人 (59.4%)</td>
+              <td class="py-3 px-3 text-center text-amber-600">14人 (14.6%)</td>
+              <td class="py-3 px-3 text-center text-rose-600">25人 (26.0%)</td>
+              <td class="py-3 px-3 text-center text-purple-600">8人 (14.0%)</td>
+              <td class="py-3 px-4">-</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      new Chart(document.getElementById('directRecruiterChart'), {
+        type: 'bar',
+        data: {
+          labels: ['おゆづ (19)', 'りょうわさくや (18)', '岩田琉我 (17)', '佐藤秀明 (12)', '土屋正太郎 (6)', 'アム (5)', '小國 (4)', '狭霧優 (2)', '福井久輝 (2)', 'まさたか (2)', 'その他 (9)'],
+          datasets: [
+            { label: '当日参加', data: [13, 7, 11, 10, 0, 5, 0, 2, 2, 2, 5], backgroundColor: '#10B981' },
+            { label: '事前欠席', data: [6, 0, 5, 0, 0, 0, 2, 0, 0, 0, 1], backgroundColor: '#F59E0B' },
+            { label: '無断欠席', data: [0, 11, 1, 2, 6, 0, 2, 0, 0, 0, 3], backgroundColor: '#EF4444' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, grid: { color: '#F1F5F9' } }
+          },
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
