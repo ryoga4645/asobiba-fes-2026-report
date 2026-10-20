@@ -1112,7 +1112,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 </thead>
                                 <tbody>
                                     <tr style="background: #F8FAFC;">
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: 700;">有料企業<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">有料企業<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
                                         <td>一元配置分散分析 (ANOVA)</td>
                                         <td>F = 0.017</td>
                                         <td>(2, 119)</td>
@@ -1126,8 +1126,22 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                         <td>p = 0.8673</td>
                                         <td>有意差なし [差 -0.33pt, d=0.043]</td>
                                     </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = 0.025</td>
+                                        <td>59.1</td>
+                                        <td>p = 0.8638</td>
+                                        <td>有意差なし [差 -0.05pt, d=0.006]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 0.176</td>
+                                        <td>63.9</td>
+                                        <td>p = 0.8608</td>
+                                        <td>有意差なし [差 -0.28pt, d=0.038]</td>
+                                    </tr>
                                     <tr>
-                                        <td rowspan="2" style="vertical-align: middle; font-weight: 700;">無料企業<br><span style="font-size: 10px; color: #64748B;">(N=164)</span></td>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">無料企業<br><span style="font-size: 10px; color: #64748B;">(N=164)</span></td>
                                         <td>一元配置分散分析 (ANOVA)</td>
                                         <td>F = 1.060</td>
                                         <td>(2, 161)</td>
@@ -1140,6 +1154,20 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                         <td>84.2</td>
                                         <td>p = 0.9073</td>
                                         <td>有意差なし [差 -0.20pt, d=0.025]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.182</td>
+                                        <td>106.0</td>
+                                        <td>p = 0.2400</td>
+                                        <td>有意差なし [差 +1.87pt, d=0.211]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 1.262</td>
+                                        <td>96.2</td>
+                                        <td>p = 0.2098</td>
+                                        <td>有意差なし [差 -2.07pt, d=0.231]</td>
                                     </tr>
                                 </tbody>
                             </table>
