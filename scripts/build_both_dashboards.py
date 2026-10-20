@@ -1864,7 +1864,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             </td>
                             <td>
                                 <div style="margin-bottom: 4px;">
-                                    <strong>① なし vs めっちゃ:</strong> <strong>p &lt; 0.0001 (***)</strong><br>
+                                    <strong>① なし vs めっちゃ知りたい:</strong> <strong>p &lt; 0.0001 (***)</strong><br>
                                     <span style="font-size: 10.5px; color: #475569;">t = -5.308, df = 153.1 (差 +5.95pt, d = 0.826 [大])</span>
                                 </div>
                                 <div style="margin-bottom: 4px;">
@@ -1872,7 +1872,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                     <span style="font-size: 10.5px; color: #475569;">t = -3.318, df = 216.2 (差 +3.27pt, d = 0.429 [中])</span>
                                 </div>
                                 <div>
-                                    <strong>③ 知りたい vs めっちゃ:</strong> <strong>p = 0.0129 (*)</strong><br>
+                                    <strong>③ 知りたい vs めっちゃ知りたい:</strong> <strong>p = 0.0129 (*)</strong><br>
                                     <span style="font-size: 10.5px; color: #475569;">t = -2.516, df = 152.3 (差 +2.68pt, d = 0.352 [小〜中])</span>
                                 </div>
                             </td>
@@ -1908,7 +1908,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             </td>
                             <td>
                                 <div style="margin-bottom: 4px;">
-                                    ① なし vs めっちゃ: p = 0.8311<br>
+                                    ① なし vs めっちゃ知りたい: p = 0.8311<br>
                                     <span style="font-size: 10.5px; color: #64748B;">t = 0.214, df = 146.0 (差 -0.28pt, d = -0.035)</span>
                                 </div>
                                 <div style="margin-bottom: 4px;">
@@ -1916,7 +1916,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                     <span style="font-size: 10.5px; color: #64748B;">t = -0.931, df = 165.7 (差 +1.12pt, d = 0.130)</span>
                                 </div>
                                 <div>
-                                    ③ 知りたい vs めっちゃ: p = 0.2369<br>
+                                    ③ 知りたい vs めっちゃ知りたい: p = 0.2369<br>
                                     <span style="font-size: 10.5px; color: #64748B;">t = 1.187, df = 159.2 (差 -1.40pt, d = -0.166)</span>
                                 </div>
                             </td>
@@ -1944,7 +1944,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-top: 10px; line-height: 1.6;">
                     <strong>🏢 企業行動の客観的結論:</strong><br>
-                    企業はバリューが10pt上がるごとに「知りたい以上」オッズが <strong>約2.03倍（p &lt; 0.0001***）</strong>、「めっちゃ知りたい」オッズが <strong>約2.05倍（p = 0.0002***）</strong> に倍増し、Welch検定の全ペア（なし vs めっちゃ +5.95pt、なし vs 知り +3.27pt、知り vs めっちゃ +2.68pt）で全て有意です。対照的にパーソナリティは全対比・全モデルで有意差が一切なく（p = 0.24〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
+                    企業はバリューが10pt上がるごとに「知りたい以上」オッズが <strong>約2.03倍（p &lt; 0.0001***）</strong>、「めっちゃ知りたい」オッズが <strong>約2.05倍（p = 0.0002***）</strong> に倍増し、Welch検定の全ペア（なし vs めっちゃ知りたい +5.95pt、なし vs 知り +3.27pt、知り vs めっちゃ知りたい +2.68pt）で全て有意です。対照的にパーソナリティは全対比・全モデルで有意差が一切なく（p = 0.24〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
                 </div>
             </div>
 
@@ -1982,7 +1982,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             </td>
                             <td>
                                 <div style="margin-bottom: 4px;">
-                                    <strong>① なし vs めっちゃ:</strong> <strong style="color: #B45309;">p = 0.0890 (†)</strong><br>
+                                    <strong>① なし vs めっちゃ知りたい:</strong> <strong style="color: #B45309;">p = 0.0890 (†)</strong><br>
                                     <span style="font-size: 10.5px; color: #475569;">t = -1.733, df = 51.7 (差 +2.70pt, d = 0.324 [中])</span>
                                 </div>
                                 <div style="margin-bottom: 4px;">
@@ -1990,7 +1990,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                     <span style="font-size: 10.5px; color: #64748B;">t = -1.084, df = 248.5 (差 +1.15pt, d = 0.136)</span>
                                 </div>
                                 <div>
-                                    ③ 知りたい vs めっちゃ: p = 0.3295<br>
+                                    ③ 知りたい vs めっちゃ知りたい: p = 0.3295<br>
                                     <span style="font-size: 10.5px; color: #64748B;">t = -0.984, df = 53.7 (差 +1.55pt, d = 0.187)</span>
                                 </div>
                             </td>
@@ -2009,7 +2009,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             <td>
                                 <span class="pill pill-amber">有意傾向 (†)</span><br>
                                 <div style="font-size: 11px; color: #92400E; margin-top: 4px; line-height: 1.3;">
-                                    なし vs めっちゃで有意傾向。<br>人柄・安心感による底上げ
+                                    なし vs めっちゃ知りたいで有意傾向。<br>人柄・安心感による底上げ
                                 </div>
                             </td>
                         </tr>
@@ -2026,7 +2026,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             </td>
                             <td>
                                 <div style="margin-bottom: 4px;">
-                                    ① なし vs めっちゃ: p = 0.6285<br>
+                                    ① なし vs めっちゃ知りたい: p = 0.6285<br>
                                     <span style="font-size: 10.5px; color: #64748B;">t = -0.486, df = 60.1 (差 +0.71pt, d = 0.090)</span>
                                 </div>
                                 <div style="margin-bottom: 4px;">
@@ -2034,7 +2034,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                     <span style="font-size: 10.5px; color: #475569;">t = -1.625, df = 270.7 (差 +1.52pt, d = 0.197)</span>
                                 </div>
                                 <div>
-                                    ③ 知りたい vs めっちゃ: p = 0.5824<br>
+                                    ③ 知りたい vs めっちゃ知りたい: p = 0.5824<br>
                                     <span style="font-size: 10.5px; color: #64748B;">t = 0.553, df = 60.8 (差 -0.81pt, d = -0.103)</span>
                                 </div>
                             </td>
