@@ -441,34 +441,42 @@
                             <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
                                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
                                     <strong style="color: #1E293B;">【効果あり】バリューフィット</strong>
-                                    <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p &lt; 0.0001 (*** 極めて有意)</span>
+                                    <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p &lt; 0.0001 (*** 極めて有意)</span>
                                 </div>
                                 <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    F(2, 310) = 13.263, 効果量 η² = 0.079（中〜大の効果量）
+                                    全体F(2, 310) = 13.263, 効果量 η² = 0.079（中〜大の効果量）
                                 </div>
                                 <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
                                     <div>・なし(57.84) vs 知りたい(61.11): <strong>Welch t = -3.322, p = 0.0009 (*** 有意)</strong> [差 +3.27pt, d=0.429]</div>
                                     <div>・知りたい(61.11) vs めっちゃ(63.79): <strong>Welch t = -2.513, p = 0.0120 (* 有意)</strong> [差 +2.68pt, d=0.352]</div>
                                     <div>・なし(57.84) vs めっちゃ(63.79): <strong>Welch t = -5.312, p &lt; 0.0001 (*** 極めて有意)</strong> [差 +5.95pt, d=0.826]</div>
+                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
+                                        └ <strong>無料企業（配席混合・自然実験）</strong>: なし(56.73) vs めっちゃ(64.24) ➔ <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 5px; border-radius: 3px; font-weight: 700;">p &lt; 0.0001 (*** 差 +7.51pt, d=1.028)</span><br>
+                                        └ <strong>有料企業（高バリュー優先配席）</strong>: なし(60.09) vs めっちゃ(63.13) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.0840 (差 +3.04pt, 元々高水準なためマイルド)</span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- パーソナリティ（効果なし） -->
                             <div style="margin-bottom: 10px;">
                                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
                                     <strong style="color: #1E293B;">【効果なし】パーソナリティフィット</strong>
-                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p = 0.4463 (有意差なし)</span>
+                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p = 0.4463 (有意差なし)</span>
                                 </div>
                                 <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    F(2, 283) = 0.817, 効果量 η² = 0.006（効果量ほぼゼロ / 有効N=286）
+                                    全体F(2, 283) = 0.817, 効果量 η² = 0.006（効果量ほぼゼロ / 有効N=286）
                                 </div>
                                 <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
                                     <div>・なし(78.41) vs 知りたい(79.53): Welch t = -0.931, p = 0.3519 (有意差なし)</div>
                                     <div>・知りたい(79.53) vs めっちゃ(78.13): Welch t = 1.184, p = 0.2363 (有意差なし・微減)</div>
                                     <div>・なし(78.41) vs めっちゃ(78.13): Welch t = 0.212, p = 0.8324 (有意差なし・完全同等)</div>
+                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
+                                        └ <strong>有料企業</strong>: なし(80.48) vs めっちゃ(80.15) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.8667 (差 -0.33pt, 効果なし ❌)</span><br>
+                                        └ <strong>無料企業</strong>: なし(76.93) vs めっちゃ(76.73) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.9070 (差 -0.20pt, 効果なし ❌)</span>
+                                    </div>
                                 </div>
                             </div>
                             <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
-                                💡 <strong>客観的結論</strong>: 企業は学生の人柄（パーソナリティ）では全く選別しておらず（p=0.45）、バリューの一致度のみを極めて厳密に評価（p&lt;0.0001）しています。
+                                💡 <strong>客観的結論</strong>: 有料・無料を問わず企業はパーソナリティで選別しておらず（有料p=0.87, 無料p=0.91）、バリュー高低が混在していた無料企業において、高バリューの学生をピンポイントで一本釣り（差 +7.51pt, p&lt;0.0001）していました。
                             </div>
                         </div>
                     </details>
@@ -518,15 +526,19 @@
                             <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
                                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
                                     <strong style="color: #1E293B;">【効果なし】バリューフィット</strong>
-                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p = 0.2720 (有意差なし)</span>
+                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p = 0.2720 (有意差なし)</span>
                                 </div>
                                 <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    F(2, 310) = 1.305, 効果量 η² = 0.008（効果量ほぼゼロ / 全体N=313）
+                                    全体F(2, 310) = 1.305, 効果量 η² = 0.008（効果量ほぼゼロ / 全体N=313）
                                 </div>
                                 <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
                                     <div>・なし(59.96) vs 知りたい(61.48): Welch t = -1.629, p = 0.1032 (有意差なし)</div>
                                     <div>・知りたい(61.48) vs めっちゃ(60.67): Welch t = 0.554, p = 0.5793 (有意差なし・微減)</div>
                                     <div>・なし(59.96) vs めっちゃ(60.67): Welch t = -0.487, p = 0.6261 (有意差なし)</div>
+                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
+                                        └ <strong>有料企業</strong>: なし(60.28) vs めっちゃ(62.02) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.2772 (差 +1.74pt, 効果なし ❌)</span><br>
+                                        └ <strong>無料企業</strong>: なし(59.75) vs めっちゃ(59.77) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.9909 (差 +0.02pt, 効果なし ❌・完全同等)</span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- パーソナリティ（限定的傾向） -->
@@ -543,13 +555,13 @@
                                     <div>・知りたい(79.23) vs めっちゃ(80.78): Welch t = -0.985, p = 0.3246 (有意差なし)</div>
                                     <div>・なし(78.08) vs めっちゃ(80.78): <strong>Welch t = -1.732, p = 0.0833 († 有意傾向)</strong> [差 +2.70pt, d=0.323]</div>
                                     <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
-                                        └ <strong>有料企業限定</strong>: なし(78.82) vs めっちゃ(82.44) ➔ <span style="background: #ECFDF5; color: #059669; padding: 1px 5px; border-radius: 3px; font-weight: 700;">p = 0.0416 (* 5%水準有意)</span><br>
-                                        └ <strong>無料企業限定</strong>: なし(77.58) vs めっちゃ(78.50) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.7024 (効果なし ❌・有意差全くなし)</span>
+                                        └ <strong>有料企業限定</strong>: なし(78.82) vs めっちゃ(82.44) ➔ <span style="background: #ECFDF5; color: #059669; padding: 1px 5px; border-radius: 3px; font-weight: 700;">p = 0.0416 (* 5%水準有意)</span> [差 +3.62pt]<br>
+                                        └ <strong>無料企業限定</strong>: なし(77.58) vs めっちゃ(78.50) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.7024 (効果なし ❌・有意差全くなし)</span> [差 +0.92pt]
                                     </div>
                                 </div>
                             </div>
                             <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
-                                💡 <strong>客観的結論</strong>: 学生は理念（バリュー）の差を判断できず無相関（p=0.27）ですが、人柄には反応しており、特に有料企業に対して有意な好意反応（p=0.042）が確認されました。
+                                💡 <strong>客観的結論</strong>: 学生は有料・無料問わず理念（バリュー）の差を判断できず無相関（p=0.28〜0.99）ですが、人柄には反応しており、特に有料企業に対して有意な好意反応（p=0.042）が確認されました。
                             </div>
                         </div>
                     </details>
