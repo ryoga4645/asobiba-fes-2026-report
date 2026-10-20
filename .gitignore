@@ -20,11 +20,13 @@ WILLOOP採用イベント_*.xlsx
 *.bak
 *.tmp
 .chrome_tmp/
+.venv_analysis/
 
 # Development / Agent config
 .agents/
 _agents/
-scripts/
+scripts/*
+!scripts/analyze_fit_actions.py
 research_*.md
 operation_*.md
 timetable.html
