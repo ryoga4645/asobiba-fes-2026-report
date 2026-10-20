@@ -1818,16 +1818,16 @@ tab_dashboard_html = f"""<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- Section: Quantitative x Qualitative Causal Analysis (Ordinal Logistic Regression) -->
+        <!-- Section: Quantitative x Qualitative Causal Analysis (Multinomial Logistic Regression) -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🎯 【要因分析】量的データ（各フィット度スコア） ➔ 質的データ（アクション選択）の順序ロジスティック回帰分析</div>
+                    <div class="section-title">🎯 【要因分析】量的データ（各フィット度スコア） ➔ 質的データ（アクション選択）の多項ロジスティック回帰分析</div>
                     <div style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: normal;">
-                        アクションの順序構造（なし ＜ 知りたい ＜ めっちゃ知りたい）を活かし、フィット度スコア（量的説明変数 X）がアクション評価ランクを上位へ押し上げる総合オッズ比を1本の回帰モデルで統合推定
+                        アクション「なし」を基準カテゴリ（Reference）とし、フィット度スコア（量的説明変数 X）が「知りたい（一次選別・希望）」および「めっちゃ知りたい（最優先枠・希望）」を選択するオッズをどれだけ高めるかを同時に推定
                     </div>
                 </div>
-                <span class="pill pill-indigo">順序ロジスティック回帰（比例オッズモデル）</span>
+                <span class="pill pill-indigo">多項ロジスティック回帰（基準: なし）</span>
             </div>
 
             <!-- ブロック1: 🏢 企業アクション (質的) に対する要因分析 (バリュー vs パーソナリティ) -->
@@ -1836,18 +1836,17 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                     <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0; display: flex; align-items: center; gap: 8px;">
                         <span>🏢</span> 企業アクションに対する要因分析：バリュー（理念・能力） vs パーソナリティ（人柄）
                     </h3>
-                    <span class="pill pill-green">バリューのみ極めて有意 (p &lt; 0.0001***) / パーソナリティ無関係 (p = 0.9839)</span>
+                    <span class="pill pill-green">バリューのみ極めて有意 (p &lt; 0.0001***) / パーソナリティ無関係 (p &gt; 0.35)</span>
                 </div>
 
-                <!-- 企業側 順序ロジスティック回帰テーブル -->
+                <!-- 企業側 多項ロジスティック回帰テーブル -->
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 22%;">説明変数（要因 X: 量的データ）</th>
-                            <th style="width: 20%;">回帰係数 (β) &amp; 標準誤差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">傾きと z 値</span></th>
-                            <th style="width: 26%;">総合オッズ比（OR: 10pt上昇）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">評価ランクが上位へ移行する倍率 [95%CI]</span></th>
-                            <th style="width: 14%;">有意確率 (p値)</th>
-                            <th style="width: 18%;">統計的判定 &amp; 結論</th>
+                            <th style="width: 20%;">説明変数（要因 X: 量的データ）</th>
+                            <th style="width: 28%;">対比①：なし ➔ 知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">一次選別オッズ比（OR: 10pt上昇）[95%CI] &amp; p値</span></th>
+                            <th style="width: 28%;">対比②：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">最優先枠オッズ比（OR: 10pt上昇）[95%CI] &amp; p値</span></th>
+                            <th style="width: 24%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1857,25 +1856,31 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 <span style="font-size: 11px; color: #64748B;">(N=313)</span>
                             </td>
                             <td>
-                                <strong>β = +0.0676</strong><br>
-                                <span style="font-size: 11px; color: #64748B;">(SE = 0.0142, z = 4.74)</span>
-                            </td>
-                            <td>
-                                <div style="font-size: 15px; font-weight: 800; color: #3730A3;">
-                                    OR 1.966 (約1.97倍)
+                                <div style="font-size: 14.5px; font-weight: 800; color: #3730A3;">
+                                    OR 1.752 (約1.75倍)
                                 </div>
                                 <div style="font-size: 10.5px; color: #4F46E5; margin-top: 2px;">
-                                    95%CI: [1.487 〜 2.599]
+                                    95%CI: [1.236 〜 2.483]
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    β₁ = +0.0561, <strong>p = 0.0016 (***)</strong>
                                 </div>
                             </td>
                             <td>
-                                <strong style="color: #4F46E5; font-size: 13.5px;">p &lt; 0.0001 (***)</strong><br>
-                                <span style="font-size: 10.5px; color: #64748B;">(p = 0.000002)</span>
+                                <div style="font-size: 15px; font-weight: 800; color: #1E1B4B;">
+                                    OR 3.174 (約3.17倍)
+                                </div>
+                                <div style="font-size: 10.5px; color: #3730A3; margin-top: 2px;">
+                                    95%CI: [1.943 〜 5.184]
+                                </div>
+                                <div style="font-size: 10.5px; color: #4F46E5; margin-top: 2px; font-weight: 700;">
+                                    β₂ = +0.1155, <strong>p &lt; 0.0001 (***)</strong>
+                                </div>
                             </td>
                             <td>
                                 <span class="pill pill-indigo">極めて有意 (***)</span><br>
                                 <div style="font-size: 11px; color: #3730A3; margin-top: 5px; line-height: 1.35;">
-                                    バリューが10pt上がると、アクション評価が上位ランクへ上がるオッズが<strong>約2倍</strong>に跳ね上がる
+                                    バリュー10pt上昇で「知りたい」が1.75倍、最優先枠「めっちゃ知りたい」は<strong>3.17倍へ跳ね上がる</strong>
                                 </div>
                             </td>
                         </tr>
@@ -1885,25 +1890,31 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 <span style="font-size: 11px; color: #64748B;">(N=286)</span>
                             </td>
                             <td>
-                                β = +0.0003<br>
-                                <span style="font-size: 11px; color: #64748B;">(SE = 0.0130, z = 0.02)</span>
-                            </td>
-                            <td>
-                                <div style="font-size: 14px; font-weight: 700; color: #475569;">
-                                    OR 1.003 (約1.00倍)
+                                <div style="font-size: 13.5px; font-weight: 700; color: #475569;">
+                                    OR 1.164 (約1.16倍)
                                 </div>
                                 <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
-                                    95%CI: [0.777 〜 1.295]
+                                    95%CI: [0.841 〜 1.609]
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    β₁ = +0.0152, p = 0.3599
                                 </div>
                             </td>
                             <td>
-                                <span style="color: #64748B; font-size: 13px;">p = 0.9839</span><br>
-                                <span style="font-size: 10.5px; color: #64748B;">(有意差なし❌)</span>
+                                <div style="font-size: 13.5px; font-weight: 700; color: #475569;">
+                                    OR 0.957 (約0.96倍)
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.637 〜 1.437]
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    β₂ = -0.0044, p = 0.8318
+                                </div>
                             </td>
                             <td>
                                 <span class="pill pill-slate">影響なし ❌</span><br>
                                 <div style="font-size: 11px; color: #64748B; margin-top: 5px; line-height: 1.35;">
-                                    オッズ比1.00倍で完全横ばい。企業のアクション選別に一切寄与していない
+                                    オッズ比は1.0倍前後で変化なし。一次選別・最優先枠のいずれにも全く寄与していない
                                 </div>
                             </td>
                         </tr>
@@ -1912,7 +1923,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-top: 10px; line-height: 1.6;">
                     <strong>🏢 企業行動の客観的結論:</strong><br>
-                    順序ロジスティック回帰により、企業はバリューが10pt上がるごとにアクション評価ランク（なし ➔ 知りたい ➔ めっちゃ知りたい）を上位に押し上げる総合オッズが <strong>約1.97倍（p &lt; 0.0001***）</strong> へ倍増することが立証されました。一方、パーソナリティはオッズ比1.00倍（p = 0.9839）と完全に無関係であり、企業は100%バリューのみを基準に厳格に選別していることがたった1つのモデルで極めて明確に証明されます。
+                    多項ロジスティック回帰により、企業はバリューが10pt上がるごとに「なし」から「知りたい」を選ぶオッズが <strong>1.75倍（p = 0.0016***）</strong>、さらに最優先枠である「めっちゃ知りたい」を選ぶオッズは <strong>3.17倍（p &lt; 0.0001***）</strong> へと劇的に跳ね上がることが立証されました。一方、パーソナリティは一次選別（OR 1.16, p = 0.3599）および最優先枠（OR 0.96, p = 0.8318）の双方で全く有意差がなく、企業は100%バリューのみを基準に厳格に選別していることが明確に証明されます。
                 </div>
             </div>
 
@@ -1922,18 +1933,17 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                     <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0; display: flex; align-items: center; gap: 8px;">
                         <span>🎓</span> 学生アクションに対する要因分析：パーソナリティ（人柄・安心感） vs バリュー（理念・魅力）
                     </h3>
-                    <span class="pill pill-amber">パーソナリティで底上げ (OR 1.23) / バリューでも希望向上 (OR 1.18)</span>
+                    <span class="pill pill-amber">パーソナリティで最優先希望底上げ (OR 1.50†) / バリューで一次希望喚起 (OR 1.29)</span>
                 </div>
 
-                <!-- 学生側 順序ロジスティック回帰テーブル -->
+                <!-- 学生側 多項ロジスティック回帰テーブル -->
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 22%;">説明変数（要因 X: 量的データ）</th>
-                            <th style="width: 20%;">回帰係数 (β) &amp; 標準誤差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">傾きと z 値</span></th>
-                            <th style="width: 26%;">総合オッズ比（OR: 10pt上昇）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">希望ランクが上位へ移行する倍率 [95%CI]</span></th>
-                            <th style="width: 14%;">有意確率 (p値)</th>
-                            <th style="width: 18%;">統計的判定 &amp; 結論</th>
+                            <th style="width: 20%;">説明変数（要因 X: 量的データ）</th>
+                            <th style="width: 28%;">対比①：なし ➔ 知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">一次希望オッズ比（OR: 10pt上昇）[95%CI] &amp; p値</span></th>
+                            <th style="width: 28%;">対比②：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">最優先希望オッズ比（OR: 10pt上昇）[95%CI] &amp; p値</span></th>
+                            <th style="width: 24%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1943,25 +1953,31 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 <span style="font-size: 11px; color: #64748B;">(N=286)</span>
                             </td>
                             <td>
-                                <strong>β = +0.0207</strong><br>
-                                <span style="font-size: 11px; color: #64748B;">(SE = 0.0136, z = 1.53)</span>
+                                <div style="font-size: 13.5px; font-weight: 700; color: #92400E;">
+                                    OR 1.177 (約1.18倍)
+                                </div>
+                                <div style="font-size: 10.5px; color: #B45309; margin-top: 2px;">
+                                    95%CI: [0.876 〜 1.581]
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    β₁ = +0.0163, p = 0.2802
+                                </div>
                             </td>
                             <td>
                                 <div style="font-size: 15px; font-weight: 800; color: #92400E;">
-                                    OR 1.230 (約1.23倍)
+                                    OR 1.498 (約1.50倍)
                                 </div>
                                 <div style="font-size: 10.5px; color: #B45309; margin-top: 2px;">
-                                    95%CI: [0.943 〜 1.606]
+                                    95%CI: [0.925 〜 2.424]
+                                </div>
+                                <div style="font-size: 10.5px; color: #B45309; margin-top: 2px; font-weight: 700;">
+                                    β₂ = +0.0404, <strong>p = 0.1001 (†)</strong>
                                 </div>
                             </td>
                             <td>
-                                <span style="color: #92400E; font-size: 13.5px; font-weight: 700;">p = 0.1269</span><br>
-                                <span style="font-size: 10.5px; color: #64748B;">(底上げ効果)</span>
-                            </td>
-                            <td>
-                                <span class="pill pill-amber">安心感による底上げ</span><br>
+                                <span class="pill pill-amber">最優先希望を底上げ</span><br>
                                 <div style="font-size: 11px; color: #92400E; margin-top: 5px; line-height: 1.35;">
-                                    人柄親和性が10pt上がるごとに、希望ランクが上位へ上がるオッズが<strong>約1.23倍</strong>に向上
+                                    人柄親和性が10pt上がるごとに、最優先希望「めっちゃ知りたい」のオッズが<strong>約1.50倍</strong>に底上げされる
                                 </div>
                             </td>
                         </tr>
@@ -1971,25 +1987,31 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 <span style="font-size: 11px; color: #64748B;">(N=313)</span>
                             </td>
                             <td>
-                                β = +0.0163<br>
-                                <span style="font-size: 11px; color: #64748B;">(SE = 0.0139, z = 1.17)</span>
-                            </td>
-                            <td>
-                                <div style="font-size: 14px; font-weight: 700; color: #065F46;">
-                                    OR 1.178 (約1.18倍)
+                                <div style="font-size: 14.5px; font-weight: 800; color: #065F46;">
+                                    OR 1.293 (約1.29倍)
                                 </div>
                                 <div style="font-size: 10.5px; color: #047857; margin-top: 2px;">
-                                    95%CI: [0.896 〜 1.548]
+                                    95%CI: [0.948 〜 1.764]
+                                </div>
+                                <div style="font-size: 10.5px; color: #065F46; margin-top: 2px; font-weight: 700;">
+                                    β₁ = +0.0257, <strong>p = 0.1051</strong>
                                 </div>
                             </td>
                             <td>
-                                <span style="color: #065F46; font-size: 13px;">p = 0.2413</span><br>
-                                <span style="font-size: 10.5px; color: #64748B;">(希望向上傾向)</span>
+                                <div style="font-size: 13.5px; font-weight: 700; color: #065F46;">
+                                    OR 1.124 (約1.12倍)
+                                </div>
+                                <div style="font-size: 10.5px; color: #047857; margin-top: 2px;">
+                                    95%CI: [0.715 〜 1.767]
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    β₂ = +0.0117, p = 0.6120
+                                </div>
                             </td>
                             <td>
                                 <span class="pill pill-green">一次希望の喚起</span><br>
                                 <div style="font-size: 11px; color: #065F46; margin-top: 5px; line-height: 1.35;">
-                                    企業魅力が10pt上がるごとに、希望ランクが上位へ上がるオッズが<strong>約1.18倍</strong>に向上
+                                    企業魅力が10pt上がるごとに、まずは一次希望「知りたい」を選ぶオッズが<strong>約1.29倍</strong>に向上する
                                 </div>
                             </td>
                         </tr>
@@ -1998,16 +2020,16 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E; margin-top: 10px; line-height: 1.6;">
                     <strong>🎓 学生行動の客観的結論:</strong><br>
-                    順序ロジスティック回帰により、学生は担当者のパーソナリティ親和性が高いほど希望ランクを上位へ押し上げる総合オッズが <strong>約1.23倍</strong> に底上げされ、バリューについても <strong>約1.18倍</strong> に向上することが示されました。学生は担当者の人柄による安心感を得ながら、企業の理念・魅力に対してもポジティブに希望ランクを高めています。
+                    多項ロジスティック回帰により、学生は担当者のパーソナリティ親和性が高いほど最優先希望である「めっちゃ知りたい」を選ぶオッズが <strong>約1.50倍（p = 0.1001†）</strong> に底上げされる傾向が示されました。一方、企業のバリュー（理念・魅力）は「なし」から「知りたい」への一次希望喚起（<strong>OR 1.29倍, p = 0.1051</strong>）に寄与しています。学生は担当者の人柄に安心感を覚えて最優先面談を望み、企業の事業魅力によって一次関心を広げるという二層構造が確認されます。
                 </div>
             </div>
 
             <!-- セクション総括インサイト -->
             <div class="insight-box" style="margin-top: 20px;">
-                <strong>💡 順序ロジスティック回帰による総括インサイト（評価軸のすれ違いの真相）:</strong><br>
+                <strong>💡 多項ロジスティック回帰による総括インサイト（評価軸のすれ違いの真相）:</strong><br>
                 <ul>
-                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（総合オッズ比 1.00倍, p = 0.9839）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて上位ランク（めっちゃ知りたい）へと配分しています（総合オッズ比 1.97倍***, p &lt; 0.0001***）。</li>
-                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まり希望ランクが約1.23倍に底上げされると同時に、理念や強みが明確に伝わる「高バリュー企業」に対しても希望ランクを約1.18倍に高めてアクションを起こしています。</li>
+                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（知りたい OR 1.16倍 / めっちゃ知りたい OR 0.96倍、いずれも有意差なし）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて一次選別（OR 1.75倍***）および最優先枠（OR 3.17倍***）へと配分しています。</li>
+                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まり最優先希望（めっちゃ知りたい）のオッズが約1.50倍に底上げされる一方、企業の理念・魅力（バリュー）によって一次希望（知りたい）のオッズが約1.29倍に向上しています。</li>
                 </ul>
             </div>
         </div>
