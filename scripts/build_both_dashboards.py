@@ -1824,7 +1824,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                 <div>
                     <div class="section-title">🎯 【要因分析】量的データ（各フィット度スコア） × 質的データ（アクション選択）の統計的仮説検定</div>
                     <div style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: normal;">
-                        各アクション（質的データ：なし / 知りたい / めっちゃ知りたい）と各フィット度スコア（量的データ）の関係性を、ANOVA・Welch t検定全対比・ロジスティック回帰で網羅的に検証
+                        各アクション（質的データ：なし / 知りたい / めっちゃ知りたい）と各フィット度スコア（量的データ）の関係性を、ANOVA・Welch t検定全3対比・ロジスティック回帰全3対比で網羅的に検証
                     </div>
                 </div>
                 <span class="pill pill-indigo">量的データ × 質的データ（統計検定網羅）</span>
@@ -1845,8 +1845,8 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                         <tr>
                             <th style="width: 14%;">評価指標（量的）</th>
                             <th style="width: 18%;">一元配置分散分析 (ANOVA)<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">群間全体の差</span></th>
-                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間のペアワイズ比較</span></th>
-                            <th style="width: 22%;">ロジスティック回帰（全2パターン）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
+                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間の平均値差</span></th>
+                            <th style="width: 22%;">ロジスティック回帰（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
                             <th style="width: 14%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
@@ -1877,15 +1877,20 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 6px;">
-                                    <strong>① 知りたい以上確率:</strong><br>
-                                    <strong>OR 2.027 (約2.03倍)</strong><br>
-                                    <span style="font-size: 10.5px; color: #4F46E5;"><strong>p &lt; 0.0001***</strong> [1.46〜2.81]</span>
+                                <div style="margin-bottom: 5px;">
+                                    <strong>① なし vs めっちゃ知りたい:</strong><br>
+                                    <strong>OR 3.174 (約3.17倍)</strong><br>
+                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p &lt; 0.0001***</strong> [1.94〜5.18]</span>
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    <strong>② なし vs 知りたい:</strong><br>
+                                    <strong>OR 1.752 (約1.75倍)</strong><br>
+                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p = 0.0016***</strong> [1.24〜2.48]</span>
                                 </div>
                                 <div>
-                                    <strong>② めっちゃ知りたい確率:</strong><br>
-                                    <strong>OR 2.054 (約2.05倍)</strong><br>
-                                    <span style="font-size: 10.5px; color: #4F46E5;"><strong>p = 0.0002***</strong> [1.40〜3.01]</span>
+                                    <strong>③ 知りたい vs めっちゃ知りたい:</strong><br>
+                                    <strong>OR 1.616 (約1.62倍)</strong><br>
+                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p = 0.0176*</strong> [1.09〜2.40]</span>
                                 </div>
                             </td>
                             <td>
@@ -1921,15 +1926,20 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 6px;">
-                                    ① 知りたい以上確率:<br>
-                                    OR 1.096 (1.10倍)<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.5633 [0.80〜1.50]</span>
+                                <div style="margin-bottom: 5px;">
+                                    ① なし vs めっちゃ知りたい:<br>
+                                    OR 0.957 (0.96倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.8318 [0.64〜1.44]</span>
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    ② なし vs 知りたい:<br>
+                                    OR 1.164 (1.16倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.3599 [0.84〜1.61]</span>
                                 </div>
                                 <div>
-                                    ② めっちゃ知りたい確率:<br>
-                                    OR 0.868 (0.87倍)<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.3851 [0.63〜1.19]</span>
+                                    ③ 知りたい vs めっちゃ知りたい:<br>
+                                    OR 0.822 (0.82倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.2573 [0.58〜1.15]</span>
                                 </div>
                             </td>
                             <td>
@@ -1944,7 +1954,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-top: 10px; line-height: 1.6;">
                     <strong>🏢 企業行動の客観的結論:</strong><br>
-                    企業はバリューが10pt上がるごとに「知りたい以上」オッズが <strong>約2.03倍（p &lt; 0.0001***）</strong>、「めっちゃ知りたい」オッズが <strong>約2.05倍（p = 0.0002***）</strong> に倍増し、Welch検定の全ペア（なし vs めっちゃ知りたい +5.95pt、なし vs 知り +3.27pt、知り vs めっちゃ知りたい +2.68pt）で全て有意です。対照的にパーソナリティは全対比・全モデルで有意差が一切なく（p = 0.24〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
+                    企業はバリューが10pt上がるごとに、「なし」に対して「知りたい」を選ぶオッズが <strong>約1.75倍（p = 0.0016***）</strong>、「めっちゃ知りたい」を選ぶオッズが <strong>約3.17倍（p &lt; 0.0001***）</strong> へ急拡大し、「知りたい」から「めっちゃ知りたい」への絞り込みオッズも <strong>約1.62倍（p = 0.0176*）</strong> 有意に上昇します。一方、パーソナリティは全対比・全モデルで有意差が一切なく（p = 0.24〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
                 </div>
             </div>
 
@@ -1963,8 +1973,8 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                         <tr>
                             <th style="width: 14%;">評価指標（量的）</th>
                             <th style="width: 18%;">一元配置分散分析 (ANOVA)<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">群間全体の差</span></th>
-                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間のペアワイズ比較</span></th>
-                            <th style="width: 22%;">ロジスティック回帰（全2パターン）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
+                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間の平均値差</span></th>
+                            <th style="width: 22%;">ロジスティック回帰（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
                             <th style="width: 14%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
@@ -1995,15 +2005,20 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 6px;">
-                                    ① 知りたい以上確率:<br>
-                                    OR 1.237 (約1.24倍)<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.1370 [0.93〜1.64]</span>
+                                <div style="margin-bottom: 5px;">
+                                    <strong>① なし vs めっちゃ知りたい:</strong><br>
+                                    <strong style="color: #92400E;">OR 1.498 (約1.50倍)</strong><br>
+                                    <span style="font-size: 10px; color: #B45309;"><strong>p = 0.1001 (†)</strong> [0.93〜2.42]</span>
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    ② なし vs 知りたい:<br>
+                                    OR 1.177 (約1.18倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.2802 [0.88〜1.58]</span>
                                 </div>
                                 <div>
-                                    <strong>② めっちゃ知りたい確率:</strong><br>
-                                    <strong style="color: #92400E;">OR 1.378 (約1.38倍)</strong><br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.1664 [0.88〜2.17]</span>
+                                    ③ 知りたい vs めっちゃ知りたい:<br>
+                                    OR 1.263 (約1.26倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.3417 [0.78〜2.04]</span>
                                 </div>
                             </td>
                             <td>
@@ -2039,21 +2054,26 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 6px;">
-                                    <strong>① 知りたい以上確率:</strong><br>
-                                    <strong style="color: #065F46;">OR 1.248 (約1.25倍)</strong><br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.1325 [0.93〜1.67]</span>
+                                <div style="margin-bottom: 5px;">
+                                    ① なし vs めっちゃ知りたい:<br>
+                                    OR 1.124 (約1.12倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.6120 [0.71〜1.77]</span>
+                                </div>
+                                <div style="margin-bottom: 5px;">
+                                    <strong>② なし vs 知りたい:</strong><br>
+                                    <strong style="color: #065F46;">OR 1.293 (約1.29倍)</strong><br>
+                                    <span style="font-size: 10px; color: #047857;"><strong>p = 0.1051</strong> [0.95〜1.76]</span>
                                 </div>
                                 <div>
-                                    ② めっちゃ知りたい確率:<br>
-                                    OR 0.994 (約0.99倍)<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">p = 0.9780 [0.65〜1.52]</span>
+                                    ③ 知りたい vs めっちゃ知りたい:<br>
+                                    OR 0.877 (約0.88倍)<br>
+                                    <span style="font-size: 10px; color: #64748B;">p = 0.5638 [0.56〜1.37]</span>
                                 </div>
                             </td>
                             <td>
                                 <span class="pill pill-green">ポジティブ希望喚起</span><br>
                                 <div style="font-size: 11px; color: #065F46; margin-top: 4px; line-height: 1.3;">
-                                    知りたい群でスコア最高。<br>魅力伝達で希望率向上
+                                    なし vs 知りたいでオッズ約1.3倍。<br>魅力伝達で希望率向上
                                 </div>
                             </td>
                         </tr>
@@ -2062,7 +2082,7 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E; margin-top: 10px; line-height: 1.6;">
                     <strong>🎓 学生行動の客観的結論:</strong><br>
-                    学生はブース担当者のパーソナリティ親和性が高いほど「めっちゃ知りたい」を選択するオッズが <strong>約1.38倍</strong> に向上し、平均スコアも <strong>78.08 ➔ 80.78（差 +2.70pt, Welch p = 0.0890†）</strong> へ有意傾向で底上げされます。一方、バリューについても「知りたい以上」を希望するオッズが <strong>約1.25倍</strong>（なし vs 知りたいで +1.52pt, p = 0.105）に向上しており、学生は担当者の人柄による安心感を得ながら、企業の理念・魅力に対してもポジティブに反応しています。
+                    学生はブース担当者のパーソナリティ親和性が高いほど、「なし」に対して「めっちゃ知りたい」を選択するオッズが <strong>約1.50倍（p = 0.1001†）</strong> へ有意傾向で底上げされます。一方、バリューについても「なし」に対して「知りたい」を選択するオッズが <strong>約1.29倍（p = 0.1051）</strong> に向上しており、学生は担当者の人柄による安心感を得ながら、企業の理念・魅力に対してもポジティブに反応しています。
                 </div>
             </div>
 
@@ -2070,8 +2090,8 @@ tab_dashboard_html = f"""<!DOCTYPE html>
             <div class="insight-box" style="margin-top: 20px;">
                 <strong>💡 量的×質的要因分析の総括インサイト（評価軸のすれ違いの真相）:</strong><br>
                 <ul>
-                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（ANOVA p = 0.4463、Welch全対比・ロジスティック回帰ともに無関係）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて「めっちゃ知りたい」枠（10枠限定）を配分しています（ANOVA p &lt; 0.0001***、Welch全対比で有意、10pt上昇でオッズ2.05倍）。</li>
-                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まりポジティブ希望率が底上げされる（なし vs めっちゃ知りたい Welch p = 0.0890†, オッズ1.38倍）と同時に、理念や強みが明確に伝わる「高バリュー企業」に対しても自発的に「知りたい」希望オッズを1.25倍に高めてアクションを起こしています。</li>
+                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（ANOVA p = 0.4463、Welch全3対比・ロジスティック回帰全3対比ともに有意差なし）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて「めっちゃ知りたい」枠（10枠限定）を配分しています（ANOVA p &lt; 0.0001***、Welch全3対比で有意、オッズ比最大3.17倍***）。</li>
+                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まりポジティブ希望率が底上げされる（なし vs めっちゃ知りたい Welch p = 0.0890†, オッズ1.50倍）と同時に、理念や強みが明確に伝わる「高バリュー企業」に対しても自発的に「知りたい」希望オッズを1.29倍に高めてアクションを起こしています。</li>
                 </ul>
             </div>
         </div>
