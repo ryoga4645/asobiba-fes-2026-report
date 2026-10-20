@@ -27,6 +27,7 @@ WILLOOP採用イベント_*.xlsx
 _agents/
 scripts/*
 !scripts/analyze_fit_actions.py
+!scripts/build_both_dashboards.py
 research_*.md
 operation_*.md
 timetable.html
