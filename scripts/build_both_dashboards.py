@@ -508,47 +508,217 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
                         </summary>
                         <div class="stats-content">
-                            <!-- バリューフィット（効果あり） -->
-                            <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                                    <strong style="color: #1E293B;">【効果あり】バリューフィット</strong>
-                                    <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p &lt; 0.0001 (*** 極めて有意)</span>
-                                </div>
-                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    全体F(2, 310) = 13.263, 効果量 η² = 0.079（中〜大の効果量）
-                                </div>
-                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
-                                    <div>・なし(57.84) vs 知りたい(61.11): <strong>Welch t = -3.322, p = 0.0009 (*** 有意)</strong> [差 +3.27pt, d=0.429]</div>
-                                    <div>・知りたい(61.11) vs めっちゃ知りたい(63.79): <strong>Welch t = -2.513, p = 0.0120 (* 有意)</strong> [差 +2.68pt, d=0.352]</div>
-                                    <div>・なし(57.84) vs めっちゃ知りたい(63.79): <strong>Welch t = -5.312, p &lt; 0.0001 (*** 極めて有意)</strong> [差 +5.95pt, d=0.826]</div>
-                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
-                                        └ <strong>無料企業（配席混合・自然実験）</strong>: <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 5px; border-radius: 3px; font-weight: 700;">ANOVA p &lt; 0.0001 (F=11.162, η²=0.106 ***)</span> ➔ なし vs めっちゃ知りたい: Welch t = -5.278, p &lt; 0.0001 (差 +7.51pt, d=1.028)<br>
-                                        └ <strong>有料企業（高バリュー優先配席）</strong>: <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">ANOVA p = 0.1610 (F=1.840 有意差なし)</span> ➔ なし vs めっちゃ知りたい: Welch t = -1.728, p = 0.0840 (差 +3.04pt)
-                                    </div>
-                                </div>
+                            <!-- ① バリューフィットの仮説検定 -->
+                            <div style="margin-bottom: 8px; font-weight: 700; color: #1E293B; font-size: 12.5px;">
+                                ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
                             </div>
-                            <!-- パーソナリティ（効果なし） -->
-                            <div style="margin-bottom: 10px;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                                    <strong style="color: #1E293B;">【効果なし】パーソナリティフィット</strong>
-                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p = 0.4463 (有意差なし)</span>
-                                </div>
-                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    全体F(2, 283) = 0.817, 効果量 η² = 0.006（効果量ほぼゼロ / 有効N=286）
-                                </div>
-                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
-                                    <div>・なし(78.41) vs 知りたい(79.53): Welch t = -0.931, p = 0.3519 (有意差なし)</div>
-                                    <div>・知りたい(79.53) vs めっちゃ知りたい(78.13): Welch t = 1.184, p = 0.2363 (有意差なし・微減)</div>
-                                    <div>・なし(78.41) vs めっちゃ知りたい(78.13): Welch t = 0.212, p = 0.8324 (有意差なし・完全同等)</div>
-                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
-                                        └ <strong>有料企業</strong>: <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">ANOVA p = 0.9715 (F=0.017 完全無相関 ❌)</span> ➔ なし vs めっちゃ知りたい: Welch t = 0.168, p = 0.8667 (差 -0.33pt)<br>
-                                        └ <strong>無料企業</strong>: <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">ANOVA p = 0.3498 (F=1.060 有意差なし ❌)</span> ➔ なし vs めっちゃ知りたい: Welch t = 0.117, p = 0.9070 (差 -0.20pt)
-                                    </div>
-                                </div>
+                            <table style="margin-bottom: 14px; font-size: 11.5px;">
+                                <thead>
+                                    <tr>
+                                        <th>分析対象</th>
+                                        <th>検定手法・対比</th>
+                                        <th>統計量</th>
+                                        <th>自由度 (df)</th>
+                                        <th>有意確率 (p値)</th>
+                                        <th>統計的判定</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">全体<br><span style="font-size: 10px; color: #64748B;">(N=313)</span></td>
+                                        <td><strong>一元配置分散分析 (ANOVA)</strong></td>
+                                        <td>F = 13.263</td>
+                                        <td>(2, 310)</td>
+                                        <td><strong>p &lt; 0.0001</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***) [η²=0.079]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td><strong>Welch t検定 (なし vs めっちゃ知りたい)</strong></td>
+                                        <td>t = -5.312</td>
+                                        <td>153.1</td>
+                                        <td><strong>p &lt; 0.0001</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***) [差 +5.95pt, d=0.826]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td><strong>Welch t検定 (なし vs 知りたい)</strong></td>
+                                        <td>t = -3.322</td>
+                                        <td>216.4</td>
+                                        <td><strong>p = 0.0010</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***) [差 +3.27pt, d=0.429]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td><strong>Welch t検定 (知りたい vs めっちゃ知りたい)</strong></td>
+                                        <td>t = -2.513</td>
+                                        <td>152.5</td>
+                                        <td><strong>p = 0.0130</strong></td>
+                                        <td><span class="pill pill-green">有意 (*) [差 +2.68pt, d=0.352]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">有料企業<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 1.840</td>
+                                        <td>(2, 119)</td>
+                                        <td>p = 0.1610</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.030)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -1.728</td>
+                                        <td>55.5</td>
+                                        <td>p = 0.0896</td>
+                                        <td><span class="pill pill-amber">有意傾向 (†) [差 +3.04pt, d=0.446]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.433</td>
+                                        <td>58.9</td>
+                                        <td>p = 0.1572</td>
+                                        <td>有意差なし [差 +1.92pt, d=0.321]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = -0.722</td>
+                                        <td>45.3</td>
+                                        <td>p = 0.4738</td>
+                                        <td>有意差なし [差 +1.12pt, d=0.177]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">無料企業<br><span style="font-size: 10px; color: #64748B;">(N=191)</span></td>
+                                        <td><strong>一元配置分散分析 (ANOVA)</strong></td>
+                                        <td>F = 11.162</td>
+                                        <td>(2, 188)</td>
+                                        <td><strong>p &lt; 0.0001</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***) [η²=0.106]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td><strong>Welch t検定 (なし vs めっちゃ知りたい)</strong></td>
+                                        <td>t = -5.278</td>
+                                        <td>92.3</td>
+                                        <td><strong>p &lt; 0.0001</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***) [差 +7.51pt, d=1.028]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -2.752</td>
+                                        <td>146.2</td>
+                                        <td><strong>p = 0.0067</strong></td>
+                                        <td><span class="pill pill-green">有意 (**) [差 +3.73pt, d=0.444]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = -2.592</td>
+                                        <td>102.8</td>
+                                        <td><strong>p = 0.0109</strong></td>
+                                        <td><span class="pill pill-green">有意 (*) [差 +3.78pt, d=0.450]</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- ② パーソナリティフィットの仮説検定 -->
+                            <div style="margin-bottom: 8px; font-weight: 700; color: #1E293B; font-size: 12.5px;">
+                                ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
                             </div>
-                            <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
-                                💡 <strong>客観的結論</strong>: 有料・無料を問わず企業はパーソナリティで選別しておらず（ANOVA p=0.35〜0.97）、バリュー高低が混在していた無料企業において、高バリューの学生をピンポイントで一本釣り（ANOVA p&lt;0.0001, 差 +7.51pt）していました。
-                            </div>
+                            <table style="font-size: 11.5px;">
+                                <thead>
+                                    <tr>
+                                        <th>分析対象</th>
+                                        <th>検定手法・対比</th>
+                                        <th>統計量</th>
+                                        <th>自由度 (df)</th>
+                                        <th>有意確率 (p値)</th>
+                                        <th>統計的判定</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">全体<br><span style="font-size: 10px; color: #64748B;">(N=286)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 0.817</td>
+                                        <td>(2, 283)</td>
+                                        <td>p = 0.4463</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.006)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = 0.212</td>
+                                        <td>146.0</td>
+                                        <td>p = 0.8327</td>
+                                        <td>有意差なし [差 -0.28pt, d=0.035]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -0.931</td>
+                                        <td>165.7</td>
+                                        <td>p = 0.3533</td>
+                                        <td>有意差なし [差 +1.12pt, d=0.130]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 1.184</td>
+                                        <td>159.2</td>
+                                        <td>p = 0.2380</td>
+                                        <td>有意差なし [差 -1.40pt, d=0.166]</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">有料企業<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 0.017</td>
+                                        <td>(2, 119)</td>
+                                        <td>p = 0.9715</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.000)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = 0.168</td>
+                                        <td>58.0</td>
+                                        <td>p = 0.8673</td>
+                                        <td>有意差なし [差 -0.33pt, d=0.043]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = 0.025</td>
+                                        <td>59.1</td>
+                                        <td>p = 0.8638</td>
+                                        <td>有意差なし [差 -0.05pt, d=0.006]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 0.176</td>
+                                        <td>63.9</td>
+                                        <td>p = 0.8608</td>
+                                        <td>有意差なし [差 -0.28pt, d=0.038]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">無料企業<br><span style="font-size: 10px; color: #64748B;">(N=164)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 1.060</td>
+                                        <td>(2, 161)</td>
+                                        <td>p = 0.3498</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.013)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = 0.117</td>
+                                        <td>84.2</td>
+                                        <td>p = 0.9073</td>
+                                        <td>有意差なし [差 -0.20pt, d=0.025]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.182</td>
+                                        <td>106.0</td>
+                                        <td>p = 0.2400</td>
+                                        <td>有意差なし [差 +1.87pt, d=0.211]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 1.262</td>
+                                        <td>96.2</td>
+                                        <td>p = 0.2098</td>
+                                        <td>有意差なし [差 -2.07pt, d=0.231]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </details>
                 </div>
@@ -593,47 +763,217 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                             <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
                         </summary>
                         <div class="stats-content">
-                            <!-- バリューフィット（効果なし） -->
-                            <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                                    <strong style="color: #1E293B;">【効果なし】バリューフィット</strong>
-                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">全体ANOVA p = 0.2720 (有意差なし)</span>
-                                </div>
-                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    全体F(2, 310) = 1.305, 効果量 η² = 0.008（効果量ほぼゼロ / 全体N=313）
-                                </div>
-                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
-                                    <div>・なし(59.96) vs 知りたい(61.48): Welch t = -1.629, p = 0.1032 (有意差なし)</div>
-                                    <div>・知りたい(61.48) vs めっちゃ知りたい(60.67): Welch t = 0.554, p = 0.5793 (有意差なし・微減)</div>
-                                    <div>・なし(59.96) vs めっちゃ知りたい(60.67): Welch t = -0.487, p = 0.6261 (有意差なし)</div>
-                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
-                                        └ <strong>有料企業</strong>: <span style="background: #FEF3C7; color: #D97706; padding: 1px 5px; border-radius: 3px; font-weight: 700;">ANOVA p = 0.0412 (F=3.249 * 知り突出)</span> ➔ なし vs めっちゃ知りたい: Welch t = -1.087, p = 0.2772 (差 +1.74pt, 有意差なし ❌)<br>
-                                        └ <strong>無料企業</strong>: <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">ANOVA p = 0.8842 (F=0.118 有意差なし ❌)</span> ➔ なし vs めっちゃ知りたい: Welch t = -0.011, p = 0.9909 (差 +0.02pt, 完全同等)
-                                    </div>
-                                </div>
+                            <!-- ① バリューフィットの仮説検定 -->
+                            <div style="margin-bottom: 8px; font-weight: 700; color: #1E293B; font-size: 12.5px;">
+                                ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
                             </div>
-                            <!-- パーソナリティ（限定的傾向） -->
-                            <div style="margin-bottom: 10px;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                                    <strong style="color: #1E293B;">【限定的・有意傾向】パーソナリティフィット</strong>
-                                    <span style="background: #FEF3C7; color: #D97706; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">なし vs めっちゃ知りたい p = 0.0833 († 傾向)</span>
-                                </div>
-                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
-                                    全体ANOVA: F(2, 283) = 1.558, p = 0.2105 (全体では5%水準で有意差なし)
-                                </div>
-                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
-                                    <div>・なし(78.08) vs 知りたい(79.23): Welch t = -1.081, p = 0.2799 (有意差なし)</div>
-                                    <div>・知りたい(79.23) vs めっちゃ知りたい(80.78): Welch t = -0.985, p = 0.3246 (有意差なし)</div>
-                                    <div>・なし(78.08) vs めっちゃ知りたい(80.78): <strong>Welch t = -1.732, p = 0.0833 († 有意傾向)</strong> [差 +2.70pt, d=0.323]</div>
-                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
-                                        └ <strong>有料企業限定</strong>: <span style="background: #FEF3C7; color: #D97706; padding: 1px 5px; border-radius: 3px; font-weight: 700;">ANOVA p = 0.1097 (F=2.231 † 傾向)</span> ➔ なし vs めっちゃ知りたい: <span style="background: #ECFDF5; color: #059669; padding: 1px 4px; border-radius: 3px; font-weight: 700;">p = 0.0416 (* 5%水準有意)</span> [差 +3.62pt]<br>
-                                        └ <strong>無料企業限定</strong>: <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">ANOVA p = 0.7666 (F=0.270 有意差なし ❌)</span> ➔ なし vs めっちゃ知りたい: p = 0.7024 (効果なし ❌・有意差全くなし) [差 +0.92pt]
-                                    </div>
-                                </div>
+                            <table style="margin-bottom: 14px; font-size: 11.5px;">
+                                <thead>
+                                    <tr>
+                                        <th>分析対象</th>
+                                        <th>検定手法・対比</th>
+                                        <th>統計量</th>
+                                        <th>自由度 (df)</th>
+                                        <th>有意確率 (p値)</th>
+                                        <th>統計的判定</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">全体<br><span style="font-size: 10px; color: #64748B;">(N=313)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 1.305</td>
+                                        <td>(2, 310)</td>
+                                        <td>p = 0.2720</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.008)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -0.487</td>
+                                        <td>60.1</td>
+                                        <td>p = 0.6279</td>
+                                        <td>有意差なし [差 +0.71pt, d=0.091]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.629</td>
+                                        <td>270.7</td>
+                                        <td>p = 0.1044</td>
+                                        <td>有意差なし [差 +1.52pt, d=0.197]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 0.554</td>
+                                        <td>60.8</td>
+                                        <td>p = 0.5813</td>
+                                        <td>有意差なし [差 -0.81pt, d=0.104]</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">有料企業宛<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 3.249</td>
+                                        <td>(2, 119)</td>
+                                        <td><strong>p = 0.0412</strong></td>
+                                        <td><span class="pill pill-green">有意 (*) [η²=0.052]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -1.087</td>
+                                        <td>30.8</td>
+                                        <td>p = 0.2856</td>
+                                        <td>有意差なし [差 +1.74pt, d=0.267]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -2.514</td>
+                                        <td>103.9</td>
+                                        <td><strong>p = 0.0135</strong></td>
+                                        <td><span class="pill pill-green">有意 (*) [差 +3.09pt, d=0.485]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 0.867</td>
+                                        <td>27.8</td>
+                                        <td>p = 0.3934</td>
+                                        <td>有意差なし [差 -1.35pt, d=0.236]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">無料企業宛<br><span style="font-size: 10px; color: #64748B;">(N=191)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 0.118</td>
+                                        <td>(2, 188)</td>
+                                        <td>p = 0.8842</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.001)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -0.011</td>
+                                        <td>33.3</td>
+                                        <td>p = 0.6685</td>
+                                        <td>有意差なし [差 +0.02pt, d=0.003]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -0.471</td>
+                                        <td>165.0</td>
+                                        <td>p = 0.6383</td>
+                                        <td>有意差なし [差 +0.61pt, d=0.073]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = 0.267</td>
+                                        <td>33.5</td>
+                                        <td>p = 0.7908</td>
+                                        <td>有意差なし [差 -0.59pt, d=0.067]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- ② パーソナリティフィットの仮説検定 -->
+                            <div style="margin-bottom: 8px; font-weight: 700; color: #1E293B; font-size: 12.5px;">
+                                ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
                             </div>
-                            <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
-                                💡 <strong>客観的結論</strong>: 学生は有料・無料問わず理念（バリュー）の差を判断できず無相関（無料ANOVA p=0.88）ですが、人柄には反応しており、特に有料企業に対して有意な好意反応（p=0.042）が確認されました。
-                            </div>
+                            <table style="font-size: 11.5px;">
+                                <thead>
+                                    <tr>
+                                        <th>分析対象</th>
+                                        <th>検定手法・対比</th>
+                                        <th>統計量</th>
+                                        <th>自由度 (df)</th>
+                                        <th>有意確率 (p値)</th>
+                                        <th>統計的判定</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">全体<br><span style="font-size: 10px; color: #64748B;">(N=286)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 1.558</td>
+                                        <td>(2, 283)</td>
+                                        <td>p = 0.2105</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.011)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -1.732</td>
+                                        <td>51.7</td>
+                                        <td>p = 0.0893</td>
+                                        <td><span class="pill pill-amber">有意傾向 (†) [差 +2.70pt, d=0.323]</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.081</td>
+                                        <td>248.6</td>
+                                        <td>p = 0.2810</td>
+                                        <td>有意差なし [差 +1.15pt, d=0.136]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = -0.985</td>
+                                        <td>53.7</td>
+                                        <td>p = 0.3290</td>
+                                        <td>有意差なし [差 +1.55pt, d=0.187]</td>
+                                    </tr>
+                                    <tr>
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">有料企業宛<br><span style="font-size: 10px; color: #64748B;">(N=122)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 2.231</td>
+                                        <td>(2, 119)</td>
+                                        <td>p = 0.1097</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.036)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Welch t検定 (なし vs めっちゃ知りたい)</strong></td>
+                                        <td>t = -1.656</td>
+                                        <td>25.1</td>
+                                        <td><strong>p = 0.0416</strong></td>
+                                        <td><span class="pill pill-green">有意 (*) [差 +3.62pt, d=0.459]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -1.779</td>
+                                        <td>103.8</td>
+                                        <td>p = 0.0782</td>
+                                        <td><span class="pill pill-amber">有意傾向 (†) [差 +2.65pt, d=0.345]</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = -0.444</td>
+                                        <td>24.7</td>
+                                        <td>p = 0.6608</td>
+                                        <td>有意差なし [差 +0.97pt, d=0.130]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td rowspan="4" style="vertical-align: middle; font-weight: 700;">無料企業宛<br><span style="font-size: 10px; color: #64748B;">(N=164)</span></td>
+                                        <td>一元配置分散分析 (ANOVA)</td>
+                                        <td>F = 0.270</td>
+                                        <td>(2, 161)</td>
+                                        <td>p = 0.7666</td>
+                                        <td><span class="pill pill-slate">有意差なし (η²=0.003)</span></td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs めっちゃ知りたい)</td>
+                                        <td>t = -0.763</td>
+                                        <td>25.2</td>
+                                        <td>p = 0.4525</td>
+                                        <td>有意差なし [差 +1.67pt, d=0.193]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (なし vs 知りたい)</td>
+                                        <td>t = -0.056</td>
+                                        <td>143.7</td>
+                                        <td>p = 0.9307</td>
+                                        <td>有意差なし [差 +0.08pt, d=0.009]</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td>Welch t検定 (知りたい vs めっちゃ知りたい)</td>
+                                        <td>t = -0.719</td>
+                                        <td>26.1</td>
+                                        <td>p = 0.4787</td>
+                                        <td>有意差なし [差 +1.59pt, d=0.184]</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </details>
                 </div>
