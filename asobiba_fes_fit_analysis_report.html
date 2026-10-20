@@ -387,11 +387,26 @@
                             <tr class="highlight-row">
                                 <td><strong>めっちゃ知りたい (10枠限定)</strong></td>
                                 <td>71件</td>
-                                <td><strong>63.79</strong> (d=0.826)</td>
+                                <td><strong>63.79</strong> (p &lt; 0.0001)</td>
                                 <td>78.13</td>
                             </tr>
                         </tbody>
                     </table>
+                    <div style="margin-top: 12px; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+                        <div style="font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>📊 統計的検定結果（有意確率）</span>
+                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">全体N=313 / 有効N=286</span>
+                        </div>
+                        <div style="margin-bottom: 4px;">
+                            ・<strong>バリューフィット</strong>: 一元配置分散分析(ANOVA) <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">p &lt; 0.0001 (*** 極めて有意)</span>
+                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
+                                └ なし vs めっちゃ知りたい: Welch t検定 <strong>p &lt; 0.0001</strong> (t=5.312, 効果量 d=0.826)
+                            </div>
+                        </div>
+                        <div>
+                            ・<strong>パーソナリティ</strong>: 一元配置分散分析(ANOVA) <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-size: 11px;">p = 0.4463 (有意差なし)</span>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">🎓 学生アクション別：パーソナリティが右肩上がり</h3>
@@ -424,10 +439,28 @@
                                 <td><strong>めっちゃ知りたい (無制限)</strong></td>
                                 <td>40件</td>
                                 <td>60.67</td>
-                                <td><strong>80.78</strong> (+2.70pt)</td>
+                                <td><strong>80.78</strong> (+2.70pt, p=0.083)</td>
                             </tr>
                         </tbody>
                     </table>
+                    <div style="margin-top: 12px; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+                        <div style="font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>📊 統計的検定結果（有意確率）</span>
+                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">全体N=313 / 有効N=286</span>
+                        </div>
+                        <div style="margin-bottom: 4px;">
+                            ・<strong>パーソナリティ</strong>: なし vs めっちゃ知りたい <span style="background: #FEF3C7; color: #D97706; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">p = 0.0833 († 10%水準傾向)</span>
+                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
+                                └ 有料企業限定時: Welch t検定 <span style="background: #ECFDF5; color: #059669; padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 11px;">p = 0.0416 (* 5%水準有意)</span> (差 +3.62pt)
+                            </div>
+                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
+                                └ 全体ANOVA: p = 0.2105 (F=1.558)
+                            </div>
+                        </div>
+                        <div>
+                            ・<strong>バリューフィット</strong>: 一元配置分散分析(ANOVA) <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-size: 11px;">p = 0.2720 (有意差なし)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="insight-box">
