@@ -1818,134 +1818,126 @@ tab_dashboard_html = f"""<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- Section: Quantitative x Qualitative Analysis -->
+        <!-- Section: Quantitative x Qualitative Causal Analysis (Logistic Regression) -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🎯 【要因分析】量的データ（各フィット度スコア） × 質的データ（アクション選択）の統計的仮説検定</div>
+                    <div class="section-title">🎯 【要因分析】量的データ（各フィット度スコア） ➔ 質的データ（アクション選択）のロジスティック回帰分析</div>
                     <div style="font-size: 13px; color: #64748B; margin-top: 4px; font-weight: normal;">
-                        各アクション（質的データ：なし / 知りたい / めっちゃ知りたい）と各フィット度スコア（量的データ）の関係性を、ANOVA・Welch t検定全3対比・ロジスティック回帰全3対比で網羅的に検証
+                        各フィット度スコア（説明変数 X：量的データ）が、意思決定アクション（目的変数 Y：質的データ）の選択確率に与える真の牽引力を全3対比で直接検証
                     </div>
                 </div>
-                <span class="pill pill-indigo">量的データ × 質的データ（統計検定網羅）</span>
+                <span class="pill pill-indigo">要因 X ➔ 結果 Y（二項ロジスティック回帰）</span>
             </div>
 
-            <!-- ブロック1: 🏢 企業アクション (質的) × バリュー & パーソナリティ (量的) -->
+            <!-- ブロック1: 🏢 企業アクション (質的) に対する要因分析 (バリュー vs パーソナリティ) -->
             <div style="margin-bottom: 28px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px;">
                     <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0; display: flex; align-items: center; gap: 8px;">
                         <span>🏢</span> 企業アクションに対する要因分析：バリュー（理念・能力） vs パーソナリティ（人柄）
                     </h3>
-                    <span class="pill pill-green">バリューのみ極めて有意 (p &lt; 0.0001***) / パーソナリティ無関係 (全検定で有意差なし)</span>
+                    <span class="pill pill-green">バリューのみ全対比で極めて有意 (p &lt; 0.0001***) / パーソナリティ無関係 (全対比で有意差なし)</span>
                 </div>
 
-                <!-- 企業側 検定テーブル -->
+                <!-- 企業側 ロジスティック回帰テーブル -->
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 14%;">評価指標（量的）</th>
-                            <th style="width: 18%;">一元配置分散分析 (ANOVA)<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">群間全体の差</span></th>
-                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間の平均値差</span></th>
-                            <th style="width: 22%;">ロジスティック回帰（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
+                            <th style="width: 18%;">説明変数（要因 X: 量的データ）</th>
+                            <th style="width: 26%;">① なし vs めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">最大飛躍の選択オッズ比 [95%CI]</span></th>
+                            <th style="width: 26%;">② なし vs 知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">一次選別の選択オッズ比 [95%CI]</span></th>
+                            <th style="width: 26%;">③ 知りたい vs めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">絞り込み配分のオッズ比 [95%CI]</span></th>
                             <th style="width: 14%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr style="background: #EEF2FF;">
                             <td>
-                                <strong style="color: #3730A3; font-size: 13px;">バリューフィット度</strong><br>
+                                <strong style="color: #3730A3; font-size: 13.5px;">バリューフィット度</strong><br>
                                 <span style="font-size: 11px; color: #64748B;">(N=313)</span>
                             </td>
                             <td>
-                                <strong>F = 13.263</strong><br>
-                                <strong>p &lt; 0.0001 (***)</strong><br>
-                                <span style="font-size: 10.5px; color: #4F46E5;">η² = 0.079 [中効果]</span><br>
-                                <span style="font-size: 10.5px; color: #64748B;">順位相関 ρ = +0.293***</span>
-                            </td>
-                            <td>
-                                <div style="margin-bottom: 4px;">
-                                    <strong>① なし vs めっちゃ知りたい:</strong> <strong>p &lt; 0.0001 (***)</strong><br>
-                                    <span style="font-size: 10.5px; color: #475569;">t = -5.308, df = 153.1 (差 +5.95pt, d = 0.826 [大])</span>
+                                <div style="font-size: 14px; font-weight: 800; color: #3730A3; margin-bottom: 2px;">
+                                    OR 3.174 (約3.17倍)
                                 </div>
-                                <div style="margin-bottom: 4px;">
-                                    <strong>② なし vs 知りたい:</strong> <strong>p = 0.0011 (***)</strong><br>
-                                    <span style="font-size: 10.5px; color: #475569;">t = -3.318, df = 216.2 (差 +3.27pt, d = 0.429 [中])</span>
+                                <div style="font-size: 11px; color: #4F46E5; font-weight: 700;">
+                                    p &lt; 0.0001 (***)
                                 </div>
-                                <div>
-                                    <strong>③ 知りたい vs めっちゃ知りたい:</strong> <strong>p = 0.0129 (*)</strong><br>
-                                    <span style="font-size: 10.5px; color: #475569;">t = -2.516, df = 152.3 (差 +2.68pt, d = 0.352 [小〜中])</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [1.943 〜 5.184] (z = 4.61)
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 5px;">
-                                    <strong>① なし vs めっちゃ知りたい:</strong><br>
-                                    <strong>OR 3.174 (約3.17倍)</strong><br>
-                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p &lt; 0.0001***</strong> [1.94〜5.18]</span>
+                                <div style="font-size: 14px; font-weight: 800; color: #3730A3; margin-bottom: 2px;">
+                                    OR 1.752 (約1.75倍)
                                 </div>
-                                <div style="margin-bottom: 5px;">
-                                    <strong>② なし vs 知りたい:</strong><br>
-                                    <strong>OR 1.752 (約1.75倍)</strong><br>
-                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p = 0.0016***</strong> [1.24〜2.48]</span>
+                                <div style="font-size: 11px; color: #4F46E5; font-weight: 700;">
+                                    p = 0.0016 (***)
                                 </div>
-                                <div>
-                                    <strong>③ 知りたい vs めっちゃ知りたい:</strong><br>
-                                    <strong>OR 1.616 (約1.62倍)</strong><br>
-                                    <span style="font-size: 10px; color: #4F46E5;"><strong>p = 0.0176*</strong> [1.09〜2.40]</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [1.236 〜 2.483] (z = 3.15)
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 14px; font-weight: 800; color: #3730A3; margin-bottom: 2px;">
+                                    OR 1.616 (約1.62倍)
+                                </div>
+                                <div style="font-size: 11px; color: #059669; font-weight: 700;">
+                                    p = 0.0176 (*)
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [1.087 〜 2.402] (z = 2.37)
                                 </div>
                             </td>
                             <td>
                                 <span class="pill pill-indigo">極めて有意 (***)</span><br>
-                                <div style="font-size: 11px; color: #3730A3; margin-top: 4px; line-height: 1.3;">
-                                    全対比・全モデルで有意。<br>企業選別の真のドライバー
+                                <div style="font-size: 11px; color: #3730A3; margin-top: 5px; line-height: 1.35;">
+                                    全対比でオッズが有意に跳ね上がり、企業選別の真のドライバーであることが立証
                                 </div>
                             </td>
                         </tr>
                         <tr style="background: #F8FAFC;">
                             <td>
-                                <strong style="color: #64748B; font-size: 13px;">パーソナリティフィット度</strong><br>
+                                <strong style="color: #64748B; font-size: 13.5px;">パーソナリティフィット度</strong><br>
                                 <span style="font-size: 11px; color: #64748B;">(N=286)</span>
                             </td>
                             <td>
-                                F = 0.817<br>
-                                p = 0.4463<br>
-                                <span style="font-size: 10.5px; color: #64748B;">η² = 0.006 [効果なし]</span><br>
-                                <span style="font-size: 10.5px; color: #64748B;">順位相関 ρ = -0.018</span>
-                            </td>
-                            <td>
-                                <div style="margin-bottom: 4px;">
-                                    ① なし vs めっちゃ知りたい: p = 0.8311<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = 0.214, df = 146.0 (差 -0.28pt, d = -0.035)</span>
+                                <div style="font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 2px;">
+                                    OR 0.957 (0.96倍)
                                 </div>
-                                <div style="margin-bottom: 4px;">
-                                    ② なし vs 知りたい: p = 0.3530<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = -0.931, df = 165.7 (差 +1.12pt, d = 0.130)</span>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.8318 (有意差なし❌)
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい: p = 0.2369<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = 1.187, df = 159.2 (差 -1.40pt, d = -0.166)</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.637 〜 1.437] (z = -0.21)
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 5px;">
-                                    ① なし vs めっちゃ知りたい:<br>
-                                    OR 0.957 (0.96倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.8318 [0.64〜1.44]</span>
+                                <div style="font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 2px;">
+                                    OR 1.164 (1.16倍)
                                 </div>
-                                <div style="margin-bottom: 5px;">
-                                    ② なし vs 知りたい:<br>
-                                    OR 1.164 (1.16倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.3599 [0.84〜1.61]</span>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.3599 (有意差なし❌)
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい:<br>
-                                    OR 0.822 (0.82倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.2573 [0.58〜1.15]</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.841 〜 1.609] (z = 0.92)
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 2px;">
+                                    OR 0.822 (0.82倍)
+                                </div>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.2573 (有意差なし❌)
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.585 〜 1.154] (z = -1.13)
                                 </div>
                             </td>
                             <td>
                                 <span class="pill pill-slate">有意差なし ❌</span><br>
-                                <div style="font-size: 11px; color: #64748B; margin-top: 4px; line-height: 1.3;">
-                                    全対比・全モデルで無関係。<br>意思決定に寄与せず
+                                <div style="font-size: 11px; color: #64748B; margin-top: 5px; line-height: 1.35;">
+                                    全対比でオッズ変動なし。企業アクションに一切寄与していない
                                 </div>
                             </td>
                         </tr>
@@ -1954,11 +1946,11 @@ tab_dashboard_html = f"""<!DOCTYPE html>
 
                 <div style="font-size: 11.5px; padding: 10px 14px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-top: 10px; line-height: 1.6;">
                     <strong>🏢 企業行動の客観的結論:</strong><br>
-                    企業はバリューが10pt上がるごとに、「なし」に対して「知りたい」を選ぶオッズが <strong>約1.75倍（p = 0.0016***）</strong>、「めっちゃ知りたい」を選ぶオッズが <strong>約3.17倍（p &lt; 0.0001***）</strong> へ急拡大し、「知りたい」から「めっちゃ知りたい」への絞り込みオッズも <strong>約1.62倍（p = 0.0176*）</strong> 有意に上昇します。一方、パーソナリティは全対比・全モデルで有意差が一切なく（p = 0.24〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
+                    企業はバリューが10pt上がるごとに、「なし」に対して「知りたい」を選ぶオッズが <strong>約1.75倍（p = 0.0016***）</strong>、「めっちゃ知りたい」を選ぶオッズが <strong>約3.17倍（p &lt; 0.0001***）</strong> へ急拡大し、「知りたい」から「めっちゃ知りたい」への絞り込みオッズも <strong>約1.62倍（p = 0.0176*）</strong> 有意に上昇します。一方、パーソナリティは全対比で有意差が一切なく（p = 0.25〜0.83）、企業は100%バリューのみを基準に厳格に選別していることが完璧に証明されます。
                 </div>
             </div>
 
-            <!-- ブロック2: 🎓 学生アクション (質的) × パーソナリティ & バリュー (量的) -->
+            <!-- ブロック2: 🎓 学生アクション (質的) に対する要因分析 (パーソナリティ vs バリュー) -->
             <div>
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px;">
                     <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0; display: flex; align-items: center; gap: 8px;">
@@ -1967,113 +1959,105 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                     <span class="pill pill-amber">パーソナリティで底上げ / バリューにも自発的に有意傾向で反応</span>
                 </div>
 
-                <!-- 学生側 検定テーブル -->
+                <!-- 学生側 ロジスティック回帰テーブル -->
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 14%;">評価指標（量的）</th>
-                            <th style="width: 18%;">一元配置分散分析 (ANOVA)<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">群間全体の差</span></th>
-                            <th style="width: 32%;">Welchのt検定（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">アクション群間の平均値差</span></th>
-                            <th style="width: 22%;">ロジスティック回帰（全3対比）<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">10pt上昇時のオッズ比 [95%CI]</span></th>
+                            <th style="width: 18%;">説明変数（要因 X: 量的データ）</th>
+                            <th style="width: 26%;">① なし vs めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">最大飛躍の希望オッズ比 [95%CI]</span></th>
+                            <th style="width: 26%;">② なし vs 知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">一次希望の選択オッズ比 [95%CI]</span></th>
+                            <th style="width: 26%;">③ 知りたい vs めっちゃ知りたい<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">絞り込み希望のオッズ比 [95%CI]</span></th>
                             <th style="width: 14%;">統計的判定 &amp; 結論</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr style="background: #FEF3C7;">
                             <td>
-                                <strong style="color: #92400E; font-size: 13px;">パーソナリティフィット度</strong><br>
+                                <strong style="color: #92400E; font-size: 13.5px;">パーソナリティフィット度</strong><br>
                                 <span style="font-size: 11px; color: #64748B;">(N=286)</span>
                             </td>
                             <td>
-                                F = 1.558<br>
-                                p = 0.2105<br>
-                                <span style="font-size: 10.5px; color: #92400E;">η² = 0.011</span><br>
-                                <span style="font-size: 10.5px; color: #B45309;">順位相関 ρ = +0.104†</span>
-                            </td>
-                            <td>
-                                <div style="margin-bottom: 4px;">
-                                    <strong>① なし vs めっちゃ知りたい:</strong> <strong style="color: #B45309;">p = 0.0890 (†)</strong><br>
-                                    <span style="font-size: 10.5px; color: #475569;">t = -1.733, df = 51.7 (差 +2.70pt, d = 0.324 [中])</span>
+                                <div style="font-size: 14px; font-weight: 800; color: #92400E; margin-bottom: 2px;">
+                                    OR 1.498 (約1.50倍)
                                 </div>
-                                <div style="margin-bottom: 4px;">
-                                    ② なし vs 知りたい: p = 0.2793<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = -1.084, df = 248.5 (差 +1.15pt, d = 0.136)</span>
+                                <div style="font-size: 11px; color: #B45309; font-weight: 700;">
+                                    p = 0.1001 (†)
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい: p = 0.3295<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = -0.984, df = 53.7 (差 +1.55pt, d = 0.187)</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.925 〜 2.424] (z = 1.64)
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 5px;">
-                                    <strong>① なし vs めっちゃ知りたい:</strong><br>
-                                    <strong style="color: #92400E;">OR 1.498 (約1.50倍)</strong><br>
-                                    <span style="font-size: 10px; color: #B45309;"><strong>p = 0.1001 (†)</strong> [0.93〜2.42]</span>
+                                <div style="font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 2px;">
+                                    OR 1.177 (約1.18倍)
                                 </div>
-                                <div style="margin-bottom: 5px;">
-                                    ② なし vs 知りたい:<br>
-                                    OR 1.177 (約1.18倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.2802 [0.88〜1.58]</span>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.2802
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい:<br>
-                                    OR 1.263 (約1.26倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.3417 [0.78〜2.04]</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.876 〜 1.581] (z = 1.08)
+                                </div>
+                            </td>
+                            <td>
+                                <div style="font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 2px;">
+                                    OR 1.263 (約1.26倍)
+                                </div>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.3417
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.781 〜 2.044] (z = 0.95)
                                 </div>
                             </td>
                             <td>
                                 <span class="pill pill-amber">有意傾向 (†)</span><br>
-                                <div style="font-size: 11px; color: #92400E; margin-top: 4px; line-height: 1.3;">
-                                    なし vs めっちゃ知りたいで有意傾向。<br>人柄・安心感による底上げ
+                                <div style="font-size: 11px; color: #92400E; margin-top: 5px; line-height: 1.35;">
+                                    人柄親和性により、最優先希望のオッズが約1.5倍に底上げされる
                                 </div>
                             </td>
                         </tr>
                         <tr style="background: #ECFDF5;">
                             <td>
-                                <strong style="color: #065F46; font-size: 13px;">バリューフィット度</strong><br>
+                                <strong style="color: #065F46; font-size: 13.5px;">バリューフィット度</strong><br>
                                 <span style="font-size: 11px; color: #64748B;">(N=313)</span>
                             </td>
                             <td>
-                                F = 1.305<br>
-                                p = 0.2720<br>
-                                <span style="font-size: 10.5px; color: #065F46;">η² = 0.008</span><br>
-                                <span style="font-size: 10.5px; color: #047857;">順位相関 ρ = +0.095†</span>
-                            </td>
-                            <td>
-                                <div style="margin-bottom: 4px;">
-                                    ① なし vs めっちゃ知りたい: p = 0.6285<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = -0.486, df = 60.1 (差 +0.71pt, d = 0.090)</span>
+                                <div style="font-size: 13px; font-weight: 700; color: #065F46; margin-bottom: 2px;">
+                                    OR 1.124 (約1.12倍)
                                 </div>
-                                <div style="margin-bottom: 4px;">
-                                    <strong>② なし vs 知りたい:</strong> <strong style="color: #047857;">p = 0.1053</strong><br>
-                                    <span style="font-size: 10.5px; color: #475569;">t = -1.625, df = 270.7 (差 +1.52pt, d = 0.197)</span>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.6120
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい: p = 0.5824<br>
-                                    <span style="font-size: 10.5px; color: #64748B;">t = 0.553, df = 60.8 (差 -0.81pt, d = -0.103)</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.715 〜 1.767] (z = 0.51)
                                 </div>
                             </td>
                             <td>
-                                <div style="margin-bottom: 5px;">
-                                    ① なし vs めっちゃ知りたい:<br>
-                                    OR 1.124 (約1.12倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.6120 [0.71〜1.77]</span>
+                                <div style="font-size: 14px; font-weight: 800; color: #065F46; margin-bottom: 2px;">
+                                    OR 1.293 (約1.29倍)
                                 </div>
-                                <div style="margin-bottom: 5px;">
-                                    <strong>② なし vs 知りたい:</strong><br>
-                                    <strong style="color: #065F46;">OR 1.293 (約1.29倍)</strong><br>
-                                    <span style="font-size: 10px; color: #047857;"><strong>p = 0.1051</strong> [0.95〜1.76]</span>
+                                <div style="font-size: 11px; color: #047857; font-weight: 700;">
+                                    p = 0.1051
                                 </div>
-                                <div>
-                                    ③ 知りたい vs めっちゃ知りたい:<br>
-                                    OR 0.877 (約0.88倍)<br>
-                                    <span style="font-size: 10px; color: #64748B;">p = 0.5638 [0.56〜1.37]</span>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.948 〜 1.764] (z = 1.62)
                                 </div>
                             </td>
                             <td>
-                                <span class="pill pill-green">ポジティブ希望喚起</span><br>
-                                <div style="font-size: 11px; color: #065F46; margin-top: 4px; line-height: 1.3;">
-                                    なし vs 知りたいでオッズ約1.3倍。<br>魅力伝達で希望率向上
+                                <div style="font-size: 13px; font-weight: 700; color: #065F46; margin-bottom: 2px;">
+                                    OR 0.877 (約0.88倍)
+                                </div>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    p = 0.5638
+                                </div>
+                                <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">
+                                    95%CI: [0.561 〜 1.371] (z = -0.58)
+                                </div>
+                            </td>
+                            <td>
+                                <span class="pill pill-green">一次希望喚起</span><br>
+                                <div style="font-size: 11px; color: #065F46; margin-top: 5px; line-height: 1.35;">
+                                    企業魅力の伝達により、「知りたい」希望オッズが約1.3倍に向上する
                                 </div>
                             </td>
                         </tr>
@@ -2090,8 +2074,8 @@ tab_dashboard_html = f"""<!DOCTYPE html>
             <div class="insight-box" style="margin-top: 20px;">
                 <strong>💡 量的×質的要因分析の総括インサイト（評価軸のすれ違いの真相）:</strong><br>
                 <ul>
-                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（ANOVA p = 0.4463、Welch全3対比・ロジスティック回帰全3対比ともに有意差なし）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて「めっちゃ知りたい」枠（10枠限定）を配分しています（ANOVA p &lt; 0.0001***、Welch全3対比で有意、オッズ比最大3.17倍***）。</li>
-                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まりポジティブ希望率が底上げされる（なし vs めっちゃ知りたい Welch p = 0.0890†, オッズ1.50倍）と同時に、理念や強みが明確に伝わる「高バリュー企業」に対しても自発的に「知りたい」希望オッズを1.29倍に高めてアクションを起こしています。</li>
+                    <li style="margin-bottom: 4px;"><strong>企業側の行動原理:</strong> 企業はパーソナリティ（人柄）に一切左右されず（ロジスティック回帰の全3対比で有意差なし）、自社の求める能力・価値観（バリュー）の高さを極めて厳格に見極めて「めっちゃ知りたい」枠（10枠限定）を配分しています（全3対比で有意、オッズ比最大3.17倍***）。</li>
+                    <li><strong>学生側の行動原理:</strong> 学生は担当者のパーソナリティ親和性によって面談の安心感・共感が高まりポジティブ希望率が底上げされる（なし vs めっちゃ知りたい オッズ1.50倍）と同時に、理念や強みが明確に伝わる「高バリュー企業」に対しても自発的に「知りたい」希望オッズを1.29倍に高めてアクションを起こしています。</li>
                 </ul>
             </div>
         </div>
