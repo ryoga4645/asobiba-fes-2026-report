@@ -282,6 +282,45 @@
         .insight-box strong {
             color: #1E1B4B;
         }
+
+        /* Stats Accordion */
+        .stats-accordion {
+            margin-top: 14px;
+            background: #F8FAFC;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 12.5px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .stats-accordion[open] {
+            background: #FFFFFF;
+            border-color: #CBD5E1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .stats-summary {
+            padding: 10px 14px;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+            border-radius: 8px;
+            transition: background 0.15s ease;
+        }
+        .stats-summary:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+        .stats-content {
+            padding: 12px 14px;
+            border-top: 1px solid #E2E8F0;
+            line-height: 1.6;
+            color: #334155;
+        }
     </style>
 </head>
 <body>
@@ -387,26 +426,52 @@
                             <tr class="highlight-row">
                                 <td><strong>めっちゃ知りたい (10枠限定)</strong></td>
                                 <td>71件</td>
-                                <td><strong>63.79</strong> (p &lt; 0.0001)</td>
+                                <td><strong>63.79</strong></td>
                                 <td>78.13</td>
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-top: 12px; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12.5px; color: #334155; line-height: 1.6;">
-                        <div style="font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>📊 統計的検定結果（有意確率）</span>
-                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">全体N=313 / 有効N=286</span>
-                        </div>
-                        <div style="margin-bottom: 4px;">
-                            ・<strong>バリューフィット</strong>: 一元配置分散分析(ANOVA) <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">p &lt; 0.0001 (*** 極めて有意)</span>
-                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
-                                └ なし vs めっちゃ知りたい: Welch t検定 <strong>p &lt; 0.0001</strong> (t=5.312, 効果量 d=0.826)
+                    <details class="stats-accordion">
+                        <summary class="stats-summary">
+                            <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                        </summary>
+                        <div class="stats-content">
+                            <!-- バリューフィット（効果あり） -->
+                            <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong style="color: #1E293B;">【効果あり】バリューフィット</strong>
+                                    <span style="background: #EEF2FF; color: #4F46E5; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p &lt; 0.0001 (*** 極めて有意)</span>
+                                </div>
+                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
+                                    F(2, 310) = 13.263, 効果量 η² = 0.079（中〜大の効果量）
+                                </div>
+                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
+                                    <div>・なし(57.84) vs 知りたい(61.11): <strong>Welch t = -3.322, p = 0.0009 (*** 有意)</strong> [差 +3.27pt, d=0.429]</div>
+                                    <div>・知りたい(61.11) vs めっちゃ(63.79): <strong>Welch t = -2.513, p = 0.0120 (* 有意)</strong> [差 +2.68pt, d=0.352]</div>
+                                    <div>・なし(57.84) vs めっちゃ(63.79): <strong>Welch t = -5.312, p &lt; 0.0001 (*** 極めて有意)</strong> [差 +5.95pt, d=0.826]</div>
+                                </div>
+                            </div>
+                            <!-- パーソナリティ（効果なし） -->
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong style="color: #1E293B;">【効果なし】パーソナリティフィット</strong>
+                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p = 0.4463 (有意差なし)</span>
+                                </div>
+                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
+                                    F(2, 283) = 0.817, 効果量 η² = 0.006（効果量ほぼゼロ / 有効N=286）
+                                </div>
+                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
+                                    <div>・なし(78.41) vs 知りたい(79.53): Welch t = -0.931, p = 0.3519 (有意差なし)</div>
+                                    <div>・知りたい(79.53) vs めっちゃ(78.13): Welch t = 1.184, p = 0.2363 (有意差なし・微減)</div>
+                                    <div>・なし(78.41) vs めっちゃ(78.13): Welch t = 0.212, p = 0.8324 (有意差なし・完全同等)</div>
+                                </div>
+                            </div>
+                            <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
+                                💡 <strong>客観的結論</strong>: 企業は学生の人柄（パーソナリティ）では全く選別しておらず（p=0.45）、バリューの一致度のみを極めて厳密に評価（p&lt;0.0001）しています。
                             </div>
                         </div>
-                        <div>
-                            ・<strong>パーソナリティ</strong>: 一元配置分散分析(ANOVA) <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-size: 11px;">p = 0.4463 (有意差なし)</span>
-                        </div>
-                    </div>
+                    </details>
                 </div>
                 <div>
                     <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">🎓 学生アクション別：パーソナリティが右肩上がり</h3>
@@ -439,28 +504,55 @@
                                 <td><strong>めっちゃ知りたい (無制限)</strong></td>
                                 <td>40件</td>
                                 <td>60.67</td>
-                                <td><strong>80.78</strong> (+2.70pt, p=0.083)</td>
+                                <td><strong>80.78</strong></td>
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-top: 12px; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12.5px; color: #334155; line-height: 1.6;">
-                        <div style="font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>📊 統計的検定結果（有意確率）</span>
-                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">全体N=313 / 有効N=286</span>
-                        </div>
-                        <div style="margin-bottom: 4px;">
-                            ・<strong>パーソナリティ</strong>: なし vs めっちゃ知りたい <span style="background: #FEF3C7; color: #D97706; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">p = 0.0833 († 10%水準傾向)</span>
-                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
-                                └ 有料企業限定時: Welch t検定 <span style="background: #ECFDF5; color: #059669; padding: 1px 5px; border-radius: 4px; font-weight: 700; font-size: 11px;">p = 0.0416 (* 5%水準有意)</span> (差 +3.62pt)
+                    <details class="stats-accordion">
+                        <summary class="stats-summary">
+                            <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                            <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                        </summary>
+                        <div class="stats-content">
+                            <!-- バリューフィット（効果なし） -->
+                            <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #E2E8F0;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong style="color: #1E293B;">【効果なし】バリューフィット</strong>
+                                    <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">ANOVA p = 0.2720 (有意差なし)</span>
+                                </div>
+                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
+                                    F(2, 310) = 1.305, 効果量 η² = 0.008（効果量ほぼゼロ / 全体N=313）
+                                </div>
+                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
+                                    <div>・なし(59.96) vs 知りたい(61.48): Welch t = -1.629, p = 0.1032 (有意差なし)</div>
+                                    <div>・知りたい(61.48) vs めっちゃ(60.67): Welch t = 0.554, p = 0.5793 (有意差なし・微減)</div>
+                                    <div>・なし(59.96) vs めっちゃ(60.67): Welch t = -0.487, p = 0.6261 (有意差なし)</div>
+                                </div>
                             </div>
-                            <div style="padding-left: 14px; font-size: 11.5px; color: #64748B;">
-                                └ 全体ANOVA: p = 0.2105 (F=1.558)
+                            <!-- パーソナリティ（限定的傾向） -->
+                            <div style="margin-bottom: 10px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                                    <strong style="color: #1E293B;">【限定的・有意傾向】パーソナリティフィット</strong>
+                                    <span style="background: #FEF3C7; color: #D97706; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 11px;">なし vs めっちゃ p = 0.0833 († 傾向)</span>
+                                </div>
+                                <div style="font-size: 11.5px; color: #64748B; margin-bottom: 6px;">
+                                    全体ANOVA: F(2, 283) = 1.558, p = 0.2105 (全体では5%水準で有意差なし)
+                                </div>
+                                <div style="padding-left: 8px; font-size: 11.5px; color: #475569; line-height: 1.6;">
+                                    <div>・なし(78.08) vs 知りたい(79.23): Welch t = -1.081, p = 0.2799 (有意差なし)</div>
+                                    <div>・知りたい(79.23) vs めっちゃ(80.78): Welch t = -0.985, p = 0.3246 (有意差なし)</div>
+                                    <div>・なし(78.08) vs めっちゃ(80.78): <strong>Welch t = -1.732, p = 0.0833 († 有意傾向)</strong> [差 +2.70pt, d=0.323]</div>
+                                    <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dotted #CBD5E1;">
+                                        └ <strong>有料企業限定</strong>: なし(78.82) vs めっちゃ(82.44) ➔ <span style="background: #ECFDF5; color: #059669; padding: 1px 5px; border-radius: 3px; font-weight: 700;">p = 0.0416 (* 5%水準有意)</span><br>
+                                        └ <strong>無料企業限定</strong>: なし(77.58) vs めっちゃ(78.50) ➔ <span style="background: #F1F5F9; color: #64748B; padding: 1px 5px; border-radius: 3px;">p = 0.7024 (効果なし ❌・有意差全くなし)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11.5px; color: #334155; line-height: 1.5;">
+                                💡 <strong>客観的結論</strong>: 学生は理念（バリュー）の差を判断できず無相関（p=0.27）ですが、人柄には反応しており、特に有料企業に対して有意な好意反応（p=0.042）が確認されました。
                             </div>
                         </div>
-                        <div>
-                            ・<strong>バリューフィット</strong>: 一元配置分散分析(ANOVA) <span style="background: #F1F5F9; color: #64748B; padding: 1px 6px; border-radius: 4px; font-size: 11px;">p = 0.2720 (有意差なし)</span>
-                        </div>
-                    </div>
+                    </details>
                 </div>
             </div>
             <div class="insight-box">
