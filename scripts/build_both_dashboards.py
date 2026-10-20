@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import json
+import json, sys
+from collections import defaultdict
+sys.path.append('scripts')
+from analyze_fit_actions import load_and_preprocess_data, mean
 
 with open('scripts/analysis_results.json') as f:
     d = json.load(f)
@@ -11,60 +14,749 @@ p = d['paid_analysis']
 fr = d['free_analysis']
 cps = d['company_profiles']
 
-# 全12社のテーブル行HTMLを構築
-company_rows_html = ""
-for cp in cps:
-    cat = cp['category']
-    if "高マッチ" in cat:
-        cat_badge = '<span class="pill pill-green">👑 高マッチ・高エンゲージ</span>'
-    elif "超厳格" in cat:
-        cat_badge = '<span class="pill pill-indigo">🎯 超厳格スクリーニング</span>'
-    elif "学生人気" in cat:
-        cat_badge = '<span class="pill pill-amber">❤️ 学生人気・集客牽引</span>'
-    elif "慎重" in cat:
-        cat_badge = '<span class="pill pill-rose">⚠️ アクション慎重・厳選</span>'
-    else:
-        cat_badge = '<span class="pill pill-slate">⚖️ 標準バランス</span>'
-        
-    diff_val = cp['value_screening']['diff_very_none']
-    if diff_val is not None:
-        diff_str = f"+{diff_val:.2f} pt" if diff_val > 0 else f"{diff_val:.2f} pt"
-        diff_class = "font-bold text-indigo-600" if diff_val >= 5.0 else "text-slate-700"
-    else:
-        diff_str = "—"
-        diff_class = "text-slate-400"
-        
-    p_mean = f"{cp['personality_stats']['mean']:.2f}" if cp['personality_stats'] else '<span style="color:#9CA3AF;">未算出</span>'
+# ============================================================
+# 全12社 詳細分析データ集計 (Tab 1 & 2 と同一の3本柱分析)
+# ============================================================
+raw_data = load_and_preprocess_data()
+comps = defaultdict(list)
+for item in raw_data:
+    comps[item['company']].append(item)
+
+paid_companies = {
+    '株式会社リード・イノベーション',
+    '株式会社Unith Link',
+    '株式会社ベル',
+    'NTT 都市開発ホテルマネジメント株式会社　カペラ京都'
+}
+
+company_details = []
+
+for c, rows in comps.items():
+    is_paid = 1 if c in paid_companies else 0
+    n = len(rows)
+    matches = sum(r['is_matched'] for r in rows)
+    match_rate = round(matches / n * 100, 1)
     
-    mr = cp['match_rate']
+    vf_all = [r['value_fit'] for r in rows]
+    pf_all = [r['personality_fit'] for r in rows if r['personality_fit'] is not None]
+    
+    # 企業アクション別
+    c_acts = {}
+    for a in ['なし', '知りたい', 'めっちゃ知りたい']:
+        sub = [r for r in rows if r['company_action'] == a]
+        vf = [r['value_fit'] for r in sub]
+        pf = [r['personality_fit'] for r in sub if r['personality_fit'] is not None]
+        c_acts[a] = {
+            'count': len(sub),
+            'v_mean': round(mean(vf), 2) if vf else None,
+            'p_mean': round(mean(pf), 2) if pf else None
+        }
+    diff_v = None
+    v_from_to = ''
+    if c_acts['めっちゃ知りたい']['v_mean'] is not None and c_acts['なし']['v_mean'] is not None:
+        diff_v = round(c_acts['めっちゃ知りたい']['v_mean'] - c_acts['なし']['v_mean'], 2)
+        v_from_to = f"{c_acts['なし']['v_mean']} ➔ {c_acts['めっちゃ知りたい']['v_mean']}"
+    elif c_acts['知りたい']['v_mean'] is not None and c_acts['なし']['v_mean'] is not None:
+        diff_v = round(c_acts['知りたい']['v_mean'] - c_acts['なし']['v_mean'], 2)
+        v_from_to = f"{c_acts['なし']['v_mean']} ➔ {c_acts['知りたい']['v_mean']}"
+    elif c_acts['めっちゃ知りたい']['v_mean'] is not None and c_acts['知りたい']['v_mean'] is not None:
+        diff_v = round(c_acts['めっちゃ知りたい']['v_mean'] - c_acts['知りたい']['v_mean'], 2)
+        v_from_to = f"{c_acts['知りたい']['v_mean']} ➔ {c_acts['めっちゃ知りたい']['v_mean']}"
+    c_acts['diff_v'] = diff_v
+    c_acts['v_from_to'] = v_from_to
+    
+    # 学生アクション別
+    s_acts = {}
+    for a in ['なし', '知りたい', 'めっちゃ知りたい']:
+        sub = [r for r in rows if r['student_action'] == a]
+        vf = [r['value_fit'] for r in sub]
+        pf = [r['personality_fit'] for r in sub if r['personality_fit'] is not None]
+        s_acts[a] = {
+            'count': len(sub),
+            'v_mean': round(mean(vf), 2) if vf else None,
+            'p_mean': round(mean(pf), 2) if pf else None
+        }
+    diff_p = None
+    p_from_to = ''
+    if s_acts['めっちゃ知りたい']['p_mean'] is not None and s_acts['なし']['p_mean'] is not None:
+        diff_p = round(s_acts['めっちゃ知りたい']['p_mean'] - s_acts['なし']['p_mean'], 2)
+        p_from_to = f"{s_acts['なし']['p_mean']} ➔ {s_acts['めっちゃ知りたい']['p_mean']}"
+    elif s_acts['知りたい']['p_mean'] is not None and s_acts['なし']['p_mean'] is not None:
+        diff_p = round(s_acts['知りたい']['p_mean'] - s_acts['なし']['p_mean'], 2)
+        p_from_to = f"{s_acts['なし']['p_mean']} ➔ {s_acts['知りたい']['p_mean']}"
+    elif s_acts['めっちゃ知りたい']['p_mean'] is not None and s_acts['知りたい']['p_mean'] is not None:
+        diff_p = round(s_acts['めっちゃ知りたい']['p_mean'] - s_acts['知りたい']['p_mean'], 2)
+        p_from_to = f"{s_acts['知りたい']['p_mean']} ➔ {s_acts['めっちゃ知りたい']['p_mean']}"
+    s_acts['diff_p'] = diff_p
+    s_acts['p_from_to'] = p_from_to
+    
+    # マッチ成立別
+    m_yes = [r for r in rows if r['is_matched'] == 1]
+    m_no = [r for r in rows if r['is_matched'] == 0]
+    m_yes_v = [r['value_fit'] for r in m_yes]
+    m_yes_p = [r['personality_fit'] for r in m_yes if r['personality_fit'] is not None]
+    m_no_v = [r['value_fit'] for r in m_no]
+    m_no_p = [r['personality_fit'] for r in m_no if r['personality_fit'] is not None]
+    
+    diff_m_v = round(mean(m_yes_v) - mean(m_no_v), 2) if (m_yes_v and m_no_v) else None
+    diff_m_p = round(mean(m_yes_p) - mean(m_no_p), 2) if (m_yes_p and m_no_p) else None
+    
+    match_factors = {
+        'matched': {
+            'count': len(m_yes),
+            'v_mean': round(mean(m_yes_v), 2) if m_yes_v else None,
+            'p_mean': round(mean(m_yes_p), 2) if m_yes_p else None
+        },
+        'unmatched': {
+            'count': len(m_no),
+            'v_mean': round(mean(m_no_v), 2) if m_no_v else None,
+            'p_mean': round(mean(m_no_p), 2) if m_no_p else None
+        },
+        'diff_v': diff_m_v,
+        'diff_p': diff_m_p
+    }
+    
+    company_details.append({
+        'company': c,
+        'is_paid': is_paid,
+        'plan_type': '有料出展' if is_paid else '無料出展',
+        'count': n,
+        'matches': matches,
+        'match_rate': match_rate,
+        'value_mean': round(mean(vf_all), 2),
+        'personality_mean': round(mean(pf_all), 2) if pf_all else None,
+        'company_actions': c_acts,
+        'student_actions': s_acts,
+        'match_factors': match_factors
+    })
+
+company_details.sort(key=lambda x: (not x['is_paid'], -x['match_rate']))
+
+# 一覧テーブルの行生成
+company_rows_html = ""
+for idx, cd in enumerate(company_details):
+    mr = cd['match_rate']
     bar_color = "#10B981" if mr >= 50 else ("#3B82F6" if mr >= 30 else "#EF4444")
     
+    ca_v = cd['company_actions']['めっちゃ知りたい']['count']
+    ca_k = cd['company_actions']['知りたい']['count']
+    ca_n = cd['company_actions']['なし']['count']
+    
+    diff_v = cd['company_actions']['diff_v']
+    if diff_v is not None:
+        diff_v_str = f"+{diff_v:.2f} pt" if diff_v > 0 else f"{diff_v:.2f} pt"
+        diff_v_class = "font-bold text-indigo-600" if diff_v >= 4.0 else ("text-rose-600 font-bold" if diff_v < 0 else "text-slate-700")
+    else:
+        diff_v_str = "—"
+        diff_v_class = "text-slate-400"
+        
+    sa_v = cd['student_actions']['めっちゃ知りたい']['count']
+    sa_k = cd['student_actions']['知りたい']['count']
+    sa_n = cd['student_actions']['なし']['count']
+    
+    diff_p = cd['student_actions']['diff_p']
+    if diff_p is not None:
+        diff_p_str = f"+{diff_p:.2f} pt" if diff_p > 0 else f"{diff_p:.2f} pt"
+        diff_p_class = "font-bold text-amber-600" if diff_p >= 4.0 else ("text-rose-600 font-bold" if diff_p < 0 else "text-slate-700")
+    else:
+        diff_p_str = "未算出" if cd['personality_mean'] is None else "—"
+        diff_p_class = "text-slate-400"
+        
+    m_diff_v = cd['match_factors']['diff_v']
+    m_diff_p = cd['match_factors']['diff_p']
+    if m_diff_v is not None:
+        m_diff_v_str = f"V: {m_diff_v:+.2f}pt"
+    else:
+        m_diff_v_str = "V: —"
+        
+    if m_diff_p is not None:
+        m_diff_p_str = f"P: {m_diff_p:+.2f}pt"
+    else:
+        m_diff_p_str = "P: 未算出" if cd['personality_mean'] is None else "P: —"
+        
     company_rows_html += f"""
-    <tr>
+    <tr id="comp-row-{idx}" class="company-table-row {'selected-row' if idx == 0 else ''}" onclick="selectCompany({idx}, true)" style="cursor: pointer; transition: background 0.15s;">
         <td style="font-weight: 700; color: #111827;">
-            <span class="pill {'pill-indigo' if cp['is_paid'] else 'pill-slate'}" style="margin-right: 6px;">{cp['plan_type']}</span>
-            {cp['company']}
+            <span class="pill {'pill-indigo' if cd['is_paid'] else 'pill-slate'}" style="margin-right: 6px;">{cd['plan_type']}</span>
+            {cd['company']}
         </td>
-        <td>{cp['count']}名</td>
+        <td>{cd['count']}名</td>
         <td>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 15px; color: {bar_color}; width: 45px;">{mr}%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                <div style="font-weight: 800; font-size: 14px; color: {bar_color}; width: 45px;">{mr}%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
                     <div style="width: {mr}%; height: 100%; background: {bar_color};"></div>
                 </div>
-                <span style="font-size: 12px; color: #6B7280;">({cp['matches']}/{cp['count']})</span>
+                <span style="font-size: 11px; color: #6B7280;">({cd['matches']}/{cd['count']})</span>
             </div>
         </td>
-        <td style="font-weight: 600;">{cp['value_stats']['mean']:.2f}</td>
-        <td>{p_mean}</td>
-        <td>
-            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">{cp['company_actions']['very']}</strong> / {cp['company_actions']['know']}</span><br>
-            <span style="font-size: 12px;">学: <strong style="color: #D97706;">{cp['student_actions']['very']}</strong> / {cp['student_actions']['know']}</span>
+        <td style="font-size: 12px;">
+            <strong style="color: #4F46E5;">{ca_v}</strong> / {ca_k} / {ca_n}
         </td>
-        <td class="{diff_class}">{diff_str}</td>
-        <td>{cat_badge}</td>
+        <td class="{diff_v_class}" style="font-size: 12.5px;">{diff_v_str}</td>
+        <td style="font-size: 12px;">
+            <strong style="color: #D97706;">{sa_v}</strong> / {sa_k} / {sa_n}
+        </td>
+        <td class="{diff_p_class}" style="font-size: 12.5px;">{diff_p_str}</td>
+        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
+            <span style="font-weight: 600;">{m_diff_v_str}</span><br>
+            <span style="color: #6B7280;">{m_diff_p_str}</span>
+        </td>
+        <td>
+            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany({idx}, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
+                詳細カルテ ▼
+            </button>
+        </td>
     </tr>
     """
+
+# セレクターオプション
+company_options_html = ""
+for idx, cd in enumerate(company_details):
+    badge = "【有料】" if cd['is_paid'] else "【無料】"
+    company_options_html += f'<option value="{idx}">{badge} {cd["company"]} (マッチ率 {cd["match_rate"]}%)</option>\n'
+
+company_details_json = json.dumps(company_details, ensure_ascii=False)
+
+# Section HTML 定義
+company_detail_section_html = f"""
+    <!-- セクション1: 全12社 客観比較一覧 -->
+    <div class="section-card">
+        <div class="section-header">
+            <div>
+                <div class="section-title">🏢 【全12社 客観比較一覧】企業別マッチング実績・選別感度・マッチング要因</div>
+                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">
+                    全体サマリー・層別比較と同一の3本柱（① 企業アクション別推移、② 学生アクション別推移、③ マッチング成立要因）で全12社を比較。行または「詳細カルテ ▼」をクリックすると下部の個別カルテへ連動切替します。
+                </p>
+            </div>
+            <span class="pill pill-indigo">全12社 確定実績</span>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table class="company-list-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 200px;">企業名</th>
+                        <th>接触数</th>
+                        <th style="min-width: 130px;">マッチ率 (件数)</th>
+                        <th style="min-width: 105px;">企アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
+                        <th>企バリュー選別差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
+                        <th style="min-width: 105px;">学アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
+                        <th>学人柄反応差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
+                        <th style="min-width: 120px;">🤝 マッチ要因差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">成立群 − 未成立群</span></th>
+                        <th>詳細</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {company_rows_html}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 12px; color: #475569; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+            <div>
+                💡 <strong>表の見方:</strong> 
+                <strong>企バリュー選別差</strong>（企業が熱望した学生と見送った学生の理念差）、
+                <strong>学人柄反応差</strong>（学生が熱望した企業への親和性差）、
+                <strong>マッチ要因差</strong>（成約ペアの特徴：V=バリュー差、P=パーソナリティ差）。
+            </div>
+            <span style="color: #64748B; font-size: 11px;">※パナソニックはパーソナリティ未算出、ミツカルはマッチ成立0件のため一部差分対象外</span>
+        </div>
+    </div>
+
+    <!-- セクション2: 🔍 個別企業詳細カルテ -->
+    <div id="company-detail-card" class="section-card" style="border-top: 4px solid var(--primary); scroll-margin-top: 80px;">
+        <div class="section-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <div class="section-title" style="margin-bottom: 0;">
+                    🔍 【個別企業詳細カルテ】<span id="cd-comp-name" style="color: var(--primary);">株式会社ベル</span>
+                </div>
+                <span id="cd-comp-plan" class="pill pill-indigo">有料出展</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="company-selector" style="font-size: 13px; font-weight: 700; color: #475569;">企業切替:</label>
+                <select id="company-selector" onchange="selectCompany(parseInt(this.value), false)" style="padding: 6px 12px; font-size: 13px; font-weight: 600; border: 1px solid #CBD5E1; border-radius: 6px; background-color: #FFF; color: #1E293B; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    {company_options_html}
+                </select>
+            </div>
+        </div>
+
+        <!-- 4枚のトップKPIカード -->
+        <div class="grid-4" style="margin-bottom: 24px;">
+            <div class="kpi-card" style="padding: 16px;">
+                <div class="kpi-title">接触学生数</div>
+                <div class="kpi-value" style="font-size: 26px; color: #1E293B;" id="cd-kpi-count">29 <span style="font-size: 14px; font-weight: normal; color: #64748B;">名</span></div>
+                <div class="kpi-sub" id="cd-kpi-matches-sub">うちマッチ成立 <strong>19</strong> 件</div>
+            </div>
+            <div class="kpi-card" style="padding: 16px;">
+                <div class="kpi-title">マッチ成立率</div>
+                <div class="kpi-value" style="font-size: 26px; color: var(--success);" id="cd-kpi-match-rate">65.5%</div>
+                <div class="kpi-sub" id="cd-kpi-mr-rank">確定マッチング率</div>
+            </div>
+            <div class="kpi-card" style="padding: 16px;">
+                <div class="kpi-title">バリューフィット平均</div>
+                <div class="kpi-value" style="font-size: 26px; color: var(--primary);" id="cd-kpi-v-mean">62.10 <span style="font-size: 14px; font-weight: normal; color: #64748B;">pt</span></div>
+                <div class="kpi-sub">接触全学生の理念適合度</div>
+            </div>
+            <div class="kpi-card" style="padding: 16px;">
+                <div class="kpi-title">パーソナリティ平均</div>
+                <div class="kpi-value" style="font-size: 26px; color: var(--warning);" id="cd-kpi-p-mean">80.44 <span style="font-size: 14px; font-weight: normal; color: #64748B;">pt</span></div>
+                <div class="kpi-sub">接触全学生の人柄親和性</div>
+            </div>
+        </div>
+
+        <!-- 2カラム推移（Tab 1 & 2 と全く同一の構造） -->
+        <div class="grid-2">
+            <!-- 左カラム: 企業アクション別推移 -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div style="font-weight: 700; color: #1E293B; font-size: 14px;">
+                        🏢 企業アクション別：バリューとパーソナリティの推移
+                    </div>
+                    <span class="pill pill-indigo" style="font-size: 11px;">企業の選別行動</span>
+                </div>
+                <div style="height: 180px; position: relative; margin-bottom: 16px;">
+                    <canvas id="chart-comp-act"></canvas>
+                </div>
+                <table style="font-size: 12px; margin-bottom: 12px;">
+                    <thead>
+                        <tr>
+                            <th>アクション区分</th>
+                            <th>件数</th>
+                            <th>バリュー平均</th>
+                            <th>パーソナリティ平均</th>
+                            <th>選別感度</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cd-tbody-comp-act">
+                    </tbody>
+                </table>
+                <div id="cd-comp-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3;">
+                </div>
+            </div>
+
+            <!-- 右カラム: 学生アクション別推移 -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div style="font-weight: 700; color: #1E293B; font-size: 14px;">
+                        🎓 学生アクション別：バリューとパーソナリティの推移
+                    </div>
+                    <span class="pill pill-amber" style="font-size: 11px;">学生の志望行動</span>
+                </div>
+                <div style="height: 180px; position: relative; margin-bottom: 16px;">
+                    <canvas id="chart-stud-act"></canvas>
+                </div>
+                <table style="font-size: 12px; margin-bottom: 12px;">
+                    <thead>
+                        <tr>
+                            <th>アクション区分</th>
+                            <th>件数</th>
+                            <th>バリュー平均</th>
+                            <th>パーソナリティ平均</th>
+                            <th>反応感度</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cd-tbody-stud-act">
+                    </tbody>
+                </table>
+                <div id="cd-stud-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 下部: マッチング成立要因分析 -->
+        <div style="margin-top: 24px; background: #FFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-weight: 700; color: #1E293B; font-size: 14px;">
+                    🤝 マッチング成立要因分析（マッチ成立群 vs 未成立群の実データ比較）
+                </div>
+                <span class="pill pill-green" style="font-size: 11px;">成立ドライバー検証</span>
+            </div>
+            <p style="font-size: 12.5px; color: #64748B; margin-bottom: 14px;">
+                この企業でマッチングが成立した学生ペア（Yes）と不成立となった学生ペア（No）の間で、バリューおよびパーソナリティにどのような差が存在したかを直接比較します。
+            </p>
+            <table style="font-size: 12px; margin-bottom: 14px;">
+                <thead>
+                    <tr>
+                        <th style="min-width: 140px;">マッチング状態</th>
+                        <th>件数 (構成比)</th>
+                        <th>バリューフィット平均</th>
+                        <th>パーソナリティ平均</th>
+                        <th>客観的示唆</th>
+                    </tr>
+                </thead>
+                <tbody id="cd-tbody-match-factors">
+                </tbody>
+            </table>
+            <div id="cd-match-summary" class="insight-box" style="margin-top: 0; font-size: 12.5px;">
+            </div>
+        </div>
+    </div>
+"""
+
+# JavaScript 定義
+js_template = """
+    // ==========================================
+    // 全12社個別カルテ 動的連動スクリプト
+    // ==========================================
+    const companyDetailsData = __COMPANY_DETAILS_JSON__;
+    let compActChart = null;
+    let studActChart = null;
+    let tab3Initialized = false;
+
+    function initCompanyDetailCharts() {
+        if (!tab3Initialized) {
+            selectCompany(0, false);
+            tab3Initialized = true;
+        } else {
+            if (compActChart) compActChart.resize();
+            if (studActChart) studActChart.resize();
+        }
+    }
+
+    function selectCompany(idx, shouldScroll) {
+        if (idx < 0 || idx >= companyDetailsData.length) return;
+        const cd = companyDetailsData[idx];
+
+        // セレクターの同期
+        const sel = document.getElementById('company-selector');
+        if (sel && parseInt(sel.value) !== idx) sel.value = idx;
+
+        // テーブル行ハイライトの同期
+        document.querySelectorAll('.company-table-row').forEach((row, i) => {
+            if (i === idx) {
+                row.classList.add('selected-row');
+                row.style.backgroundColor = '#EEF2FF';
+            } else {
+                row.classList.remove('selected-row');
+                row.style.backgroundColor = '';
+            }
+        });
+
+        // ヘッダー情報
+        const nameEl = document.getElementById('cd-comp-name');
+        if (nameEl) nameEl.textContent = cd.company;
+        const planEl = document.getElementById('cd-comp-plan');
+        if (planEl) {
+            planEl.className = cd.is_paid ? 'pill pill-indigo' : 'pill pill-slate';
+            planEl.textContent = cd.plan_type;
+        }
+
+        // KPIカード
+        const cntEl = document.getElementById('cd-kpi-count');
+        if (cntEl) cntEl.innerHTML = cd.count + ' <span style="font-size: 14px; font-weight: normal; color: #64748B;">名</span>';
+        
+        const matchesSubEl = document.getElementById('cd-kpi-matches-sub');
+        if (matchesSubEl) matchesSubEl.innerHTML = 'うちマッチ成立 <strong>' + cd.matches + '</strong> 件 (' + cd.match_rate + '%)';
+        
+        const mrEl = document.getElementById('cd-kpi-match-rate');
+        if (mrEl) {
+            mrEl.textContent = cd.match_rate + '%';
+            mrEl.style.color = cd.match_rate >= 50 ? 'var(--success)' : (cd.match_rate >= 30 ? 'var(--primary)' : 'var(--danger)');
+        }
+        
+        const vMeanEl = document.getElementById('cd-kpi-v-mean');
+        if (vMeanEl) vMeanEl.innerHTML = cd.value_mean.toFixed(2) + ' <span style="font-size: 14px; font-weight: normal; color: #64748B;">pt</span>';
+        
+        const pMeanEl = document.getElementById('cd-kpi-p-mean');
+        if (pMeanEl) {
+            if (cd.personality_mean !== null) {
+                pMeanEl.innerHTML = cd.personality_mean.toFixed(2) + ' <span style="font-size: 14px; font-weight: normal; color: #64748B;">pt</span>';
+            } else {
+                pMeanEl.innerHTML = '<span style="font-size: 18px; color: #9CA3AF;">未算出</span>';
+            }
+        }
+
+        // テーブル生成: 企業アクション別
+        const acts = ['なし', '知りたい', 'めっちゃ知りたい'];
+        let compTbodyHtml = '';
+        acts.forEach(a => {
+            const item = cd.company_actions[a];
+            const vStr = item.v_mean !== null ? item.v_mean.toFixed(2) : '—';
+            const pStr = item.p_mean !== null ? item.p_mean.toFixed(2) : (cd.personality_mean === null ? '未算出' : '—');
+            const isHighlight = a === 'めっちゃ知りたい' ? 'style="background: #F8FAFC; font-weight: 600;"' : '';
+            const badge = a === 'めっちゃ知りたい' ? '<span class="pill pill-indigo" style="font-size: 10px; margin-left: 4px;">最優先</span>' : '';
+            const baseNoneV = cd.company_actions['なし'].v_mean;
+            let diffCol = '—';
+            if (a === 'なし') {
+                diffCol = '<span style="color: #64748B;">基準</span>';
+            } else if (item.v_mean !== null && baseNoneV !== null) {
+                const diffVal = item.v_mean - baseNoneV;
+                const sign = diffVal > 0 ? '+' : '';
+                const color = diffVal >= 4.0 ? 'color: var(--primary); font-weight: 700;' : (diffVal < 0 ? 'color: var(--danger); font-weight: 700;' : '');
+                diffCol = '<span style="' + color + '">' + sign + diffVal.toFixed(2) + ' pt</span>';
+            }
+            compTbodyHtml += '<tr ' + isHighlight + '>' +
+                '<td><strong>' + a + '</strong> ' + badge + '</td>' +
+                '<td>' + item.count + '件</td>' +
+                '<td><strong>' + vStr + '</strong></td>' +
+                '<td>' + pStr + '</td>' +
+                '<td>' + diffCol + '</td>' +
+            '</tr>';
+        });
+        const compTbody = document.getElementById('cd-tbody-comp-act');
+        if (compTbody) compTbody.innerHTML = compTbodyHtml;
+
+        // 企業アクションサマリー
+        const diffV = cd.company_actions.diff_v;
+        let compSummaryHtml = '';
+        if (diffV !== null) {
+            const sign = diffV > 0 ? '+' : '';
+            if (diffV >= 4.0) {
+                compSummaryHtml = '<strong>🎯 鋭敏なバリュー選別:</strong> 「なし」から「めっちゃ知りたい」への移行でバリューが <strong>' + sign + diffV.toFixed(2) + ' pt</strong> 上昇（' + cd.company_actions.v_from_to + '）。理念適合度の高い学生を明確に見極めて評価しています。';
+            } else if (diffV > 0) {
+                compSummaryHtml = '<strong>⚖️ 穏やかなバリュー傾斜:</strong> アクション移行に伴うバリュー差は <strong>' + sign + diffV.toFixed(2) + ' pt</strong>（' + cd.company_actions.v_from_to + '）。母集団全体のベース水準を重視したアクション傾向です。';
+            } else {
+                compSummaryHtml = '<strong>⚠️ フラットな選別:</strong> アクション間でのバリュー差は <strong>' + diffV.toFixed(2) + ' pt</strong>（' + cd.company_actions.v_from_to + '）。理念スコア以外の個別要因（専門性や経験）を重視したアクションとなっています。';
+            }
+        } else {
+            compSummaryHtml = '<strong>ℹ️ アクション状況:</strong> アクション区分の偏りにより差分算出対象外となります。';
+        }
+        const compSumEl = document.getElementById('cd-comp-act-summary');
+        if (compSumEl) compSumEl.innerHTML = compSummaryHtml;
+
+        // テーブル生成: 学生アクション別
+        let studTbodyHtml = '';
+        acts.forEach(a => {
+            const item = cd.student_actions[a];
+            const vStr = item.v_mean !== null ? item.v_mean.toFixed(2) : '—';
+            const pStr = item.p_mean !== null ? item.p_mean.toFixed(2) : (cd.personality_mean === null ? '未算出' : '—');
+            const isHighlight = a === 'めっちゃ知りたい' ? 'style="background: #F8FAFC; font-weight: 600;"' : '';
+            const badge = a === 'めっちゃ知りたい' ? '<span class="pill pill-amber" style="font-size: 10px; margin-left: 4px;">熱望</span>' : '';
+            const baseNoneP = cd.student_actions['なし'].p_mean;
+            let diffCol = '—';
+            if (cd.personality_mean === null) {
+                diffCol = '<span style="color: #9CA3AF;">未算出</span>';
+            } else if (a === 'なし') {
+                diffCol = '<span style="color: #64748B;">基準</span>';
+            } else if (item.p_mean !== null && baseNoneP !== null) {
+                const diffVal = item.p_mean - baseNoneP;
+                const sign = diffVal > 0 ? '+' : '';
+                const color = diffVal >= 4.0 ? 'color: #D97706; font-weight: 700;' : (diffVal < 0 ? 'color: var(--danger); font-weight: 700;' : '');
+                diffCol = '<span style="' + color + '">' + sign + diffVal.toFixed(2) + ' pt</span>';
+            }
+            studTbodyHtml += '<tr ' + isHighlight + '>' +
+                '<td><strong>' + a + '</strong> ' + badge + '</td>' +
+                '<td>' + item.count + '件</td>' +
+                '<td>' + vStr + '</td>' +
+                '<td><strong style="color: #D97706;">' + pStr + '</strong></td>' +
+                '<td>' + diffCol + '</td>' +
+            '</tr>';
+        });
+        const studTbody = document.getElementById('cd-tbody-stud-act');
+        if (studTbody) studTbody.innerHTML = studTbodyHtml;
+
+        // 学生アクションサマリー
+        const diffP = cd.student_actions.diff_p;
+        let studSummaryHtml = '';
+        if (cd.personality_mean === null) {
+            studSummaryHtml = '<strong>ℹ️ パーソナリティ未算出:</strong> 企業側の診断データが未登録のため、パーソナリティ親和性分析の対象外となります。';
+        } else if (diffP !== null) {
+            const sign = diffP > 0 ? '+' : '';
+            if (diffP >= 4.0) {
+                studSummaryHtml = '<strong>❤️ 高い人柄共鳴・共感:</strong> 学生が「めっちゃ知りたい」と希望した層はパーソナリティが <strong>' + sign + diffP.toFixed(2) + ' pt</strong> 上昇（' + cd.student_actions.p_from_to + '）。ブースで親和性を強く感じた学生が集まっています。';
+            } else if (diffP > 0) {
+                studSummaryHtml = '<strong>⚖️ 安定したパーソナリティ反応:</strong> 希望度に応じたパーソナリティ差は <strong>' + sign + diffP.toFixed(2) + ' pt</strong>（' + cd.student_actions.p_from_to + '）。幅広い学生から好意的に受け止められています。';
+            } else {
+                studSummaryHtml = '<strong>⚠️ 認知・事業興味先行:</strong> パーソナリティ差は <strong>' + diffP.toFixed(2) + ' pt</strong>。性格特性の一致よりも、事業内容や知名度を動機とした希望傾向が見られます。';
+            }
+        } else {
+            studSummaryHtml = '<strong>ℹ️ アクション状況:</strong> アクション区分の偏りにより差分算出対象外となります。';
+        }
+        const studSumEl = document.getElementById('cd-stud-act-summary');
+        if (studSumEl) studSumEl.innerHTML = studSummaryHtml;
+
+        // テーブル生成: マッチング成立要因
+        const mf = cd.match_factors;
+        let matchTbodyHtml = '';
+        const mYesV = mf.matched.v_mean !== null ? mf.matched.v_mean.toFixed(2) : '—';
+        const mYesP = mf.matched.p_mean !== null ? mf.matched.p_mean.toFixed(2) : (cd.personality_mean === null ? '未算出' : '—');
+        const mNoV = mf.unmatched.v_mean !== null ? mf.unmatched.v_mean.toFixed(2) : '—';
+        const mNoP = mf.unmatched.p_mean !== null ? mf.unmatched.p_mean.toFixed(2) : (cd.personality_mean === null ? '未算出' : '—');
+        
+        const diffMVStr = mf.diff_v !== null ? (mf.diff_v >= 0 ? '+' : '') + mf.diff_v.toFixed(2) + ' pt' : '—';
+        const diffMPStr = mf.diff_p !== null ? (mf.diff_p >= 0 ? '+' : '') + mf.diff_p.toFixed(2) + ' pt' : (cd.personality_mean === null ? '未算出' : '—');
+
+        matchTbodyHtml += '<tr style="background: #F0FDF4;">' +
+            '<td><strong>👑 マッチ成立群 (Yes)</strong></td>' +
+            '<td><strong style="color: var(--success);">' + mf.matched.count + '件</strong> (' + (mf.matched.count / cd.count * 100).toFixed(1) + '%)</td>' +
+            '<td><strong style="color: var(--primary); font-size: 13px;">' + mYesV + '</strong></td>' +
+            '<td><strong style="color: #D97706; font-size: 13px;">' + mYesP + '</strong></td>' +
+            '<td>双方の評価が合致し成約した層</td>' +
+        '</tr>' +
+        '<tr>' +
+            '<td>❌ マッチ未成立群 (No)</td>' +
+            '<td>' + mf.unmatched.count + '件 (' + (mf.unmatched.count / cd.count * 100).toFixed(1) + '%)</td>' +
+            '<td>' + mNoV + '</td>' +
+            '<td>' + mNoP + '</td>' +
+            '<td>いずれか一方または双方が見送った層</td>' +
+        '</tr>' +
+        '<tr style="background: #F8FAFC; font-weight: 700; border-top: 2px solid #CBD5E1;">' +
+            '<td>📊 差分 (成立群 − 未成立群)</td>' +
+            '<td>—</td>' +
+            '<td style="color: ' + (mf.diff_v !== null && mf.diff_v >= 3.0 ? 'var(--primary)' : '#1E293B') + ';">' + diffMVStr + '</td>' +
+            '<td style="color: ' + (mf.diff_p !== null && mf.diff_p >= 3.0 ? '#D97706' : '#1E293B') + ';">' + diffMPStr + '</td>' +
+            '<td>成約ペアの際立った特徴</td>' +
+        '</tr>';
+        const matchTbody = document.getElementById('cd-tbody-match-factors');
+        if (matchTbody) matchTbody.innerHTML = matchTbodyHtml;
+
+        // マッチ要因サマリー
+        let matchSummaryHtml = '';
+        if (cd.matches === 0) {
+            matchSummaryHtml = '<strong>⚠️ マッチ成立なし:</strong> この企業では今回のイベントでマッチングが成立しませんでした（0件）。企業側または学生側のアクション基準を見直す必要があります。';
+        } else {
+            let vPart = '';
+            if (mf.diff_v !== null) {
+                if (mf.diff_v >= 3.0) vPart = 'バリュー適合度（差 <strong>+' + mf.diff_v.toFixed(2) + ' pt</strong>）が決定打';
+                else if (mf.diff_v > 0) vPart = 'バリュー差 <strong>+' + mf.diff_v.toFixed(2) + ' pt</strong>';
+                else vPart = 'バリュー差 <strong>' + mf.diff_v.toFixed(2) + ' pt</strong>';
+            }
+            let pPart = '';
+            if (cd.personality_mean === null) {
+                pPart = 'パーソナリティは未算出';
+            } else if (mf.diff_p !== null) {
+                if (mf.diff_p >= 3.0) pPart = 'パーソナリティ親和性（差 <strong>+' + mf.diff_p.toFixed(2) + ' pt</strong>）が強力な推進力';
+                else if (mf.diff_p > 0) pPart = 'パーソナリティ差 <strong>+' + mf.diff_p.toFixed(2) + ' pt</strong>';
+                else pPart = 'パーソナリティ差 <strong>' + mf.diff_p.toFixed(2) + ' pt</strong>';
+            }
+            matchSummaryHtml = '<strong>🎯 マッチング成立の主要因:</strong> 成約に至った学生ペアは、未成立ペアと比較して ' + vPart + (pPart ? '、' + pPart : '') + ' となっており、相互の適合度に基づく自然な合意形成が確認されます。';
+        }
+        const matchSumEl = document.getElementById('cd-match-summary');
+        if (matchSumEl) matchSumEl.innerHTML = matchSummaryHtml;
+
+        // グラフ更新 (Chart.js)
+        updateDetailCharts(cd);
+
+        // スムーススクロール
+        if (shouldScroll) {
+            const target = document.getElementById('company-detail-card');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    function updateDetailCharts(cd) {
+        const labels = ['なし', '知りたい', 'めっちゃ知りたい'];
+        
+        // 企業アクション別チャート
+        const compCtx = document.getElementById('chart-comp-act');
+        if (compCtx) {
+            if (compActChart) compActChart.destroy();
+            
+            const compVData = labels.map(l => cd.company_actions[l].v_mean);
+            const compPData = labels.map(l => cd.company_actions[l].p_mean);
+            
+            const datasets = [
+                {
+                    label: 'バリューフィット',
+                    data: compVData,
+                    backgroundColor: 'rgba(79, 70, 229, 0.85)',
+                    borderColor: '#4F46E5',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }
+            ];
+            if (cd.personality_mean !== null) {
+                datasets.push({
+                    label: 'パーソナリティ',
+                    data: compPData,
+                    backgroundColor: 'rgba(156, 163, 175, 0.7)',
+                    borderColor: '#9CA3AF',
+                    borderWidth: 1,
+                    borderRadius: 4
+                });
+            }
+            
+            compActChart = new Chart(compCtx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 45,
+                            max: 95,
+                            grid: { color: '#F1F5F9' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) {
+                                    return c.dataset.label + ': ' + (c.raw !== null ? c.raw.toFixed(2) + ' pt' : '未算出');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 学生アクション別チャート
+        const studCtx = document.getElementById('chart-stud-act');
+        if (studCtx) {
+            if (studActChart) studActChart.destroy();
+            
+            const studVData = labels.map(l => cd.student_actions[l].v_mean);
+            const studPData = labels.map(l => cd.student_actions[l].p_mean);
+            
+            const datasets = [
+                {
+                    label: 'バリューフィット',
+                    data: studVData,
+                    backgroundColor: 'rgba(156, 163, 175, 0.7)',
+                    borderColor: '#9CA3AF',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }
+            ];
+            if (cd.personality_mean !== null) {
+                datasets.push({
+                    label: 'パーソナリティ',
+                    data: studPData,
+                    backgroundColor: 'rgba(217, 119, 6, 0.85)',
+                    borderColor: '#D97706',
+                    borderWidth: 1,
+                    borderRadius: 4
+                });
+            }
+            
+            studActChart = new Chart(studCtx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 45,
+                            max: 95,
+                            grid: { color: '#F1F5F9' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) {
+                                    return c.dataset.label + ': ' + (c.raw !== null ? c.raw.toFixed(2) + ' pt' : '未算出');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+"""
+company_detail_js = js_template.replace('__COMPANY_DETAILS_JSON__', company_details_json)
+
 
 # ============================================================
 # 1. asobiba_fes_fit_analysis_report.html (タブ統合版)
@@ -308,6 +1000,13 @@ tab_dashboard_html = f"""<!DOCTYPE html>
         .pill-amber {{ background: #FEF3C7; color: #92400E; }}
         .pill-rose {{ background: #FFE4E6; color: #BE123C; }}
         .pill-slate {{ background: #F1F5F9; color: #475569; }}
+        
+        .company-table-row:hover {{
+            background-color: #F1F5F9 !important;
+        }}
+        .company-table-row.selected-row {{
+            background-color: #EEF2FF !important;
+        }}
         
         .matrix-table {{
             width: 100%;
@@ -1523,49 +2222,10 @@ tab_dashboard_html = f"""<!DOCTYPE html>
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 3: 全12社 個別カルテ -->
+    <!-- TAB 3: 全12社 個別カルテ（標準化3本柱分析） -->
     <!-- ========================================== -->
     <div id="tab-companies" class="tab-pane">
-        <div class="section-card">
-            <div class="section-header">
-                <div>
-                    <div class="section-title">🏢 【全12社個別カルテ】企業別マッチング実績・選別感度・プロファイル</div>
-                    <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">各社ごとの受発注アクション、バリュー選別感度（めっちゃ知りたい時 vs なし時の差）、プロファイル分類</p>
-                </div>
-                <span class="pill pill-indigo">全12社 確定実績</span>
-            </div>
-            
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="min-width: 220px;">企業名</th>
-                            <th>接触数</th>
-                            <th style="min-width: 140px;">マッチ率 (件数)</th>
-                            <th>バリュー平均</th>
-                            <th>パーソナリティ</th>
-                            <th style="min-width: 110px;">アクション (めっちゃ知りたい/知りたい)</th>
-                            <th>企バリュー選別差</th>
-                            <th style="min-width: 180px;">プロファイル分類</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {company_rows_html}
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="grid-2" style="margin-top: 20px;">
-                <div class="insight-box" style="margin-top: 0; background: #ECFDF5; border-color: var(--success); color: #065F46;">
-                    <strong>👑 高マッチの共通項:</strong><br>
-                    ベル（65.5%）やカペラ京都（59.4%）は、企業側がほぼ全員（90%以上）に知りたい以上を送り、学生のパーソナリティを高く引き出すブース体験を提供していました。
-                </div>
-                <div class="insight-box" style="margin-top: 0; background: #EEF2FF; border-color: var(--primary); color: #3730A3;">
-                    <strong>🎯 超厳格スクリーニングの企業:</strong><br>
-                    アイプラス（差 +9.49pt）やCKC（差 +7.03pt）は、理念・カルチャーに合う学生のみを驚異的な精度で一本釣りしており、採用基準のブレがありません。
-                </div>
-            </div>
-        </div>
+{company_detail_section_html}
     </div>
 
 </div>
@@ -1581,6 +2241,10 @@ tab_dashboard_html = f"""<!DOCTYPE html>
         // Activate selected pane and button
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
+
+        if (tabId === 'tab-companies') {{
+            initCompanyDetailCharts();
+        }}
 
         // Trigger chart resize if needed
         window.dispatchEvent(new Event('resize'));
@@ -1730,6 +2394,8 @@ tab_dashboard_html = f"""<!DOCTYPE html>
             }}
         }}
     }});
+
+{company_detail_js}
 </script>
 
 </body>
@@ -1938,6 +2604,13 @@ company_page_html = f"""<!DOCTYPE html>
         .pill-rose {{ background: #FFE4E6; color: #BE123C; }}
         .pill-slate {{ background: #F1F5F9; color: #475569; }}
 
+        .company-table-row:hover {{
+            background-color: #F1F5F9 !important;
+        }}
+        .company-table-row.selected-row {{
+            background-color: #EEF2FF !important;
+        }}
+
         .insight-box {{
             background: #F0F9FF;
             border-left: 4px solid #0EA5E9;
@@ -1999,47 +2672,7 @@ company_page_html = f"""<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- Section: 12 Company Profiles -->
-    <div class="section-card">
-        <div class="section-header">
-            <div>
-                <div class="section-title">🏢 【全12社個別カルテ】企業別マッチング実績・選別感度・プロファイル</div>
-                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">各社ごとの受発注アクション、バリュー選別感度（めっちゃ知りたい時 vs なし時の差）、プロファイル分類</p>
-            </div>
-            <span class="pill pill-indigo">全12社 確定実績</span>
-        </div>
-        
-        <div style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="min-width: 220px;">企業名</th>
-                        <th>接触数</th>
-                        <th style="min-width: 140px;">マッチ率 (件数)</th>
-                        <th>バリュー平均</th>
-                        <th>パーソナリティ</th>
-                        <th style="min-width: 110px;">アクション (めっちゃ知りたい/知りたい)</th>
-                        <th>企バリュー選別差</th>
-                        <th style="min-width: 180px;">プロファイル分類</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {company_rows_html}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="grid-2" style="margin-top: 20px;">
-            <div class="insight-box" style="margin-top: 0; background: #ECFDF5; border-color: var(--success); color: #065F46;">
-                <strong>👑 高マッチの共通項:</strong><br>
-                ベル（65.5%）やカペラ京都（59.4%）は、企業側がほぼ全員（90%以上）に知りたい以上を送り、学生のパーソナリティを高く引き出すブース体験を提供していました。
-            </div>
-            <div class="insight-box" style="margin-top: 0; background: #EEF2FF; border-color: var(--primary); color: #3730A3;">
-                <strong>🎯 超厳格スクリーニングの企業:</strong><br>
-                アイプラス（差 +9.49pt）やCKC（差 +7.03pt）は、理念・カルチャーに合う学生のみを驚異的な精度で一本釣りしており、採用基準のブレがありません。
-            </div>
-        </div>
-    </div>
+{company_detail_section_html}
 
     <!-- Section: Paid vs Free Stratified Analysis -->
     <div class="section-card">
@@ -2182,6 +2815,13 @@ company_page_html = f"""<!DOCTYPE html>
             maintainAspectRatio: false,
             scales: {{ y: {{ min: 70, max: 86 }} }}
         }}
+    }});
+
+{company_detail_js}
+
+    // 初期表示で個別カルテを初期化
+    document.addEventListener('DOMContentLoaded', function() {{
+        initCompanyDetailCharts();
     }});
 </script>
 
