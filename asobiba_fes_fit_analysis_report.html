@@ -696,6 +696,252 @@
                     </details>
                 </div>
             </div>
+
+            <!-- 因果モデル: フィット度 (説明変数X) ➔ アクション行動 (目的変数Y) のクロス集計 & 統計検定 -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 2px dashed #CBD5E1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <div style="font-size: 16px; font-weight: 800; color: #1E293B; display: flex; align-items: center; gap: 8px;">
+                            <span>🎯</span> 【因果モデル検証】フィット度（要因 $X$）➔ アクション選択（結果 $Y$）のクロス集計 &amp; 統計的仮説検定
+                        </div>
+                        <div style="font-size: 12.5px; color: #64748B; margin-top: 3px;">
+                            「フィット度が高いからポジティブなアクションを起こすのか？」という行動因果を、クロス集計表（分割表）・カイ二乗検定・ロジスティック回帰で直接検証。
+                        </div>
+                    </div>
+                    <span class="pill pill-indigo" style="font-size: 11px;">正方向の因果検定</span>
+                </div>
+
+                <div class="grid-2">
+                    <!-- 左カード: 企業アクション -->
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div style="font-weight: 700; color: #1E293B; font-size: 13.5px;">
+                                🏢 企業側：バリュー水準 ($X$) ➔ 企業アクション ($Y$)
+                            </div>
+                            <span class="pill pill-green" style="font-size: 10.5px;">p &lt; 0.0001 (***)</span>
+                        </div>
+                        <table style="font-size: 12px; margin-bottom: 12px;">
+                            <thead>
+                                <tr>
+                                    <th>バリュー水準 ($X$)</th>
+                                    <th>接触数</th>
+                                    <th>なし</th>
+                                    <th>知りたい</th>
+                                    <th>めっちゃ知りたい</th>
+                                    <th>ポジティブ率<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">(知りたい以上)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>低 (&lt;58.0)</strong></td>
+                                    <td>110件</td>
+                                    <td>49件 (44.5%)</td>
+                                    <td>47件 (42.7%)</td>
+                                    <td>14件 (12.7%)</td>
+                                    <td><strong>55.5%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>中 (58.0〜63.9)</strong></td>
+                                    <td>88件</td>
+                                    <td>29件 (33.0%)</td>
+                                    <td>42件 (47.7%)</td>
+                                    <td>17件 (19.3%)</td>
+                                    <td><strong>67.0%</strong></td>
+                                </tr>
+                                <tr style="background: #EEF2FF; font-weight: 600;">
+                                    <td><strong style="color: var(--primary);">高 (&ge;64.0)</strong></td>
+                                    <td>115件</td>
+                                    <td>19件 (16.5%)</td>
+                                    <td>56件 (48.7%)</td>
+                                    <td><strong style="color: var(--primary);">40件 (34.8%)</strong></td>
+                                    <td><strong style="color: var(--primary); font-size: 13px;">83.5%</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-bottom: 12px; line-height: 1.5;">
+                            <strong>🎯 バリュー上昇で企業アクションが倍増:</strong><br>
+                            バリュー高群では見送り（なし）がわずか <strong>16.5%</strong> に激減し、ポジティブ率は <strong>83.5%</strong>、めっちゃ知りたい率は低群の約2.7倍（<strong>34.8%</strong>）へと跳ね上がります。
+                        </div>
+
+                        <!-- 企業側 統計検定アコーディオン -->
+                        <details class="stats-accordion">
+                            <summary class="stats-summary" style="padding: 8px 12px;">
+                                <span>📊 統計的仮説検定（カイ二乗検定 / トレンド検定 / ロジスティック回帰）</span>
+                                <span style="font-size: 10.5px; color: #64748B;">展開 ▼</span>
+                            </summary>
+                            <div class="stats-content" style="padding: 10px 12px;">
+                                <table style="font-size: 11px; margin-bottom: 8px;">
+                                    <thead>
+                                        <tr>
+                                            <th>検定手法・目的変数</th>
+                                            <th>統計量</th>
+                                            <th>自由度 (df)</th>
+                                            <th>有意確率 (p値)</th>
+                                            <th>統計的判定</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="background: #F8FAFC;">
+                                            <td><strong>カイ二乗検定 (3×3 分割表全体)</strong></td>
+                                            <td>χ² = 27.552</td>
+                                            <td>df = 4</td>
+                                            <td><strong>p &lt; 0.0001 (0.000015)</strong></td>
+                                            <td><span class="pill pill-indigo">極めて有意 (***)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Mantel-Haenszel 線形トレンド検定</strong></td>
+                                            <td>M² = 26.621</td>
+                                            <td>df = 1</td>
+                                            <td><strong>p &lt; 0.0001</strong></td>
+                                            <td><span class="pill pill-indigo">極めて有意 (***)</span></td>
+                                        </tr>
+                                        <tr style="background: #F8FAFC;">
+                                            <td><strong>ロジスティック回帰: 知りたい以上確率</strong></td>
+                                            <td>β = +0.0707 (z = 4.23)</td>
+                                            <td>N = 313</td>
+                                            <td><strong>p = 0.000023</strong></td>
+                                            <td><span class="pill pill-indigo">10pt上昇で 約2.03倍 (OR 2.027)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ロジスティック回帰: めっちゃ知りたい確率</strong></td>
+                                            <td>β = +0.0720 (z = 3.71)</td>
+                                            <td>N = 313</td>
+                                            <td><strong>p = 0.00021</strong></td>
+                                            <td><span class="pill pill-indigo">10pt上昇で 約2.05倍 (OR 2.054)</span></td>
+                                        </tr>
+                                        <tr style="background: #FFF1F2;">
+                                            <td><strong>対照実験: パーソナリティ ➔ 企業アクション</strong></td>
+                                            <td>χ² = 5.386 (z = 0.58)</td>
+                                            <td>df = 4</td>
+                                            <td>p = 0.3177</td>
+                                            <td><span class="pill pill-slate">有意差なし ❌ (OR 1.10, p=0.56)</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    ※対照実験としてパーソナリティを説明変数にした場合、p=0.3177と全く有意差が出ず、企業は100%バリューのみを基準にアクションを選別していることが実証されます。
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- 右カード: 学生アクション -->
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div style="font-weight: 700; color: #1E293B; font-size: 13.5px;">
+                                🎓 学生側：パーソナリティ水準 ($X$) ➔ 学生アクション ($Y$)
+                            </div>
+                            <span class="pill pill-amber" style="font-size: 10.5px;">底上げ・共鳴効果</span>
+                        </div>
+                        <table style="font-size: 12px; margin-bottom: 12px;">
+                            <thead>
+                                <tr>
+                                    <th>パーソナリティ水準 ($X$)</th>
+                                    <th>接触数</th>
+                                    <th>なし</th>
+                                    <th>知りたい</th>
+                                    <th>めっちゃ知りたい</th>
+                                    <th>ポジティブ率<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">(知りたい以上)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>低 (&lt;76.0)</strong></td>
+                                    <td>104件</td>
+                                    <td>55件 (52.9%)</td>
+                                    <td>40件 (38.5%)</td>
+                                    <td>9件 (8.7%)</td>
+                                    <td>47.1%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>中 (76.0〜81.9)</strong></td>
+                                    <td>70件</td>
+                                    <td>29件 (41.4%)</td>
+                                    <td>32件 (45.7%)</td>
+                                    <td>9件 (12.9%)</td>
+                                    <td><strong>58.6%</strong></td>
+                                </tr>
+                                <tr style="background: #FEF3C7; font-weight: 600;">
+                                    <td><strong style="color: #92400E;">高 (&ge;82.0)</strong></td>
+                                    <td>112件</td>
+                                    <td>49件 (43.8%)</td>
+                                    <td>48件 (42.9%)</td>
+                                    <td><strong style="color: #D97706;">15件 (13.4%)</strong></td>
+                                    <td><strong style="color: #92400E; font-size: 13px;">56.2%</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E; margin-bottom: 12px; line-height: 1.5;">
+                            <strong>❤️ 人柄親和性が高まるとポジティブ率が底上げ:</strong><br>
+                            パーソナリティが低から中・高へ上がることで、学生のポジティブ希望率は <strong>47.1% ➔ 56〜58%</strong>（+10pt前後）へ底上げされ、めっちゃ知りたい率も1.5倍に増加します。
+                        </div>
+
+                        <!-- 学生側 統計検定アコーディオン -->
+                        <details class="stats-accordion">
+                            <summary class="stats-summary" style="padding: 8px 12px;">
+                                <span>📊 統計的仮説検定（カイ二乗検定 / トレンド検定 / ロジスティック回帰）</span>
+                                <span style="font-size: 10.5px; color: #64748B;">展開 ▼</span>
+                            </summary>
+                            <div class="stats-content" style="padding: 10px 12px;">
+                                <table style="font-size: 11px; margin-bottom: 8px;">
+                                    <thead>
+                                        <tr>
+                                            <th>検定手法・目的変数</th>
+                                            <th>統計量</th>
+                                            <th>自由度 (df)</th>
+                                            <th>有意確率 (p値)</th>
+                                            <th>統計的判定</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="background: #F8FAFC;">
+                                            <td><strong>カイ二乗検定 (3×3 分割表全体)</strong></td>
+                                            <td>χ² = 3.230</td>
+                                            <td>df = 4</td>
+                                            <td>p = 0.5199</td>
+                                            <td><span class="pill pill-slate">有意差なし (分布全体)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>二項カイ二乗検定 (なし vs 知り以上)</strong></td>
+                                            <td>χ² = 2.768</td>
+                                            <td>df = 2</td>
+                                            <td>p = 0.2505</td>
+                                            <td>有意差なし (差 +9.1pt)</td>
+                                        </tr>
+                                        <tr style="background: #F8FAFC;">
+                                            <td><strong>ロジスティック回帰: めっちゃ知りたい確率</strong></td>
+                                            <td>β = +0.0321 (z = 1.38)</td>
+                                            <td>N = 286</td>
+                                            <td>p = 0.1664</td>
+                                            <td>10pt上昇で 約1.38倍 (OR 1.378)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ロジスティック回帰: 知りたい以上確率</strong></td>
+                                            <td>β = +0.0212 (z = 1.49)</td>
+                                            <td>N = 286</td>
+                                            <td>p = 0.1370</td>
+                                            <td>10pt上昇で 約1.24倍 (OR 1.237)</td>
+                                        </tr>
+                                        <tr style="background: #ECFDF5;">
+                                            <td><strong>対照実験: バリュー ➔ 学生アクション (トレンド)</strong></td>
+                                            <td>M² = 4.790 (r = 0.124)</td>
+                                            <td>df = 1</td>
+                                            <td><strong>p = 0.0254</strong></td>
+                                            <td><span class="pill pill-green">有意 (*) [高バリューで66.1%]</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="font-size: 11px; color: #64748B;">
+                                    ※学生のアクションには、ブース担当者のパーソナリティによる底上げ効果に加え、バリュー適合度の高い企業へのポジティブ反応（トレンド p=0.0254*）も有意に存在します。
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
             <div class="insight-box">
                 <strong>💡 インサイト（すれ違いの構造）:</strong><br>
                 企業は理念・カルチャー適合（バリュー）をプロの目で厳しく見極めてアクションしている一方、学生は短時間では抽象的な理念を理解できず、目の前のブース担当者の「人柄・共感・話しやすさ（パーソナリティ）」に直感的に惹かれてアクションしています。
