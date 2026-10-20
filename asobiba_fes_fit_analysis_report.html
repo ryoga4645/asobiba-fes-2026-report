@@ -1463,466 +1463,14 @@
     <!-- ========================================== -->
     <div id="tab-companies" class="tab-pane">
 
-    <!-- セクション1: 全12社 客観比較一覧 -->
-    <div class="section-card">
-        <div class="section-header">
+    <!-- 企業選択ナビゲーションバー（有料4社 / 無料8社） -->
+    <div class="section-card" style="margin-bottom: 20px; padding: 20px 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
             <div>
-                <div class="section-title">🏢 【全12社 客観比較一覧】企業別マッチング実績・選別感度・マッチング要因</div>
-                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">
-                    全体サマリー・層別比較と同一の3本柱（① 企業アクション別推移、② 学生アクション別推移、③ マッチング成立要因）で全12社を比較。行または「詳細カルテ ▼」をクリックすると下部の個別カルテへ連動切替します。
-                </p>
-            </div>
-            <span class="pill pill-indigo">全12社 確定実績</span>
-        </div>
-        
-        <div style="overflow-x: auto;">
-            <table class="company-list-table">
-                <thead>
-                    <tr>
-                        <th style="min-width: 200px;">企業名</th>
-                        <th>接触数</th>
-                        <th style="min-width: 130px;">マッチ率 (件数)</th>
-                        <th style="min-width: 105px;">企アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
-                        <th>企バリュー選別差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
-                        <th style="min-width: 105px;">学アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
-                        <th>学人柄反応差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
-                        <th style="min-width: 120px;">🤝 マッチ要因差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">成立群 − 未成立群</span></th>
-                        <th>詳細</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-    <tr id="comp-row-0" class="company-table-row selected-row" onclick="selectCompany(0, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
-            株式会社ベル
-        </td>
-        <td>29名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #10B981; width: 45px;">65.5%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 65.5%; height: 100%; background: #10B981;"></div>
+                <div style="font-size: 16px; font-weight: 800; color: #1E293B;">🏢 分析対象企業の選択</div>
+                <div style="font-size: 12.5px; color: #64748B; margin-top: 2px;">
+                    企業ボタンまたはドロップダウンから選択すると、Tab 1・Tab 2 と同一の3本柱（推移・統計的仮説検定・マッチング要因）が即座に切り替わります。
                 </div>
-                <span style="font-size: 11px; color: #6B7280;">(19/29)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">10</strong> / 18 / 1
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+5.16 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">5</strong> / 14 / 10
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+1.43 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +1.48pt</span><br>
-            <span style="color: #6B7280;">P: +2.18pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(0, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-1" class="company-table-row " onclick="selectCompany(1, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
-            NTT 都市開発ホテルマネジメント株式会社　カペラ京都
-        </td>
-        <td>32名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #10B981; width: 45px;">59.4%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 59.4%; height: 100%; background: #10B981;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(19/32)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">10</strong> / 18 / 4
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+4.33 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">9</strong> / 10 / 13
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+1.82 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +2.69pt</span><br>
-            <span style="color: #6B7280;">P: +2.45pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(1, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-2" class="company-table-row " onclick="selectCompany(2, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
-            株式会社リード・イノベーション
-        </td>
-        <td>31名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #3B82F6; width: 45px;">35.5%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 35.5%; height: 100%; background: #3B82F6;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(11/31)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">6</strong> / 16 / 9
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+3.67 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">1</strong> / 13 / 17
-        </td>
-        <td class="font-bold text-amber-600" style="font-size: 12.5px;">+12.61 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +7.19pt</span><br>
-            <span style="color: #6B7280;">P: +7.62pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(2, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-3" class="company-table-row " onclick="selectCompany(3, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
-            株式会社Unith Link
-        </td>
-        <td>30名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #EF4444; width: 45px;">16.7%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 16.7%; height: 100%; background: #EF4444;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(5/30)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">3</strong> / 9 / 18
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+2.38 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">1</strong> / 13 / 16
-        </td>
-        <td class="font-bold text-amber-600" style="font-size: 12.5px;">+5.99 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +4.96pt</span><br>
-            <span style="color: #6B7280;">P: -2.07pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(3, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-4" class="company-table-row " onclick="selectCompany(4, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            株式会社Linoa Group
-        </td>
-        <td>23名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #10B981; width: 45px;">65.2%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 65.2%; height: 100%; background: #10B981;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(15/23)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">10</strong> / 12 / 1
-        </td>
-        <td class="text-rose-600 font-bold" style="font-size: 12.5px;">-8.91 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">0</strong> / 15 / 8
-        </td>
-        <td class="text-rose-600 font-bold" style="font-size: 12.5px;">-0.57 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: -1.25pt</span><br>
-            <span style="color: #6B7280;">P: -0.58pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(4, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-5" class="company-table-row " onclick="selectCompany(5, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            とものや株式会社
-        </td>
-        <td>24名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #10B981; width: 45px;">54.2%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 54.2%; height: 100%; background: #10B981;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(13/24)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">7</strong> / 9 / 8
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+4.45 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">7</strong> / 13 / 4
-        </td>
-        <td class="font-bold text-amber-600" style="font-size: 12.5px;">+7.87 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: -1.87pt</span><br>
-            <span style="color: #6B7280;">P: +9.65pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(5, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-6" class="company-table-row " onclick="selectCompany(6, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            株式会社アイプラス
-        </td>
-        <td>22名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #10B981; width: 45px;">50.0%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 50.0%; height: 100%; background: #10B981;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(11/22)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">4</strong> / 15 / 3
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+9.49 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">4</strong> / 10 / 8
-        </td>
-        <td class="font-bold text-amber-600" style="font-size: 12.5px;">+4.86 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +3.28pt</span><br>
-            <span style="color: #6B7280;">P: +1.96pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(6, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-7" class="company-table-row " onclick="selectCompany(7, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            CKCネットワーク株式会社（ナビ個別指導学院）
-        </td>
-        <td>25名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #3B82F6; width: 45px;">48.0%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 48.0%; height: 100%; background: #3B82F6;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(12/25)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">7</strong> / 10 / 8
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+7.03 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">2</strong> / 11 / 12
-        </td>
-        <td class="font-bold text-amber-600" style="font-size: 12.5px;">+9.24 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +3.31pt</span><br>
-            <span style="color: #6B7280;">P: +6.13pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(7, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-8" class="company-table-row " onclick="selectCompany(8, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            株式会社EGIJ
-        </td>
-        <td>21名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #3B82F6; width: 45px;">42.9%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 42.9%; height: 100%; background: #3B82F6;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(9/21)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">7</strong> / 14 / 0
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+5.58 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">2</strong> / 7 / 12
-        </td>
-        <td class="text-rose-600 font-bold" style="font-size: 12.5px;">-4.28 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +8.29pt</span><br>
-            <span style="color: #6B7280;">P: -3.26pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(8, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-9" class="company-table-row " onclick="selectCompany(9, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            株式会社ユーズテック
-        </td>
-        <td>24名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #EF4444; width: 45px;">29.2%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 29.2%; height: 100%; background: #EF4444;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(7/24)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">7</strong> / 12 / 5
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+6.38 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">2</strong> / 6 / 16
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+3.33 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: -2.32pt</span><br>
-            <span style="color: #6B7280;">P: +2.08pt</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(9, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-10" class="company-table-row " onclick="selectCompany(10, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            パナソニック オペレーショナルエクセレンス株式会社
-        </td>
-        <td>27名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #EF4444; width: 45px;">25.9%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 25.9%; height: 100%; background: #EF4444;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(7/27)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">0</strong> / 7 / 20
-        </td>
-        <td class="font-bold text-indigo-600" style="font-size: 12.5px;">+5.54 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">7</strong> / 14 / 6
-        </td>
-        <td class="text-slate-400" style="font-size: 12.5px;">未算出</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: +5.53pt</span><br>
-            <span style="color: #6B7280;">P: 未算出</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(10, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-    <tr id="comp-row-11" class="company-table-row " onclick="selectCompany(11, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
-            株式会社ミツカル
-        </td>
-        <td>25名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: #EF4444; width: 45px;">0.0%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: 0.0%; height: 100%; background: #EF4444;"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">(0/25)</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">0</strong> / 5 / 20
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+1.77 pt</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">0</strong> / 8 / 17
-        </td>
-        <td class="text-slate-700" style="font-size: 12.5px;">+1.12 pt</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">V: —</span><br>
-            <span style="color: #6B7280;">P: —</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany(11, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    
-                </tbody>
-            </table>
-        </div>
-        
-        <div style="margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 12px; color: #475569; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-            <div>
-                💡 <strong>表の見方:</strong> 
-                <strong>企バリュー選別差</strong>（企業が熱望した学生と見送った学生の理念差）、
-                <strong>学人柄反応差</strong>（学生が熱望した企業への親和性差）、
-                <strong>マッチ要因差</strong>（成約ペアの特徴：V=バリュー差、P=パーソナリティ差）。
-            </div>
-            <span style="color: #64748B; font-size: 11px;">※パナソニックはパーソナリティ未算出、ミツカルはマッチ成立0件のため一部差分対象外</span>
-        </div>
-    </div>
-
-    <!-- セクション2: 🔍 個別企業詳細カルテ -->
-    <div id="company-detail-card" class="section-card" style="border-top: 4px solid var(--primary); scroll-margin-top: 80px;">
-        <div class="section-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <div class="section-title" style="margin-bottom: 0;">
-                    🔍 【個別企業詳細カルテ】<span id="cd-comp-name" style="color: var(--primary);">株式会社ベル</span>
-                </div>
-                <span id="cd-comp-plan" class="pill pill-indigo">有料出展</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <label for="company-selector" style="font-size: 13px; font-weight: 700; color: #475569;">企業切替:</label>
@@ -1941,6 +1489,79 @@
 <option value="11">【無料】 株式会社ミツカル (マッチ率 0.0%)</option>
 
                 </select>
+            </div>
+        </div>
+
+        <!-- 有料企業4社ボタン群 -->
+        <div style="margin-bottom: 12px;">
+            <div style="font-size: 11.5px; font-weight: 700; color: #4F46E5; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span class="pill pill-indigo" style="font-size: 10px;">有料出展 4社</span>
+                <span style="color: #64748B; font-weight: normal; font-size: 11px;">（バリュー高優先配席）</span>
+            </div>
+            <div class="comp-nav-container">
+                <button type="button" id="comp-btn-0" class="comp-nav-btn active" onclick="selectCompany(0, false)">
+        <span class="btn-name">株式会社ベル</span>
+        <span class="btn-rate">65.5%</span>
+    </button><button type="button" id="comp-btn-1" class="comp-nav-btn " onclick="selectCompany(1, false)">
+        <span class="btn-name">NTT 都市開発ホテルマネジメント株式会社　カペラ京都</span>
+        <span class="btn-rate">59.4%</span>
+    </button><button type="button" id="comp-btn-2" class="comp-nav-btn " onclick="selectCompany(2, false)">
+        <span class="btn-name">株式会社リード・イノベーション</span>
+        <span class="btn-rate">35.5%</span>
+    </button><button type="button" id="comp-btn-3" class="comp-nav-btn " onclick="selectCompany(3, false)">
+        <span class="btn-name">株式会社Unith Link</span>
+        <span class="btn-rate">16.7%</span>
+    </button>
+            </div>
+        </div>
+
+        <!-- 無料企業8社ボタン群 -->
+        <div>
+            <div style="font-size: 11.5px; font-weight: 700; color: #475569; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span class="pill pill-slate" style="font-size: 10px;">無料出展 8社</span>
+                <span style="color: #64748B; font-weight: normal; font-size: 11px;">（高低混合配席）</span>
+            </div>
+            <div class="comp-nav-container">
+                <button type="button" id="comp-btn-4" class="comp-nav-btn " onclick="selectCompany(4, false)">
+        <span class="btn-name">株式会社Linoa Group</span>
+        <span class="btn-rate">65.2%</span>
+    </button><button type="button" id="comp-btn-5" class="comp-nav-btn " onclick="selectCompany(5, false)">
+        <span class="btn-name">とものや株式会社</span>
+        <span class="btn-rate">54.2%</span>
+    </button><button type="button" id="comp-btn-6" class="comp-nav-btn " onclick="selectCompany(6, false)">
+        <span class="btn-name">株式会社アイプラス</span>
+        <span class="btn-rate">50.0%</span>
+    </button><button type="button" id="comp-btn-7" class="comp-nav-btn " onclick="selectCompany(7, false)">
+        <span class="btn-name">CKCネットワーク株式会社（ナビ個別指導学院）</span>
+        <span class="btn-rate">48.0%</span>
+    </button><button type="button" id="comp-btn-8" class="comp-nav-btn " onclick="selectCompany(8, false)">
+        <span class="btn-name">株式会社EGIJ</span>
+        <span class="btn-rate">42.9%</span>
+    </button><button type="button" id="comp-btn-9" class="comp-nav-btn " onclick="selectCompany(9, false)">
+        <span class="btn-name">株式会社ユーズテック</span>
+        <span class="btn-rate">29.2%</span>
+    </button><button type="button" id="comp-btn-10" class="comp-nav-btn " onclick="selectCompany(10, false)">
+        <span class="btn-name">パナソニック オペレーショナルエクセレンス株式会社</span>
+        <span class="btn-rate">25.9%</span>
+    </button><button type="button" id="comp-btn-11" class="comp-nav-btn " onclick="selectCompany(11, false)">
+        <span class="btn-name">株式会社ミツカル</span>
+        <span class="btn-rate">0.0%</span>
+    </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔍 個別企業詳細カルテ -->
+    <div id="company-detail-card" class="section-card" style="border-top: 4px solid var(--primary);">
+        <div class="section-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <div class="section-title" style="margin-bottom: 0;">
+                    🔍 【個別カルテ】<span id="cd-comp-name" style="color: var(--primary);">株式会社ベル</span>
+                </div>
+                <span id="cd-comp-plan" class="pill pill-indigo">有料出展</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748B;">
+                全体サマリー・層別比較と完全に同一の分析フレームワーク
             </div>
         </div>
 
@@ -1994,8 +1615,53 @@
                     <tbody id="cd-tbody-comp-act">
                     </tbody>
                 </table>
-                <div id="cd-comp-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3;">
+                <div id="cd-comp-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-bottom: 14px;">
                 </div>
+
+                <!-- 統計的仮説検定アコーディオン（企業側） -->
+                <details class="stats-accordion">
+                    <summary class="stats-summary">
+                        <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                        <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                    </summary>
+                    <div class="stats-content">
+                        <!-- ① バリューフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="margin-bottom: 14px; font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp-test-v">
+                            </tbody>
+                        </table>
+
+                        <!-- ② パーソナリティフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp-test-p">
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
 
             <!-- 右カラム: 学生アクション別推移 -->
@@ -2022,8 +1688,53 @@
                     <tbody id="cd-tbody-stud-act">
                     </tbody>
                 </table>
-                <div id="cd-stud-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E;">
+                <div id="cd-stud-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E; margin-bottom: 14px;">
                 </div>
+
+                <!-- 統計的仮説検定アコーディオン（学生側） -->
+                <details class="stats-accordion">
+                    <summary class="stats-summary">
+                        <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                        <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                    </summary>
+                    <div class="stats-content">
+                        <!-- ① バリューフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="margin-bottom: 14px; font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud-test-v">
+                            </tbody>
+                        </table>
+
+                        <!-- ② パーソナリティフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud-test-p">
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
         </div>
 
@@ -2051,6 +1762,31 @@
                 <tbody id="cd-tbody-match-factors">
                 </tbody>
             </table>
+
+            <!-- マッチング成立要因の統計的仮説検定（Welch t検定）アコーディオン -->
+            <details class="stats-accordion" style="margin-bottom: 14px;">
+                <summary class="stats-summary">
+                    <span>📊 マッチング成立要因の統計的仮説検定（Welch t検定: 成約群 vs 未成立群）</span>
+                    <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                </summary>
+                <div class="stats-content">
+                    <table style="font-size: 11.5px;">
+                        <thead>
+                            <tr>
+                                <th>検証指標</th>
+                                <th>検定手法</th>
+                                <th>統計量</th>
+                                <th>自由度 (df)</th>
+                                <th>有意確率 (p値)</th>
+                                <th>統計的判定</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cd-tbody-match-test">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+
             <div id="cd-match-summary" class="insight-box" style="margin-top: 0; font-size: 12.5px;">
             </div>
         </div>
@@ -2227,9 +1963,9 @@
 
 
     // ==========================================
-    // 全12社個別カルテ 動的連動スクリプト
+    // 全12社個別カルテ 動的連動スクリプト (統計的仮説検定完全対応)
     // ==========================================
-    const companyDetailsData = [{"company": "株式会社ベル", "is_paid": 1, "plan_type": "有料出展", "count": 29, "matches": 19, "match_rate": 65.5, "value_mean": 62.1, "personality_mean": 80.44, "company_actions": {"なし": {"count": 1, "v_mean": 57.82, "p_mean": 90.95}, "知りたい": {"count": 18, "v_mean": 61.85, "p_mean": 80.96}, "めっちゃ知りたい": {"count": 10, "v_mean": 62.98, "p_mean": 78.46}, "diff_v": 5.16, "v_from_to": "57.82 ➔ 62.98"}, "student_actions": {"なし": {"count": 10, "v_mean": 61.13, "p_mean": 79.01}, "知りたい": {"count": 14, "v_mean": 64.4, "p_mean": 81.46}, "めっちゃ知りたい": {"count": 5, "v_mean": 57.62, "p_mean": 80.44}, "diff_p": 1.43, "p_from_to": "79.01 ➔ 80.44"}, "match_factors": {"matched": {"count": 19, "v_mean": 62.61, "p_mean": 81.19}, "unmatched": {"count": 10, "v_mean": 61.13, "p_mean": 79.01}, "diff_v": 1.48, "diff_p": 2.18}}, {"company": "NTT 都市開発ホテルマネジメント株式会社　カペラ京都", "is_paid": 1, "plan_type": "有料出展", "count": 32, "matches": 19, "match_rate": 59.4, "value_mean": 62.09, "personality_mean": 82.07, "company_actions": {"なし": {"count": 4, "v_mean": 59.11, "p_mean": 84.21}, "知りたい": {"count": 18, "v_mean": 62.01, "p_mean": 82.45}, "めっちゃ知りたい": {"count": 10, "v_mean": 63.44, "p_mean": 80.52}, "diff_v": 4.33, "v_from_to": "59.11 ➔ 63.44"}, "student_actions": {"なし": {"count": 13, "v_mean": 60.5, "p_mean": 80.61}, "知りたい": {"count": 10, "v_mean": 63.18, "p_mean": 83.63}, "めっちゃ知りたい": {"count": 9, "v_mean": 63.2, "p_mean": 82.43}, "diff_p": 1.82, "p_from_to": "80.61 ➔ 82.43"}, "match_factors": {"matched": {"count": 19, "v_mean": 63.19, "p_mean": 83.06}, "unmatched": {"count": 13, "v_mean": 60.5, "p_mean": 80.61}, "diff_v": 2.69, "diff_p": 2.45}}, {"company": "株式会社リード・イノベーション", "is_paid": 1, "plan_type": "有料出展", "count": 31, "matches": 11, "match_rate": 35.5, "value_mean": 60.95, "personality_mean": 78.01, "company_actions": {"なし": {"count": 9, "v_mean": 59.13, "p_mean": 74.47}, "知りたい": {"count": 16, "v_mean": 61.27, "p_mean": 79.06}, "めっちゃ知りたい": {"count": 6, "v_mean": 62.8, "p_mean": 80.52}, "diff_v": 3.67, "v_from_to": "59.13 ➔ 62.8"}, "student_actions": {"なし": {"count": 17, "v_mean": 58.53, "p_mean": 74.37}, "知りたい": {"count": 13, "v_mean": 63.57, "p_mean": 82.08}, "めっちゃ知りたい": {"count": 1, "v_mean": 67.9, "p_mean": 86.98}, "diff_p": 12.61, "p_from_to": "74.37 ➔ 86.98"}, "match_factors": {"matched": {"count": 11, "v_mean": 65.59, "p_mean": 82.92}, "unmatched": {"count": 20, "v_mean": 58.4, "p_mean": 75.31}, "diff_v": 7.19, "diff_p": 7.62}}, {"company": "株式会社Unith Link", "is_paid": 1, "plan_type": "有料出展", "count": 30, "matches": 5, "match_rate": 16.7, "value_mean": 61.97, "personality_mean": 80.98, "company_actions": {"なし": {"count": 18, "v_mean": 60.92, "p_mean": 82.08}, "知りたい": {"count": 9, "v_mean": 63.65, "p_mean": 77.82}, "めっちゃ知りたい": {"count": 3, "v_mean": 63.3, "p_mean": 83.85}, "diff_v": 2.38, "v_from_to": "60.92 ➔ 63.3"}, "student_actions": {"なし": {"count": 16, "v_mean": 61.42, "p_mean": 81.98}, "知りたい": {"count": 13, "v_mean": 62.23, "p_mean": 79.21}, "めっちゃ知りたい": {"count": 1, "v_mean": 67.6, "p_mean": 87.97}, "diff_p": 5.99, "p_from_to": "81.98 ➔ 87.97"}, "match_factors": {"matched": {"count": 5, "v_mean": 66.11, "p_mean": 79.25}, "unmatched": {"count": 25, "v_mean": 61.15, "p_mean": 81.32}, "diff_v": 4.96, "diff_p": -2.07}}, {"company": "株式会社Linoa Group", "is_paid": 0, "plan_type": "無料出展", "count": 23, "matches": 15, "match_rate": 65.2, "value_mean": 63.22, "personality_mean": 74.53, "company_actions": {"なし": {"count": 1, "v_mean": 71.84, "p_mean": 86.0}, "知りたい": {"count": 12, "v_mean": 62.75, "p_mean": 76.2}, "めっちゃ知りたい": {"count": 10, "v_mean": 62.93, "p_mean": 71.38}, "diff_v": -8.91, "v_from_to": "71.84 ➔ 62.93"}, "student_actions": {"なし": {"count": 8, "v_mean": 64.04, "p_mean": 74.9}, "知りたい": {"count": 15, "v_mean": 62.79, "p_mean": 74.33}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_p": -0.57, "p_from_to": "74.9 ➔ 74.33"}, "match_factors": {"matched": {"count": 15, "v_mean": 62.79, "p_mean": 74.33}, "unmatched": {"count": 8, "v_mean": 64.04, "p_mean": 74.9}, "diff_v": -1.25, "diff_p": -0.58}}, {"company": "とものや株式会社", "is_paid": 0, "plan_type": "無料出展", "count": 24, "matches": 13, "match_rate": 54.2, "value_mean": 61.28, "personality_mean": 76.95, "company_actions": {"なし": {"count": 8, "v_mean": 61.3, "p_mean": 72.68}, "知りたい": {"count": 9, "v_mean": 57.77, "p_mean": 80.13}, "めっちゃ知りたい": {"count": 7, "v_mean": 65.75, "p_mean": 77.74}, "diff_v": 4.45, "v_from_to": "61.3 ➔ 65.75"}, "student_actions": {"なし": {"count": 4, "v_mean": 63.53, "p_mean": 70.46}, "知りたい": {"count": 13, "v_mean": 61.17, "p_mean": 78.2}, "めっちゃ知りたい": {"count": 7, "v_mean": 60.19, "p_mean": 78.33}, "diff_p": 7.87, "p_from_to": "70.46 ➔ 78.33"}, "match_factors": {"matched": {"count": 13, "v_mean": 60.42, "p_mean": 81.37}, "unmatched": {"count": 11, "v_mean": 62.29, "p_mean": 71.72}, "diff_v": -1.87, "diff_p": 9.65}}, {"company": "株式会社アイプラス", "is_paid": 0, "plan_type": "無料出展", "count": 22, "matches": 11, "match_rate": 50.0, "value_mean": 58.92, "personality_mean": 73.19, "company_actions": {"なし": {"count": 3, "v_mean": 53.74, "p_mean": 74.07}, "知りたい": {"count": 15, "v_mean": 58.8, "p_mean": 73.26}, "めっちゃ知りたい": {"count": 4, "v_mean": 63.23, "p_mean": 72.23}, "diff_v": 9.49, "v_from_to": "53.74 ➔ 63.23"}, "student_actions": {"なし": {"count": 8, "v_mean": 58.61, "p_mean": 71.51}, "知りたい": {"count": 10, "v_mean": 58.28, "p_mean": 73.25}, "めっちゃ知りたい": {"count": 4, "v_mean": 61.13, "p_mean": 76.37}, "diff_p": 4.86, "p_from_to": "71.51 ➔ 76.37"}, "match_factors": {"matched": {"count": 11, "v_mean": 60.55, "p_mean": 74.17}, "unmatched": {"count": 11, "v_mean": 57.28, "p_mean": 72.21}, "diff_v": 3.28, "diff_p": 1.96}}, {"company": "CKCネットワーク株式会社（ナビ個別指導学院）", "is_paid": 0, "plan_type": "無料出展", "count": 25, "matches": 12, "match_rate": 48.0, "value_mean": 63.79, "personality_mean": 78.03, "company_actions": {"なし": {"count": 8, "v_mean": 57.54, "p_mean": 76.04}, "知りたい": {"count": 10, "v_mean": 68.25, "p_mean": 78.78}, "めっちゃ知りたい": {"count": 7, "v_mean": 64.57, "p_mean": 79.23}, "diff_v": 7.03, "v_from_to": "57.54 ➔ 64.57"}, "student_actions": {"なし": {"count": 12, "v_mean": 62.46, "p_mean": 74.64}, "知りたい": {"count": 11, "v_mean": 64.34, "p_mean": 80.67}, "めっちゃ知りたい": {"count": 2, "v_mean": 68.72, "p_mean": 83.88}, "diff_p": 9.24, "p_from_to": "74.64 ➔ 83.88"}, "match_factors": {"matched": {"count": 12, "v_mean": 65.51, "p_mean": 81.22}, "unmatched": {"count": 13, "v_mean": 62.2, "p_mean": 75.09}, "diff_v": 3.31, "diff_p": 6.13}}, {"company": "株式会社EGIJ", "is_paid": 0, "plan_type": "無料出展", "count": 21, "matches": 9, "match_rate": 42.9, "value_mean": 63.14, "personality_mean": 83.77, "company_actions": {"なし": {"count": 0, "v_mean": null, "p_mean": null}, "知りたい": {"count": 14, "v_mean": 61.28, "p_mean": 84.4}, "めっちゃ知りたい": {"count": 7, "v_mean": 66.86, "p_mean": 82.49}, "diff_v": 5.58, "v_from_to": "61.28 ➔ 66.86"}, "student_actions": {"なし": {"count": 12, "v_mean": 59.59, "p_mean": 85.16}, "知りたい": {"count": 7, "v_mean": 68.19, "p_mean": 82.19}, "めっちゃ知りたい": {"count": 2, "v_mean": 66.79, "p_mean": 80.88}, "diff_p": -4.28, "p_from_to": "85.16 ➔ 80.88"}, "match_factors": {"matched": {"count": 9, "v_mean": 67.88, "p_mean": 81.9}, "unmatched": {"count": 12, "v_mean": 59.59, "p_mean": 85.16}, "diff_v": 8.29, "diff_p": -3.26}}, {"company": "株式会社ユーズテック", "is_paid": 0, "plan_type": "無料出展", "count": 24, "matches": 7, "match_rate": 29.2, "value_mean": 57.79, "personality_mean": 78.48, "company_actions": {"なし": {"count": 5, "v_mean": 55.84, "p_mean": 73.86}, "知りたい": {"count": 12, "v_mean": 56.03, "p_mean": 80.88}, "めっちゃ知りたい": {"count": 7, "v_mean": 62.22, "p_mean": 77.67}, "diff_v": 6.38, "v_from_to": "55.84 ➔ 62.22"}, "student_actions": {"なし": {"count": 16, "v_mean": 59.21, "p_mean": 78.43}, "知りたい": {"count": 6, "v_mean": 55.79, "p_mean": 77.54}, "めっちゃ知りたい": {"count": 2, "v_mean": 52.48, "p_mean": 81.76}, "diff_p": 3.33, "p_from_to": "78.43 ➔ 81.76"}, "match_factors": {"matched": {"count": 7, "v_mean": 56.15, "p_mean": 79.96}, "unmatched": {"count": 17, "v_mean": 58.47, "p_mean": 77.88}, "diff_v": -2.32, "diff_p": 2.08}}, {"company": "パナソニック オペレーショナルエクセレンス株式会社", "is_paid": 0, "plan_type": "無料出展", "count": 27, "matches": 7, "match_rate": 25.9, "value_mean": 54.98, "personality_mean": null, "company_actions": {"なし": {"count": 20, "v_mean": 53.54, "p_mean": null}, "知りたい": {"count": 7, "v_mean": 59.08, "p_mean": null}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_v": 5.54, "v_from_to": "53.54 ➔ 59.08"}, "student_actions": {"なし": {"count": 6, "v_mean": 53.3, "p_mean": null}, "知りたい": {"count": 14, "v_mean": 55.13, "p_mean": null}, "めっちゃ知りたい": {"count": 7, "v_mean": 56.1, "p_mean": null}, "diff_p": null, "p_from_to": ""}, "match_factors": {"matched": {"count": 7, "v_mean": 59.08, "p_mean": null}, "unmatched": {"count": 20, "v_mean": 53.54, "p_mean": null}, "diff_v": 5.53, "diff_p": null}}, {"company": "株式会社ミツカル", "is_paid": 0, "plan_type": "無料出展", "count": 25, "matches": 0, "match_rate": 0.0, "value_mean": 58.03, "personality_mean": 79.51, "company_actions": {"なし": {"count": 20, "v_mean": 57.67, "p_mean": 79.73}, "知りたい": {"count": 5, "v_mean": 59.44, "p_mean": 78.67}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_v": 1.77, "v_from_to": "57.67 ➔ 59.44"}, "student_actions": {"なし": {"count": 17, "v_mean": 58.35, "p_mean": 79.16}, "知りたい": {"count": 8, "v_mean": 57.33, "p_mean": 80.28}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_p": 1.12, "p_from_to": "79.16 ➔ 80.28"}, "match_factors": {"matched": {"count": 0, "v_mean": null, "p_mean": null}, "unmatched": {"count": 25, "v_mean": 58.03, "p_mean": 79.51}, "diff_v": null, "diff_p": null}}];
+    const companyDetailsData = [{"company": "株式会社ベル", "is_paid": 1, "plan_type": "有料出展", "count": 29, "matches": 19, "match_rate": 65.5, "value_mean": 62.1, "personality_mean": 80.44, "company_actions": {"なし": {"count": 1, "v_mean": 57.82, "p_mean": 90.95}, "知りたい": {"count": 18, "v_mean": 61.85, "p_mean": 80.96}, "めっちゃ知りたい": {"count": 10, "v_mean": 62.98, "p_mean": 78.46}, "diff_v": 5.16, "v_from_to": "57.82 ➔ 62.98", "test_v": {"anova": {"status": "ok", "f": 0.319, "df": "(2, 26)", "p": 0.7297, "eta2": 0.024}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=10, n2=1)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=18, n2=1)"}, "t_very_know": {"status": "ok", "diff": 1.13, "t": 0.392, "df": 13.6, "p": 0.7011, "d": 0.173}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.479, "df": "(2, 26)", "p": 0.2465, "eta2": 0.102}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=10, n2=1)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=18, n2=1)"}, "t_very_know": {"status": "ok", "diff": -2.5, "t": -0.9, "df": 20.2, "p": 0.3789, "d": 0.346}}}, "student_actions": {"なし": {"count": 10, "v_mean": 61.13, "p_mean": 79.01}, "知りたい": {"count": 14, "v_mean": 64.4, "p_mean": 81.46}, "めっちゃ知りたい": {"count": 5, "v_mean": 57.62, "p_mean": 80.44}, "diff_p": 1.43, "p_from_to": "79.01 ➔ 80.44", "test_v": {"anova": {"status": "ok", "f": 2.506, "df": "(2, 26)", "p": 0.1011, "eta2": 0.162}, "t_very_none": {"status": "ok", "diff": -3.51, "t": -1.043, "df": 12.7, "p": 0.3162, "d": 0.471}, "t_know_none": {"status": "ok", "diff": 3.27, "t": 1.131, "df": 12.2, "p": 0.2799, "d": 0.52}, "t_very_know": {"status": "ok", "diff": -6.78, "t": -2.888, "df": 6.6, "p": 0.0251, "d": 1.574}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.309, "df": "(2, 26)", "p": 0.7369, "eta2": 0.023}, "t_very_none": {"status": "ok", "diff": 1.43, "t": 0.373, "df": 12.2, "p": 0.7158, "d": 0.173}, "t_know_none": {"status": "ok", "diff": 2.45, "t": 0.718, "df": 15.7, "p": 0.4835, "d": 0.313}, "t_very_know": {"status": "ok", "diff": -1.03, "t": -0.333, "df": 8.6, "p": 0.7475, "d": 0.158}}}, "match_factors": {"matched": {"count": 19, "v_mean": 62.61, "p_mean": 81.19}, "unmatched": {"count": 10, "v_mean": 61.13, "p_mean": 79.01}, "diff_v": 1.48, "diff_p": 2.18, "test_v": {"status": "ok", "diff": 1.48, "t": 0.509, "df": 12.7, "p": 0.6196, "d": 0.23}, "test_p": {"status": "ok", "diff": 2.18, "t": 0.673, "df": 13.7, "p": 0.5123, "d": 0.295}}}, {"company": "NTT 都市開発ホテルマネジメント株式会社　カペラ京都", "is_paid": 1, "plan_type": "有料出展", "count": 32, "matches": 19, "match_rate": 59.4, "value_mean": 62.09, "personality_mean": 82.07, "company_actions": {"なし": {"count": 4, "v_mean": 59.11, "p_mean": 84.21}, "知りたい": {"count": 18, "v_mean": 62.01, "p_mean": 82.45}, "めっちゃ知りたい": {"count": 10, "v_mean": 63.44, "p_mean": 80.52}, "diff_v": 4.33, "v_from_to": "59.11 ➔ 63.44", "test_v": {"anova": {"status": "ok", "f": 0.579, "df": "(2, 29)", "p": 0.567, "eta2": 0.038}, "t_very_none": {"status": "ok", "diff": 4.32, "t": 1.037, "df": 5.3, "p": 0.345, "d": 0.633}, "t_know_none": {"status": "ok", "diff": 2.9, "t": 0.737, "df": 4.3, "p": 0.4994, "d": 0.422}, "t_very_know": {"status": "ok", "diff": 1.43, "t": 0.537, "df": 18.9, "p": 0.5978, "d": 0.211}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.38, "df": "(2, 29)", "p": 0.6874, "eta2": 0.026}, "t_very_none": {"status": "ok", "diff": -3.69, "t": -1.287, "df": 11.7, "p": 0.2231, "d": 0.51}, "t_know_none": {"status": "ok", "diff": -1.76, "t": -0.788, "df": 17.4, "p": 0.4413, "d": 0.237}, "t_very_know": {"status": "ok", "diff": -1.93, "t": -0.6, "df": 18.3, "p": 0.5561, "d": 0.239}}}, "student_actions": {"なし": {"count": 13, "v_mean": 60.5, "p_mean": 80.61}, "知りたい": {"count": 10, "v_mean": 63.18, "p_mean": 83.63}, "めっちゃ知りたい": {"count": 9, "v_mean": 63.2, "p_mean": 82.43}, "diff_p": 1.82, "p_from_to": "80.61 ➔ 82.43", "test_v": {"anova": {"status": "ok", "f": 0.602, "df": "(2, 29)", "p": 0.5543, "eta2": 0.04}, "t_very_none": {"status": "ok", "diff": 2.7, "t": 1.052, "df": 19.7, "p": 0.3057, "d": 0.416}, "t_know_none": {"status": "ok", "diff": 2.68, "t": 0.85, "df": 19.6, "p": 0.4058, "d": 0.357}, "t_very_know": {"status": "ok", "diff": 0.02, "t": 0.006, "df": 14.9, "p": 0.5755, "d": 0.003}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.453, "df": "(2, 29)", "p": 0.6401, "eta2": 0.03}, "t_very_none": {"status": "ok", "diff": 1.82, "t": 0.515, "df": 13.1, "p": 0.615, "d": 0.239}, "t_know_none": {"status": "ok", "diff": 3.02, "t": 0.997, "df": 17.0, "p": 0.3328, "d": 0.432}, "t_very_know": {"status": "ok", "diff": -1.2, "t": -0.306, "df": 15.9, "p": 0.7639, "d": 0.142}}}, "match_factors": {"matched": {"count": 19, "v_mean": 63.19, "p_mean": 83.06}, "unmatched": {"count": 13, "v_mean": 60.5, "p_mean": 80.61}, "diff_v": 2.69, "diff_p": 2.45, "test_v": {"status": "ok", "diff": 2.69, "t": 1.071, "df": 22.1, "p": 0.2957, "d": 0.402}, "test_p": {"status": "ok", "diff": 2.45, "t": 0.95, "df": 29.6, "p": 0.3499, "d": 0.325}}}, {"company": "株式会社リード・イノベーション", "is_paid": 1, "plan_type": "有料出展", "count": 31, "matches": 11, "match_rate": 35.5, "value_mean": 60.95, "personality_mean": 78.01, "company_actions": {"なし": {"count": 9, "v_mean": 59.13, "p_mean": 74.47}, "知りたい": {"count": 16, "v_mean": 61.27, "p_mean": 79.06}, "めっちゃ知りたい": {"count": 6, "v_mean": 62.8, "p_mean": 80.52}, "diff_v": 3.67, "v_from_to": "59.13 ➔ 62.8", "test_v": {"anova": {"status": "ok", "f": 0.6, "df": "(2, 28)", "p": 0.5555, "eta2": 0.041}, "t_very_none": {"status": "ok", "diff": 3.67, "t": 0.852, "df": 7.4, "p": 0.4209, "d": 0.498}, "t_know_none": {"status": "ok", "diff": 2.14, "t": 0.898, "df": 17.0, "p": 0.3817, "d": 0.372}, "t_very_know": {"status": "ok", "diff": 1.53, "t": 0.37, "df": 6.5, "p": 0.7234, "d": 0.221}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.394, "df": "(2, 28)", "p": 0.2648, "eta2": 0.091}, "t_very_none": {"status": "ok", "diff": 6.04, "t": 1.529, "df": 12.5, "p": 0.1511, "d": 0.712}, "t_know_none": {"status": "ok", "diff": 4.58, "t": 1.215, "df": 12.6, "p": 0.2467, "d": 0.558}, "t_very_know": {"status": "ok", "diff": 1.46, "t": 0.528, "df": 12.4, "p": 0.6068, "d": 0.219}}}, "student_actions": {"なし": {"count": 17, "v_mean": 58.53, "p_mean": 74.37}, "知りたい": {"count": 13, "v_mean": 63.57, "p_mean": 82.08}, "めっちゃ知りたい": {"count": 1, "v_mean": 67.9, "p_mean": 86.98}, "diff_p": 12.61, "p_from_to": "74.37 ➔ 86.98", "test_v": {"anova": {"status": "ok", "f": 3.234, "df": "(2, 28)", "p": 0.0545, "eta2": 0.188}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=17)"}, "t_know_none": {"status": "ok", "diff": 5.04, "t": 2.33, "df": 27.9, "p": 0.0272, "d": 0.833}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=13)"}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 5.467, "df": "(2, 28)", "p": 0.0099, "eta2": 0.281}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=17)"}, "t_know_none": {"status": "ok", "diff": 7.71, "t": 3.052, "df": 26.6, "p": 0.0051, "d": 1.117}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=13)"}}}, "match_factors": {"matched": {"count": 11, "v_mean": 65.59, "p_mean": 82.92}, "unmatched": {"count": 20, "v_mean": 58.4, "p_mean": 75.31}, "diff_v": 7.19, "diff_p": 7.62, "test_v": {"status": "ok", "diff": 7.19, "t": 3.814, "df": 27.0, "p": 0.0007, "d": 1.294}, "test_p": {"status": "ok", "diff": 7.62, "t": 3.11, "df": 25.6, "p": 0.0046, "d": 1.08}}}, {"company": "株式会社Unith Link", "is_paid": 1, "plan_type": "有料出展", "count": 30, "matches": 5, "match_rate": 16.7, "value_mean": 61.97, "personality_mean": 80.98, "company_actions": {"なし": {"count": 18, "v_mean": 60.92, "p_mean": 82.08}, "知りたい": {"count": 9, "v_mean": 63.65, "p_mean": 77.82}, "めっちゃ知りたい": {"count": 3, "v_mean": 63.3, "p_mean": 83.85}, "diff_v": 2.38, "v_from_to": "60.92 ➔ 63.3", "test_v": {"anova": {"status": "ok", "f": 0.658, "df": "(2, 27)", "p": 0.5261, "eta2": 0.046}, "t_very_none": {"status": "ok", "diff": 2.38, "t": 0.707, "df": 3.3, "p": 0.5259, "d": 0.358}, "t_know_none": {"status": "ok", "diff": 2.73, "t": 1.182, "df": 21.1, "p": 0.2505, "d": 0.435}, "t_very_know": {"status": "ok", "diff": -0.35, "t": -0.104, "df": 3.4, "p": 0.923, "d": 0.07}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.053, "df": "(2, 27)", "p": 0.3628, "eta2": 0.072}, "t_very_none": {"status": "ok", "diff": 1.77, "t": 0.584, "df": 4.2, "p": 0.5888, "d": 0.252}, "t_know_none": {"status": "ok", "diff": -4.25, "t": -1.131, "df": 12.4, "p": 0.2793, "d": 0.515}, "t_very_know": {"status": "ok", "diff": 6.03, "t": 1.443, "df": 8.6, "p": 0.1844, "d": 0.656}}}, "student_actions": {"なし": {"count": 16, "v_mean": 61.42, "p_mean": 81.98}, "知りたい": {"count": 13, "v_mean": 62.23, "p_mean": 79.21}, "めっちゃ知りたい": {"count": 1, "v_mean": 67.6, "p_mean": 87.97}, "diff_p": 5.99, "p_from_to": "81.98 ➔ 87.97", "test_v": {"anova": {"status": "ok", "f": 0.48, "df": "(2, 27)", "p": 0.624, "eta2": 0.034}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=16)"}, "t_know_none": {"status": "ok", "diff": 0.81, "t": 0.339, "df": 22.8, "p": 0.7378, "d": 0.13}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=13)"}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.803, "df": "(2, 27)", "p": 0.4583, "eta2": 0.056}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=16)"}, "t_know_none": {"status": "ok", "diff": -2.77, "t": -0.907, "df": 24.8, "p": 0.3733, "d": 0.342}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=1, n2=13)"}}}, "match_factors": {"matched": {"count": 5, "v_mean": 66.11, "p_mean": 79.25}, "unmatched": {"count": 25, "v_mean": 61.15, "p_mean": 81.32}, "diff_v": 4.96, "diff_p": -2.07, "test_v": {"status": "ok", "diff": 4.96, "t": 3.615, "df": 28.0, "p": 0.0012, "d": 0.835}, "test_p": {"status": "ok", "diff": -2.07, "t": -0.398, "df": 4.8, "p": 0.7075, "d": 0.254}}}, {"company": "株式会社Linoa Group", "is_paid": 0, "plan_type": "無料出展", "count": 23, "matches": 15, "match_rate": 65.2, "value_mean": 63.22, "personality_mean": 74.53, "company_actions": {"なし": {"count": 1, "v_mean": 71.84, "p_mean": 86.0}, "知りたい": {"count": 12, "v_mean": 62.75, "p_mean": 76.2}, "めっちゃ知りたい": {"count": 10, "v_mean": 62.93, "p_mean": 71.38}, "diff_v": -8.91, "v_from_to": "71.84 ➔ 62.93", "test_v": {"anova": {"status": "ok", "f": 0.786, "df": "(2, 20)", "p": 0.4694, "eta2": 0.073}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=10, n2=1)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=12, n2=1)"}, "t_very_know": {"status": "ok", "diff": 0.18, "t": 0.058, "df": 15.7, "p": 0.9541, "d": 0.026}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.343, "df": "(2, 20)", "p": 0.2837, "eta2": 0.118}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=10, n2=1)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=12, n2=1)"}, "t_very_know": {"status": "ok", "diff": -4.82, "t": -1.168, "df": 19.7, "p": 0.2566, "d": 0.486}}}, "student_actions": {"なし": {"count": 8, "v_mean": 64.04, "p_mean": 74.9}, "知りたい": {"count": 15, "v_mean": 62.79, "p_mean": 74.33}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_p": -0.57, "p_from_to": "74.9 ➔ 74.33", "test_v": {"anova": {"status": "ok", "f": 0.162, "df": "(1, 21)", "p": 0.6916, "eta2": 0.008}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=8)"}, "t_know_none": {"status": "ok", "diff": -1.25, "t": -0.403, "df": 14.5, "p": 0.6928, "d": 0.176}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=15)"}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.016, "df": "(1, 21)", "p": 0.8993, "eta2": 0.001}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=8)"}, "t_know_none": {"status": "ok", "diff": -0.58, "t": -0.121, "df": 12.3, "p": 0.9059, "d": 0.056}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=15)"}}}, "match_factors": {"matched": {"count": 15, "v_mean": 62.79, "p_mean": 74.33}, "unmatched": {"count": 8, "v_mean": 64.04, "p_mean": 74.9}, "diff_v": -1.25, "diff_p": -0.58, "test_v": {"status": "ok", "diff": -1.25, "t": -0.403, "df": 14.5, "p": 0.6928, "d": 0.176}, "test_p": {"status": "ok", "diff": -0.58, "t": -0.121, "df": 12.3, "p": 0.9059, "d": 0.056}}}, {"company": "とものや株式会社", "is_paid": 0, "plan_type": "無料出展", "count": 24, "matches": 13, "match_rate": 54.2, "value_mean": 61.28, "personality_mean": 76.95, "company_actions": {"なし": {"count": 8, "v_mean": 61.3, "p_mean": 72.68}, "知りたい": {"count": 9, "v_mean": 57.77, "p_mean": 80.13}, "めっちゃ知りたい": {"count": 7, "v_mean": 65.75, "p_mean": 77.74}, "diff_v": 4.45, "v_from_to": "61.3 ➔ 65.75", "test_v": {"anova": {"status": "ok", "f": 1.563, "df": "(2, 21)", "p": 0.2329, "eta2": 0.13}, "t_very_none": {"status": "ok", "diff": 4.45, "t": 1.203, "df": 11.8, "p": 0.2528, "d": 0.631}, "t_know_none": {"status": "ok", "diff": -3.53, "t": -0.798, "df": 12.9, "p": 0.4394, "d": 0.375}, "t_very_know": {"status": "ok", "diff": 7.98, "t": 1.666, "df": 13.8, "p": 0.1182, "d": 0.799}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 2.211, "df": "(2, 21)", "p": 0.1345, "eta2": 0.174}, "t_very_none": {"status": "ok", "diff": 5.06, "t": 1.311, "df": 10.8, "p": 0.2171, "d": 0.694}, "t_know_none": {"status": "ok", "diff": 7.45, "t": 2.247, "df": 14.9, "p": 0.0402, "d": 1.078}, "t_very_know": {"status": "ok", "diff": -2.39, "t": -0.587, "df": 12.2, "p": 0.5678, "d": 0.301}}}, "student_actions": {"なし": {"count": 4, "v_mean": 63.53, "p_mean": 70.46}, "知りたい": {"count": 13, "v_mean": 61.17, "p_mean": 78.2}, "めっちゃ知りたい": {"count": 7, "v_mean": 60.19, "p_mean": 78.33}, "diff_p": 7.87, "p_from_to": "70.46 ➔ 78.33", "test_v": {"anova": {"status": "ok", "f": 0.159, "df": "(2, 21)", "p": 0.8542, "eta2": 0.015}, "t_very_none": {"status": "ok", "diff": -3.34, "t": -0.484, "df": 5.4, "p": 0.6477, "d": 0.321}, "t_know_none": {"status": "ok", "diff": -2.36, "t": -0.372, "df": 4.1, "p": 0.7286, "d": 0.25}, "t_very_know": {"status": "ok", "diff": -0.98, "t": -0.223, "df": 11.4, "p": 0.8272, "d": 0.108}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.793, "df": "(2, 21)", "p": 0.1909, "eta2": 0.146}, "t_very_none": {"status": "ok", "diff": 7.87, "t": 2.358, "df": 8.2, "p": 0.0453, "d": 1.345}, "t_know_none": {"status": "ok", "diff": 7.74, "t": 2.342, "df": 9.9, "p": 0.0414, "d": 0.978}, "t_very_know": {"status": "ok", "diff": 0.13, "t": 0.038, "df": 15.8, "p": 0.9695, "d": 0.016}}}, "match_factors": {"matched": {"count": 13, "v_mean": 60.42, "p_mean": 81.37}, "unmatched": {"count": 11, "v_mean": 62.29, "p_mean": 71.72}, "diff_v": -1.87, "diff_p": 9.65, "test_v": {"status": "ok", "diff": -1.87, "t": -0.498, "df": 22.0, "p": 0.6232, "d": 0.201}, "test_p": {"status": "ok", "diff": 9.65, "t": 3.872, "df": 21.9, "p": 0.0008, "d": 1.571}}}, {"company": "株式会社アイプラス", "is_paid": 0, "plan_type": "無料出展", "count": 22, "matches": 11, "match_rate": 50.0, "value_mean": 58.92, "personality_mean": 73.19, "company_actions": {"なし": {"count": 3, "v_mean": 53.74, "p_mean": 74.07}, "知りたい": {"count": 15, "v_mean": 58.8, "p_mean": 73.26}, "めっちゃ知りたい": {"count": 4, "v_mean": 63.23, "p_mean": 72.23}, "diff_v": 9.49, "v_from_to": "53.74 ➔ 63.23", "test_v": {"anova": {"status": "ok", "f": 0.895, "df": "(2, 19)", "p": 0.4252, "eta2": 0.086}, "t_very_none": {"status": "ok", "diff": 9.5, "t": 1.043, "df": 4.3, "p": 0.3514, "d": 0.803}, "t_know_none": {"status": "ok", "diff": 5.06, "t": 0.692, "df": 2.4, "p": 0.5501, "d": 0.575}, "t_very_know": {"status": "ok", "diff": 4.43, "t": 0.716, "df": 3.8, "p": 0.5153, "d": 0.497}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.032, "df": "(2, 19)", "p": 0.9682, "eta2": 0.003}, "t_very_none": {"status": "ok", "diff": -1.83, "t": -0.217, "df": 2.1, "p": 0.8471, "d": 0.195}, "t_know_none": {"status": "ok", "diff": -0.8, "t": -0.093, "df": 2.4, "p": 0.9334, "d": 0.077}, "t_very_know": {"status": "ok", "diff": -1.03, "t": -0.347, "df": 15.8, "p": 0.7335, "d": 0.115}}}, "student_actions": {"なし": {"count": 8, "v_mean": 58.61, "p_mean": 71.51}, "知りたい": {"count": 10, "v_mean": 58.28, "p_mean": 73.25}, "めっちゃ知りたい": {"count": 4, "v_mean": 61.13, "p_mean": 76.37}, "diff_p": 4.86, "p_from_to": "71.51 ➔ 76.37", "test_v": {"anova": {"status": "ok", "f": 0.131, "df": "(2, 19)", "p": 0.8779, "eta2": 0.014}, "t_very_none": {"status": "ok", "diff": 2.53, "t": 0.408, "df": 6.2, "p": 0.6971, "d": 0.249}, "t_know_none": {"status": "ok", "diff": -0.33, "t": -0.071, "df": 14.2, "p": 0.9443, "d": 0.034}, "t_very_know": {"status": "ok", "diff": 2.86, "t": 0.493, "df": 5.1, "p": 0.6428, "d": 0.306}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.35, "df": "(2, 19)", "p": 0.7091, "eta2": 0.036}, "t_very_none": {"status": "ok", "diff": 4.86, "t": 0.859, "df": 6.4, "p": 0.4217, "d": 0.517}, "t_know_none": {"status": "ok", "diff": 1.75, "t": 0.385, "df": 15.2, "p": 0.7058, "d": 0.182}, "t_very_know": {"status": "ok", "diff": 3.12, "t": 0.57, "df": 5.9, "p": 0.5898, "d": 0.329}}}, "match_factors": {"matched": {"count": 11, "v_mean": 60.55, "p_mean": 74.17}, "unmatched": {"count": 11, "v_mean": 57.28, "p_mean": 72.21}, "diff_v": 3.28, "diff_p": 1.96, "test_v": {"status": "ok", "diff": 3.28, "t": 0.823, "df": 18.9, "p": 0.4207, "d": 0.351}, "test_p": {"status": "ok", "diff": 1.96, "t": 0.491, "df": 19.1, "p": 0.6293, "d": 0.209}}}, {"company": "CKCネットワーク株式会社（ナビ個別指導学院）", "is_paid": 0, "plan_type": "無料出展", "count": 25, "matches": 12, "match_rate": 48.0, "value_mean": 63.79, "personality_mean": 78.03, "company_actions": {"なし": {"count": 8, "v_mean": 57.54, "p_mean": 76.04}, "知りたい": {"count": 10, "v_mean": 68.25, "p_mean": 78.78}, "めっちゃ知りたい": {"count": 7, "v_mean": 64.57, "p_mean": 79.23}, "diff_v": 7.03, "v_from_to": "57.54 ➔ 64.57", "test_v": {"anova": {"status": "ok", "f": 4.158, "df": "(2, 22)", "p": 0.0294, "eta2": 0.274}, "t_very_none": {"status": "ok", "diff": 7.03, "t": 2.023, "df": 13.0, "p": 0.0641, "d": 1.036}, "t_know_none": {"status": "ok", "diff": 10.71, "t": 2.76, "df": 16.0, "p": 0.0139, "d": 1.273}, "t_very_know": {"status": "ok", "diff": -3.67, "t": -0.981, "df": 15.0, "p": 0.3421, "d": 0.451}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.574, "df": "(2, 22)", "p": 0.5715, "eta2": 0.05}, "t_very_none": {"status": "ok", "diff": 3.18, "t": 1.127, "df": 8.2, "p": 0.2915, "d": 0.611}, "t_know_none": {"status": "ok", "diff": 2.74, "t": 1.007, "df": 12.4, "p": 0.3333, "d": 0.439}, "t_very_know": {"status": "ok", "diff": 0.44, "t": 0.123, "df": 14.1, "p": 0.9035, "d": 0.059}}}, "student_actions": {"なし": {"count": 12, "v_mean": 62.46, "p_mean": 74.64}, "知りたい": {"count": 11, "v_mean": 64.34, "p_mean": 80.67}, "めっちゃ知りたい": {"count": 2, "v_mean": 68.72, "p_mean": 83.88}, "diff_p": 9.24, "p_from_to": "74.64 ➔ 83.88", "test_v": {"anova": {"status": "ok", "f": 0.446, "df": "(2, 22)", "p": 0.6459, "eta2": 0.039}, "t_very_none": {"status": "ok", "diff": 6.26, "t": 0.624, "df": 1.2, "p": 0.632, "d": 0.622}, "t_know_none": {"status": "ok", "diff": 1.88, "t": 0.518, "df": 20.6, "p": 0.6097, "d": 0.214}, "t_very_know": {"status": "ok", "diff": 4.38, "t": 0.442, "df": 1.1, "p": 0.7289, "d": 0.522}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 4.639, "df": "(2, 22)", "p": 0.0208, "eta2": 0.297}, "t_very_none": {"status": "ok", "diff": 9.24, "t": 2.522, "df": 1.3, "p": 0.1914, "d": 2.057}, "t_know_none": {"status": "ok", "diff": 6.03, "t": 2.558, "df": 17.4, "p": 0.0201, "d": 1.086}, "t_very_know": {"status": "ok", "diff": 3.21, "t": 0.812, "df": 1.8, "p": 0.5121, "d": 0.501}}}, "match_factors": {"matched": {"count": 12, "v_mean": 65.51, "p_mean": 81.22}, "unmatched": {"count": 13, "v_mean": 62.2, "p_mean": 75.09}, "diff_v": 3.31, "diff_p": 6.13, "test_v": {"status": "ok", "diff": 3.31, "t": 0.936, "df": 23.0, "p": 0.359, "d": 0.373}, "test_p": {"status": "ok", "diff": 6.13, "t": 2.702, "df": 19.5, "p": 0.0139, "d": 1.097}}}, {"company": "株式会社EGIJ", "is_paid": 0, "plan_type": "無料出展", "count": 21, "matches": 9, "match_rate": 42.9, "value_mean": 63.14, "personality_mean": 83.77, "company_actions": {"なし": {"count": 0, "v_mean": null, "p_mean": null}, "知りたい": {"count": 14, "v_mean": 61.28, "p_mean": 84.4}, "めっちゃ知りたい": {"count": 7, "v_mean": 66.86, "p_mean": 82.49}, "diff_v": 5.58, "v_from_to": "61.28 ➔ 66.86", "test_v": {"anova": {"status": "ok", "f": 1.935, "df": "(1, 19)", "p": 0.1803, "eta2": 0.092}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=7, n2=0)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=14, n2=0)"}, "t_very_know": {"status": "ok", "diff": 5.58, "t": 1.705, "df": 18.9, "p": 0.1047, "d": 0.644}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.29, "df": "(1, 19)", "p": 0.5965, "eta2": 0.015}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=7, n2=0)"}, "t_know_none": {"status": "insufficient", "note": "サンプル数不足 (n1=14, n2=0)"}, "t_very_know": {"status": "ok", "diff": -1.91, "t": -0.583, "df": 15.0, "p": 0.5685, "d": 0.249}}}, "student_actions": {"なし": {"count": 12, "v_mean": 59.59, "p_mean": 85.16}, "知りたい": {"count": 7, "v_mean": 68.19, "p_mean": 82.19}, "めっちゃ知りたい": {"count": 2, "v_mean": 66.79, "p_mean": 80.88}, "diff_p": -4.28, "p_from_to": "85.16 ➔ 80.88", "test_v": {"anova": {"status": "ok", "f": 2.637, "df": "(2, 18)", "p": 0.099, "eta2": 0.227}, "t_very_none": {"status": "ok", "diff": 7.2, "t": 2.481, "df": 11.0, "p": 0.0305, "d": 0.748}, "t_know_none": {"status": "ok", "diff": 8.6, "t": 2.602, "df": 15.9, "p": 0.0193, "d": 1.017}, "t_very_know": {"status": "ok", "diff": -1.4, "t": -0.883, "df": 6.0, "p": 0.4112, "d": 0.361}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.483, "df": "(2, 18)", "p": 0.625, "eta2": 0.051}, "t_very_none": {"status": "ok", "diff": -4.29, "t": -0.533, "df": 1.1, "p": 0.6822, "d": 0.672}, "t_know_none": {"status": "ok", "diff": -2.97, "t": -0.728, "df": 8.5, "p": 0.4862, "d": 0.398}, "t_very_know": {"status": "ok", "diff": -1.32, "t": -0.151, "df": 1.5, "p": 0.8976, "d": 0.131}}}, "match_factors": {"matched": {"count": 9, "v_mean": 67.88, "p_mean": 81.9}, "unmatched": {"count": 12, "v_mean": 59.59, "p_mean": 85.16}, "diff_v": 8.29, "diff_p": -3.26, "test_v": {"status": "ok", "diff": 8.29, "t": 2.632, "df": 14.6, "p": 0.0192, "d": 1.035}, "test_p": {"status": "ok", "diff": -3.26, "t": -0.919, "df": 12.4, "p": 0.3758, "d": 0.434}}}, {"company": "株式会社ユーズテック", "is_paid": 0, "plan_type": "無料出展", "count": 24, "matches": 7, "match_rate": 29.2, "value_mean": 57.79, "personality_mean": 78.48, "company_actions": {"なし": {"count": 5, "v_mean": 55.84, "p_mean": 73.86}, "知りたい": {"count": 12, "v_mean": 56.03, "p_mean": 80.88}, "めっちゃ知りたい": {"count": 7, "v_mean": 62.22, "p_mean": 77.67}, "diff_v": 6.38, "v_from_to": "55.84 ➔ 62.22", "test_v": {"anova": {"status": "ok", "f": 2.682, "df": "(2, 21)", "p": 0.0918, "eta2": 0.203}, "t_very_none": {"status": "ok", "diff": 6.37, "t": 3.309, "df": 9.7, "p": 0.0083, "d": 1.763}, "t_know_none": {"status": "ok", "diff": 0.18, "t": 0.076, "df": 14.6, "p": 0.9405, "d": 0.028}, "t_very_know": {"status": "ok", "diff": 6.19, "t": 2.289, "df": 17.0, "p": 0.0352, "d": 0.942}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 1.719, "df": "(2, 21)", "p": 0.2035, "eta2": 0.141}, "t_very_none": {"status": "ok", "diff": 3.81, "t": 0.987, "df": 9.8, "p": 0.3473, "d": 0.53}, "t_know_none": {"status": "ok", "diff": 7.02, "t": 2.292, "df": 11.1, "p": 0.0424, "d": 1.039}, "t_very_know": {"status": "ok", "diff": -3.21, "t": -0.846, "df": 11.3, "p": 0.415, "d": 0.418}}}, "student_actions": {"なし": {"count": 16, "v_mean": 59.21, "p_mean": 78.43}, "知りたい": {"count": 6, "v_mean": 55.79, "p_mean": 77.54}, "めっちゃ知りたい": {"count": 2, "v_mean": 52.48, "p_mean": 81.76}, "diff_p": 3.33, "p_from_to": "78.43 ➔ 81.76", "test_v": {"anova": {"status": "ok", "f": 1.413, "df": "(2, 21)", "p": 0.2656, "eta2": 0.119}, "t_very_none": {"status": "ok", "diff": -6.73, "t": -0.567, "df": 1.0, "p": 0.6702, "d": 1.1}, "t_know_none": {"status": "ok", "diff": -3.42, "t": -1.124, "df": 6.8, "p": 0.2995, "d": 0.648}, "t_very_know": {"status": "ok", "diff": -3.3, "t": -0.272, "df": 1.1, "p": 0.8272, "d": 0.356}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.225, "df": "(2, 21)", "p": 0.8007, "eta2": 0.021}, "t_very_none": {"status": "ok", "diff": 3.33, "t": 0.271, "df": 1.0, "p": 0.8305, "d": 0.431}, "t_know_none": {"status": "ok", "diff": -0.89, "t": -0.25, "df": 7.9, "p": 0.8091, "d": 0.129}, "t_very_know": {"status": "ok", "diff": 4.22, "t": 0.335, "df": 1.1, "p": 0.7887, "d": 0.423}}}, "match_factors": {"matched": {"count": 7, "v_mean": 56.15, "p_mean": 79.96}, "unmatched": {"count": 17, "v_mean": 58.47, "p_mean": 77.88}, "diff_v": -2.32, "diff_p": 2.08, "test_v": {"status": "ok", "diff": -2.32, "t": -0.59, "df": 7.0, "p": 0.5734, "d": 0.358}, "test_p": {"status": "ok", "diff": 2.08, "t": 0.514, "df": 8.2, "p": 0.6206, "d": 0.275}}}, {"company": "パナソニック オペレーショナルエクセレンス株式会社", "is_paid": 0, "plan_type": "無料出展", "count": 27, "matches": 7, "match_rate": 25.9, "value_mean": 54.98, "personality_mean": null, "company_actions": {"なし": {"count": 20, "v_mean": 53.54, "p_mean": null}, "知りたい": {"count": 7, "v_mean": 59.08, "p_mean": null}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_v": 5.54, "v_from_to": "53.54 ➔ 59.08", "test_v": {"anova": {"status": "ok", "f": 2.738, "df": "(1, 25)", "p": 0.1105, "eta2": 0.099}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=20)"}, "t_know_none": {"status": "ok", "diff": 5.53, "t": 1.365, "df": 8.0, "p": 0.2096, "d": 0.727}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=7)"}}, "test_p": {"has_data": false}}, "student_actions": {"なし": {"count": 6, "v_mean": 53.3, "p_mean": null}, "知りたい": {"count": 14, "v_mean": 55.13, "p_mean": null}, "めっちゃ知りたい": {"count": 7, "v_mean": 56.1, "p_mean": null}, "diff_p": null, "p_from_to": "", "test_v": {"anova": {"status": "ok", "f": 0.198, "df": "(2, 24)", "p": 0.822, "eta2": 0.016}, "t_very_none": {"status": "ok", "diff": 2.8, "t": 0.772, "df": 10.0, "p": 0.4578, "d": 0.413}, "t_know_none": {"status": "ok", "diff": 1.83, "t": 0.585, "df": 16.8, "p": 0.5666, "d": 0.225}, "t_very_know": {"status": "ok", "diff": 0.97, "t": 0.248, "df": 13.6, "p": 0.8078, "d": 0.11}}, "test_p": {"has_data": false}}, "match_factors": {"matched": {"count": 7, "v_mean": 59.08, "p_mean": null}, "unmatched": {"count": 20, "v_mean": 53.54, "p_mean": null}, "diff_v": 5.53, "diff_p": null, "test_v": {"status": "ok", "diff": 5.53, "t": 1.365, "df": 8.0, "p": 0.2096, "d": 0.727}, "test_p": {"status": "insufficient", "note": "データ未算出または0件のため検定対象外"}}}, {"company": "株式会社ミツカル", "is_paid": 0, "plan_type": "無料出展", "count": 25, "matches": 0, "match_rate": 0.0, "value_mean": 58.03, "personality_mean": 79.51, "company_actions": {"なし": {"count": 20, "v_mean": 57.67, "p_mean": 79.73}, "知りたい": {"count": 5, "v_mean": 59.44, "p_mean": 78.67}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_v": 1.77, "v_from_to": "57.67 ➔ 59.44", "test_v": {"anova": {"status": "ok", "f": 0.232, "df": "(1, 23)", "p": 0.6346, "eta2": 0.01}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=20)"}, "t_know_none": {"status": "ok", "diff": 1.77, "t": 0.604, "df": 8.8, "p": 0.5612, "d": 0.241}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=5)"}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.052, "df": "(1, 23)", "p": 0.8209, "eta2": 0.002}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=20)"}, "t_know_none": {"status": "ok", "diff": -1.05, "t": -0.189, "df": 5.1, "p": 0.8572, "d": 0.115}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=5)"}}}, "student_actions": {"なし": {"count": 17, "v_mean": 58.35, "p_mean": 79.16}, "知りたい": {"count": 8, "v_mean": 57.33, "p_mean": 80.28}, "めっちゃ知りたい": {"count": 0, "v_mean": null, "p_mean": null}, "diff_p": 1.12, "p_from_to": "79.16 ➔ 80.28", "test_v": {"anova": {"status": "ok", "f": 0.104, "df": "(1, 23)", "p": 0.7505, "eta2": 0.004}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=17)"}, "t_know_none": {"status": "ok", "diff": -1.02, "t": -0.361, "df": 18.6, "p": 0.7219, "d": 0.138}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=8)"}}, "test_p": {"has_data": true, "anova": {"status": "ok", "f": 0.082, "df": "(1, 23)", "p": 0.7777, "eta2": 0.004}, "t_very_none": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=17)"}, "t_know_none": {"status": "ok", "diff": 1.12, "t": 0.324, "df": 19.1, "p": 0.7491, "d": 0.123}, "t_very_know": {"status": "insufficient", "note": "サンプル数不足 (n1=0, n2=8)"}}}, "match_factors": {"matched": {"count": 0, "v_mean": null, "p_mean": null}, "unmatched": {"count": 25, "v_mean": 58.03, "p_mean": 79.51}, "diff_v": null, "diff_p": null, "test_v": {"status": "insufficient", "note": "成立群または未成立群が0件のため検定対象外"}, "test_p": {"status": "insufficient", "note": "データ未算出または0件のため検定対象外"}}}];
     let compActChart = null;
     let studActChart = null;
     let tab3Initialized = false;
@@ -2244,6 +1980,99 @@
         }
     }
 
+    function renderTestTableRows(testData, hasData) {
+        if (!hasData || !testData) {
+            return '<tr><td colspan="5" style="text-align: center; color: #9CA3AF; padding: 10px;">データ未算出のため検定対象外</td></tr>';
+        }
+        let html = '';
+        
+        // ANOVA
+        const anova = testData.anova;
+        if (anova.status === 'ok') {
+            const pStr = anova.p < 0.0001 ? 'p < 0.0001' : 'p = ' + anova.p.toFixed(4);
+            const pBold = anova.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+            let pill = '<span class="pill pill-slate">有意差なし (η²=' + anova.eta2.toFixed(3) + ')</span>';
+            if (anova.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+            else if (anova.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+            else if (anova.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+
+            html += '<tr style="background: #F8FAFC;">' +
+                '<td><strong>一元配置分散分析 (ANOVA)</strong></td>' +
+                '<td>F = ' + anova.f.toFixed(3) + '</td>' +
+                '<td>' + anova.df + '</td>' +
+                '<td>' + pBold + '</td>' +
+                '<td>' + pill + '</td>' +
+            '</tr>';
+        } else {
+            html += '<tr style="background: #F8FAFC;">' +
+                '<td><strong>一元配置分散分析 (ANOVA)</strong></td>' +
+                '<td colspan="4" style="color: #64748B;">' + anova.note + '</td>' +
+            '</tr>';
+        }
+
+        // Welch t検定 3対比
+        const pairs = [
+            { key: 't_very_none', label: 'Welch t検定 (なし vs めっちゃ知りたい)' },
+            { key: 't_know_none', label: 'Welch t検定 (なし vs 知りたい)' },
+            { key: 't_very_know', label: 'Welch t検定 (知りたい vs めっちゃ知りたい)' }
+        ];
+
+        pairs.forEach(p => {
+            const t = testData[p.key];
+            if (t.status === 'ok') {
+                const pStr = t.p < 0.0001 ? 'p < 0.0001' : 'p = ' + t.p.toFixed(4);
+                const pBold = t.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+                const sign = t.diff > 0 ? '+' : '';
+                let pill = '<span class="pill pill-slate">有意差なし [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                if (t.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                else if (t.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                else if (t.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+
+                html += '<tr>' +
+                    '<td>' + p.label + '</td>' +
+                    '<td>t = ' + t.t.toFixed(3) + '</td>' +
+                    '<td>' + t.df.toFixed(1) + '</td>' +
+                    '<td>' + pBold + '</td>' +
+                    '<td>' + pill + '</td>' +
+                '</tr>';
+            } else {
+                html += '<tr>' +
+                    '<td>' + p.label + '</td>' +
+                    '<td colspan="4" style="color: #64748B;">' + t.note + '</td>' +
+                '</tr>';
+            }
+        });
+
+        return html;
+    }
+
+    function renderMatchTestRow(test, label) {
+        if (test.status === 'ok') {
+            const pStr = test.p < 0.0001 ? 'p < 0.0001' : 'p = ' + test.p.toFixed(4);
+            const pBold = test.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+            const sign = test.diff > 0 ? '+' : '';
+            let pill = '<span class="pill pill-slate">有意差なし [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            if (test.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            else if (test.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            else if (test.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+
+            return '<tr>' +
+                '<td><strong>' + label + '</strong></td>' +
+                '<td>Welch t検定 (成立群 vs 未成立群)</td>' +
+                '<td>t = ' + test.t.toFixed(3) + '</td>' +
+                '<td>' + test.df.toFixed(1) + '</td>' +
+                '<td>' + pBold + '</td>' +
+                '<td>' + pill + '</td>' +
+            '</tr>';
+        } else {
+            return '<tr>' +
+                '<td><strong>' + label + '</strong></td>' +
+                '<td>Welch t検定 (成立群 vs 未成立群)</td>' +
+                '<td colspan="4" style="color: #64748B;">' + test.note + '</td>' +
+            '</tr>';
+        }
+    }
+
     function selectCompany(idx, shouldScroll) {
         if (idx < 0 || idx >= companyDetailsData.length) return;
         const cd = companyDetailsData[idx];
@@ -2252,15 +2081,10 @@
         const sel = document.getElementById('company-selector');
         if (sel && parseInt(sel.value) !== idx) sel.value = idx;
 
-        // テーブル行ハイライトの同期
-        document.querySelectorAll('.company-table-row').forEach((row, i) => {
-            if (i === idx) {
-                row.classList.add('selected-row');
-                row.style.backgroundColor = '#EEF2FF';
-            } else {
-                row.classList.remove('selected-row');
-                row.style.backgroundColor = '';
-            }
+        // ピルボタンの同期
+        document.querySelectorAll('.comp-nav-btn').forEach((btn, i) => {
+            if (i === idx) btn.classList.add('active');
+            else btn.classList.remove('active');
         });
 
         // ヘッダー情報
@@ -2345,6 +2169,13 @@
         const compSumEl = document.getElementById('cd-comp-act-summary');
         if (compSumEl) compSumEl.innerHTML = compSummaryHtml;
 
+        // 企業検定テーブル展開
+        const compTestVEl = document.getElementById('cd-tbody-comp-test-v');
+        if (compTestVEl) compTestVEl.innerHTML = renderTestTableRows(cd.company_actions.test_v, true);
+        
+        const compTestPEl = document.getElementById('cd-tbody-comp-test-p');
+        if (compTestPEl) compTestPEl.innerHTML = renderTestTableRows(cd.company_actions.test_p, cd.company_actions.test_p.has_data);
+
         // テーブル生成: 学生アクション別
         let studTbodyHtml = '';
         acts.forEach(a => {
@@ -2396,6 +2227,13 @@
         const studSumEl = document.getElementById('cd-stud-act-summary');
         if (studSumEl) studSumEl.innerHTML = studSummaryHtml;
 
+        // 学生検定テーブル展開
+        const studTestVEl = document.getElementById('cd-tbody-stud-test-v');
+        if (studTestVEl) studTestVEl.innerHTML = renderTestTableRows(cd.student_actions.test_v, true);
+        
+        const studTestPEl = document.getElementById('cd-tbody-stud-test-p');
+        if (studTestPEl) studTestPEl.innerHTML = renderTestTableRows(cd.student_actions.test_p, cd.student_actions.test_p.has_data);
+
         // テーブル生成: マッチング成立要因
         const mf = cd.match_factors;
         let matchTbodyHtml = '';
@@ -2430,6 +2268,15 @@
         '</tr>';
         const matchTbody = document.getElementById('cd-tbody-match-factors');
         if (matchTbody) matchTbody.innerHTML = matchTbodyHtml;
+
+        // マッチング検定テーブル展開
+        const matchTestEl = document.getElementById('cd-tbody-match-test');
+        if (matchTestEl) {
+            let mTestHtml = '';
+            mTestHtml += renderMatchTestRow(mf.test_v, 'バリューフィット');
+            mTestHtml += renderMatchTestRow(mf.test_p, 'パーソナリティ親和性');
+            matchTestEl.innerHTML = mTestHtml;
+        }
 
         // マッチ要因サマリー
         let matchSummaryHtml = '';

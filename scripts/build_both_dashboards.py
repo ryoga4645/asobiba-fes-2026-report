@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import json, sys
-from collections import defaultdict
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import sys, math, json
 sys.path.append('scripts')
 from analyze_fit_actions import load_and_preprocess_data, mean
+from collections import defaultdict
 
 with open('scripts/analysis_results.json') as f:
     d = json.load(f)
@@ -14,9 +17,143 @@ p = d['paid_analysis']
 fr = d['free_analysis']
 cps = d['company_profiles']
 
-# ============================================================
-# 全12社 詳細分析データ集計 (Tab 1 & 2 と同一の3本柱分析)
-# ============================================================
+def t_survival(t_val, df):
+    if df <= 0 or math.isnan(df): return None
+    x = df / (df + t_val * t_val)
+    a = df / 2.0
+    b = 0.5
+    if x <= 0: return 1.0
+    if x >= 1: return 0.0
+    
+    qab = a + b
+    qap = a + 1.0
+    qam = a - 1.0
+    c = 1.0
+    d = 1.0 - qab * x / qap
+    if abs(d) < 1e-30: d = 1e-30
+    d = 1.0 / d
+    f = d
+    for m in range(1, 200):
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        if abs(d) < 1e-30: d = 1e-30
+        c = 1.0 + aa / c
+        if abs(c) < 1e-30: c = 1e-30
+        d = 1.0 / d
+        f *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d
+        if abs(d) < 1e-30: d = 1e-30
+        c = 1.0 + aa / c
+        if abs(c) < 1e-30: c = 1e-30
+        d = 1.0 / d
+        del_val = d * c
+        f *= del_val
+        if abs(del_val - 1.0) < 1e-15:
+            break
+    lbeta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+    bt = math.exp(math.log(x) * a + math.log(1.0 - x) * b - lbeta)
+    return bt * f / a
+
+def f_survival(f_val, df1, df2):
+    if f_val <= 0 or df1 <= 0 or df2 <= 0: return 1.0
+    x = df2 / (df2 + df1 * f_val)
+    a = df2 / 2.0
+    b = df1 / 2.0
+    if x <= 0: return 0.0
+    if x >= 1: return 1.0
+    
+    qab = a + b
+    qap = a + 1.0
+    qam = a - 1.0
+    c = 1.0
+    d = 1.0 - qab * x / qap
+    if abs(d) < 1e-30: d = 1e-30
+    d = 1.0 / d
+    f = d
+    for m in range(1, 200):
+        m2 = 2 * m
+        aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+        d = 1.0 + aa * d
+        if abs(d) < 1e-30: d = 1e-30
+        c = 1.0 + aa / c
+        if abs(c) < 1e-30: c = 1e-30
+        d = 1.0 / d
+        f *= d * c
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+        d = 1.0 + aa * d
+        if abs(d) < 1e-30: d = 1e-30
+        c = 1.0 + aa / c
+        if abs(c) < 1e-30: c = 1e-30
+        d = 1.0 / d
+        del_val = d * c
+        f *= del_val
+        if abs(del_val - 1.0) < 1e-15:
+            break
+    lbeta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+    bt = math.exp(math.log(x) * a + math.log(1.0 - x) * b - lbeta)
+    return bt * f / a
+
+def run_anova(groups):
+    valid_groups = [g for g in groups if len(g) > 0]
+    k = len(valid_groups)
+    if k < 2:
+        return {"status": "insufficient", "note": "比較群数不足 (1群のみ)"}
+    n_total = sum(len(g) for g in valid_groups)
+    all_vals = [x for g in valid_groups for x in g]
+    grand_mean = sum(all_vals) / n_total
+    ss_total = sum((x - grand_mean)**2 for x in all_vals)
+    ss_between = sum(len(g) * (sum(g)/len(g) - grand_mean)**2 for g in valid_groups)
+    ss_within = ss_total - ss_between
+    df_between = k - 1
+    df_within = n_total - k
+    if df_within <= 0 or ss_within <= 0:
+        return {"status": "insufficient", "note": "自由度不足"}
+    ms_between = ss_between / df_between
+    ms_within = ss_within / df_within
+    f_val = ms_between / ms_within
+    pval = f_survival(f_val, df_between, df_within)
+    eta2 = ss_between / ss_total if ss_total > 0 else 0.0
+    return {
+        "status": "ok",
+        "f": round(f_val, 3),
+        "df": f"({df_between}, {df_within})",
+        "p": round(pval, 4) if pval is not None else 1.0,
+        "eta2": round(eta2, 3)
+    }
+
+def run_welch_t(g1, g2):
+    n1, n2 = len(g1), len(g2)
+    if n1 < 2 or n2 < 2:
+        return {"status": "insufficient", "note": f"サンプル数不足 (n1={n1}, n2={n2})"}
+    m1, m2 = sum(g1)/n1, sum(g2)/n2
+    v1 = sum((x - m1)**2 for x in g1) / (n1 - 1)
+    v2 = sum((x - m2)**2 for x in g2) / (n2 - 1)
+    if v1 == 0 and v2 == 0:
+        return {"status": "no_variance", "note": "分散ゼロ"}
+    denom = v1/n1 + v2/n2
+    if denom <= 0:
+        return {"status": "error", "note": "分散推定不能"}
+    se = math.sqrt(denom)
+    t = (m1 - m2) / se
+    df_num = denom**2
+    df_den = ((v1/n1)**2 / (n1 - 1)) + ((v2/n2)**2 / (n2 - 1))
+    df = df_num / df_den if df_den > 0 else 1.0
+    pval = t_survival(abs(t), df)
+    s_pooled = math.sqrt(((n1 - 1)*v1 + (n2 - 1)*v2) / (n1 + n2 - 2)) if (n1 + n2 - 2) > 0 else 1.0
+    d = (m1 - m2) / s_pooled if s_pooled > 0 else 0.0
+    diff = m1 - m2
+    return {
+        "status": "ok",
+        "diff": round(diff, 2),
+        "t": round(t, 3),
+        "df": round(df, 1),
+        "p": round(pval, 4) if pval is not None else 1.0,
+        "d": round(abs(d), 3)
+    }
+
+# データロード
 raw_data = load_and_preprocess_data()
 comps = defaultdict(list)
 for item in raw_data:
@@ -65,6 +202,31 @@ for c, rows in comps.items():
     c_acts['diff_v'] = diff_v
     c_acts['v_from_to'] = v_from_to
     
+    # 企業アクション別 検定
+    g_none_cv = [r['value_fit'] for r in rows if r['company_action'] == 'なし']
+    g_know_cv = [r['value_fit'] for r in rows if r['company_action'] == '知りたい']
+    g_very_cv = [r['value_fit'] for r in rows if r['company_action'] == 'めっちゃ知りたい']
+    c_acts['test_v'] = {
+        'anova': run_anova([g_none_cv, g_know_cv, g_very_cv]),
+        't_very_none': run_welch_t(g_very_cv, g_none_cv),
+        't_know_none': run_welch_t(g_know_cv, g_none_cv),
+        't_very_know': run_welch_t(g_very_cv, g_know_cv)
+    }
+    
+    if pf_all:
+        g_none_cp = [r['personality_fit'] for r in rows if r['company_action'] == 'なし' and r['personality_fit'] is not None]
+        g_know_cp = [r['personality_fit'] for r in rows if r['company_action'] == '知りたい' and r['personality_fit'] is not None]
+        g_very_cp = [r['personality_fit'] for r in rows if r['company_action'] == 'めっちゃ知りたい' and r['personality_fit'] is not None]
+        c_acts['test_p'] = {
+            'has_data': True,
+            'anova': run_anova([g_none_cp, g_know_cp, g_very_cp]),
+            't_very_none': run_welch_t(g_very_cp, g_none_cp),
+            't_know_none': run_welch_t(g_know_cp, g_none_cp),
+            't_very_know': run_welch_t(g_very_cp, g_know_cp)
+        }
+    else:
+        c_acts['test_p'] = {'has_data': False}
+        
     # 学生アクション別
     s_acts = {}
     for a in ['なし', '知りたい', 'めっちゃ知りたい']:
@@ -90,6 +252,31 @@ for c, rows in comps.items():
     s_acts['diff_p'] = diff_p
     s_acts['p_from_to'] = p_from_to
     
+    # 学生アクション別 検定
+    g_none_sv = [r['value_fit'] for r in rows if r['student_action'] == 'なし']
+    g_know_sv = [r['value_fit'] for r in rows if r['student_action'] == '知りたい']
+    g_very_sv = [r['value_fit'] for r in rows if r['student_action'] == 'めっちゃ知りたい']
+    s_acts['test_v'] = {
+        'anova': run_anova([g_none_sv, g_know_sv, g_very_sv]),
+        't_very_none': run_welch_t(g_very_sv, g_none_sv),
+        't_know_none': run_welch_t(g_know_sv, g_none_sv),
+        't_very_know': run_welch_t(g_very_sv, g_know_sv)
+    }
+    
+    if pf_all:
+        g_none_sp = [r['personality_fit'] for r in rows if r['student_action'] == 'なし' and r['personality_fit'] is not None]
+        g_know_sp = [r['personality_fit'] for r in rows if r['student_action'] == '知りたい' and r['personality_fit'] is not None]
+        g_very_sp = [r['personality_fit'] for r in rows if r['student_action'] == 'めっちゃ知りたい' and r['personality_fit'] is not None]
+        s_acts['test_p'] = {
+            'has_data': True,
+            'anova': run_anova([g_none_sp, g_know_sp, g_very_sp]),
+            't_very_none': run_welch_t(g_very_sp, g_none_sp),
+            't_know_none': run_welch_t(g_know_sp, g_none_sp),
+            't_very_know': run_welch_t(g_very_sp, g_know_sp)
+        }
+    else:
+        s_acts['test_p'] = {'has_data': False}
+        
     # マッチ成立別
     m_yes = [r for r in rows if r['is_matched'] == 1]
     m_no = [r for r in rows if r['is_matched'] == 0]
@@ -100,6 +287,10 @@ for c, rows in comps.items():
     
     diff_m_v = round(mean(m_yes_v) - mean(m_no_v), 2) if (m_yes_v and m_no_v) else None
     diff_m_p = round(mean(m_yes_p) - mean(m_no_p), 2) if (m_yes_p and m_no_p) else None
+    
+    # マッチ成立別 検定
+    t_match_v = run_welch_t(m_yes_v, m_no_v) if (m_yes_v and m_no_v) else {'status': 'insufficient', 'note': '成立群または未成立群が0件のため検定対象外'}
+    t_match_p = run_welch_t(m_yes_p, m_no_p) if (m_yes_p and m_no_p) else {'status': 'insufficient', 'note': 'データ未算出または0件のため検定対象外'}
     
     match_factors = {
         'matched': {
@@ -113,7 +304,9 @@ for c, rows in comps.items():
             'p_mean': round(mean(m_no_p), 2) if m_no_p else None
         },
         'diff_v': diff_m_v,
-        'diff_p': diff_m_p
+        'diff_p': diff_m_p,
+        'test_v': t_match_v,
+        'test_p': t_match_p
     }
     
     company_details.append({
@@ -132,152 +325,80 @@ for c, rows in comps.items():
 
 company_details.sort(key=lambda x: (not x['is_paid'], -x['match_rate']))
 
-# 一覧テーブルの行生成
-company_rows_html = ""
-for idx, cd in enumerate(company_details):
-    mr = cd['match_rate']
-    bar_color = "#10B981" if mr >= 50 else ("#3B82F6" if mr >= 30 else "#EF4444")
-    
-    ca_v = cd['company_actions']['めっちゃ知りたい']['count']
-    ca_k = cd['company_actions']['知りたい']['count']
-    ca_n = cd['company_actions']['なし']['count']
-    
-    diff_v = cd['company_actions']['diff_v']
-    if diff_v is not None:
-        diff_v_str = f"+{diff_v:.2f} pt" if diff_v > 0 else f"{diff_v:.2f} pt"
-        diff_v_class = "font-bold text-indigo-600" if diff_v >= 4.0 else ("text-rose-600 font-bold" if diff_v < 0 else "text-slate-700")
-    else:
-        diff_v_str = "—"
-        diff_v_class = "text-slate-400"
-        
-    sa_v = cd['student_actions']['めっちゃ知りたい']['count']
-    sa_k = cd['student_actions']['知りたい']['count']
-    sa_n = cd['student_actions']['なし']['count']
-    
-    diff_p = cd['student_actions']['diff_p']
-    if diff_p is not None:
-        diff_p_str = f"+{diff_p:.2f} pt" if diff_p > 0 else f"{diff_p:.2f} pt"
-        diff_p_class = "font-bold text-amber-600" if diff_p >= 4.0 else ("text-rose-600 font-bold" if diff_p < 0 else "text-slate-700")
-    else:
-        diff_p_str = "未算出" if cd['personality_mean'] is None else "—"
-        diff_p_class = "text-slate-400"
-        
-    m_diff_v = cd['match_factors']['diff_v']
-    m_diff_p = cd['match_factors']['diff_p']
-    if m_diff_v is not None:
-        m_diff_v_str = f"V: {m_diff_v:+.2f}pt"
-    else:
-        m_diff_v_str = "V: —"
-        
-    if m_diff_p is not None:
-        m_diff_p_str = f"P: {m_diff_p:+.2f}pt"
-    else:
-        m_diff_p_str = "P: 未算出" if cd['personality_mean'] is None else "P: —"
-        
-    company_rows_html += f"""
-    <tr id="comp-row-{idx}" class="company-table-row {'selected-row' if idx == 0 else ''}" onclick="selectCompany({idx}, true)" style="cursor: pointer; transition: background 0.15s;">
-        <td style="font-weight: 700; color: #111827;">
-            <span class="pill {'pill-indigo' if cd['is_paid'] else 'pill-slate'}" style="margin-right: 6px;">{cd['plan_type']}</span>
-            {cd['company']}
-        </td>
-        <td>{cd['count']}名</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <div style="font-weight: 800; font-size: 14px; color: {bar_color}; width: 45px;">{mr}%</div>
-                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 60px;">
-                    <div style="width: {mr}%; height: 100%; background: {bar_color};"></div>
-                </div>
-                <span style="font-size: 11px; color: #6B7280;">({cd['matches']}/{cd['count']})</span>
-            </div>
-        </td>
-        <td style="font-size: 12px;">
-            <strong style="color: #4F46E5;">{ca_v}</strong> / {ca_k} / {ca_n}
-        </td>
-        <td class="{diff_v_class}" style="font-size: 12.5px;">{diff_v_str}</td>
-        <td style="font-size: 12px;">
-            <strong style="color: #D97706;">{sa_v}</strong> / {sa_k} / {sa_n}
-        </td>
-        <td class="{diff_p_class}" style="font-size: 12.5px;">{diff_p_str}</td>
-        <td style="font-size: 11.5px; color: #374151; white-space: nowrap;">
-            <span style="font-weight: 600;">{m_diff_v_str}</span><br>
-            <span style="color: #6B7280;">{m_diff_p_str}</span>
-        </td>
-        <td>
-            <button type="button" class="btn-detail" onclick="event.stopPropagation(); selectCompany({idx}, true);" style="padding: 4px 10px; font-size: 11.5px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 4px; cursor: pointer;">
-                詳細カルテ ▼
-            </button>
-        </td>
-    </tr>
-    """
-
-# セレクターオプション
+# 企業セレクターのボタン群HTML（選択肢A: ピルボタン群）
+paid_buttons_html = ""
+free_buttons_html = ""
 company_options_html = ""
+
 for idx, cd in enumerate(company_details):
     badge = "【有料】" if cd['is_paid'] else "【無料】"
     company_options_html += f'<option value="{idx}">{badge} {cd["company"]} (マッチ率 {cd["match_rate"]}%)</option>\n'
+    
+    btn_html = f"""<button type="button" id="comp-btn-{idx}" class="comp-nav-btn {'active' if idx == 0 else ''}" onclick="selectCompany({idx}, false)">
+        <span class="btn-name">{cd['company']}</span>
+        <span class="btn-rate">{cd['match_rate']}%</span>
+    </button>"""
+    
+    if cd['is_paid']:
+        paid_buttons_html += btn_html
+    else:
+        free_buttons_html += btn_html
 
 company_details_json = json.dumps(company_details, ensure_ascii=False)
 
 # Section HTML 定義
 company_detail_section_html = f"""
-    <!-- セクション1: 全12社 客観比較一覧 -->
-    <div class="section-card">
-        <div class="section-header">
+    <!-- 企業選択ナビゲーションバー（有料4社 / 無料8社） -->
+    <div class="section-card" style="margin-bottom: 20px; padding: 20px 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
             <div>
-                <div class="section-title">🏢 【全12社 客観比較一覧】企業別マッチング実績・選別感度・マッチング要因</div>
-                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">
-                    全体サマリー・層別比較と同一の3本柱（① 企業アクション別推移、② 学生アクション別推移、③ マッチング成立要因）で全12社を比較。行または「詳細カルテ ▼」をクリックすると下部の個別カルテへ連動切替します。
-                </p>
-            </div>
-            <span class="pill pill-indigo">全12社 確定実績</span>
-        </div>
-        
-        <div style="overflow-x: auto;">
-            <table class="company-list-table">
-                <thead>
-                    <tr>
-                        <th style="min-width: 200px;">企業名</th>
-                        <th>接触数</th>
-                        <th style="min-width: 130px;">マッチ率 (件数)</th>
-                        <th style="min-width: 105px;">企アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
-                        <th>企バリュー選別差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
-                        <th style="min-width: 105px;">学アクション<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">めっちゃ/知り/なし</span></th>
-                        <th>学人柄反応差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">なし➔めっちゃ</span></th>
-                        <th style="min-width: 120px;">🤝 マッチ要因差<br><span style="font-size: 10px; font-weight: normal; color: #64748B;">成立群 − 未成立群</span></th>
-                        <th>詳細</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {company_rows_html}
-                </tbody>
-            </table>
-        </div>
-        
-        <div style="margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 12px; color: #475569; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-            <div>
-                💡 <strong>表の見方:</strong> 
-                <strong>企バリュー選別差</strong>（企業が熱望した学生と見送った学生の理念差）、
-                <strong>学人柄反応差</strong>（学生が熱望した企業への親和性差）、
-                <strong>マッチ要因差</strong>（成約ペアの特徴：V=バリュー差、P=パーソナリティ差）。
-            </div>
-            <span style="color: #64748B; font-size: 11px;">※パナソニックはパーソナリティ未算出、ミツカルはマッチ成立0件のため一部差分対象外</span>
-        </div>
-    </div>
-
-    <!-- セクション2: 🔍 個別企業詳細カルテ -->
-    <div id="company-detail-card" class="section-card" style="border-top: 4px solid var(--primary); scroll-margin-top: 80px;">
-        <div class="section-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <div class="section-title" style="margin-bottom: 0;">
-                    🔍 【個別企業詳細カルテ】<span id="cd-comp-name" style="color: var(--primary);">株式会社ベル</span>
+                <div style="font-size: 16px; font-weight: 800; color: #1E293B;">🏢 分析対象企業の選択</div>
+                <div style="font-size: 12.5px; color: #64748B; margin-top: 2px;">
+                    企業ボタンまたはドロップダウンから選択すると、Tab 1・Tab 2 と同一の3本柱（推移・統計的仮説検定・マッチング要因）が即座に切り替わります。
                 </div>
-                <span id="cd-comp-plan" class="pill pill-indigo">有料出展</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <label for="company-selector" style="font-size: 13px; font-weight: 700; color: #475569;">企業切替:</label>
                 <select id="company-selector" onchange="selectCompany(parseInt(this.value), false)" style="padding: 6px 12px; font-size: 13px; font-weight: 600; border: 1px solid #CBD5E1; border-radius: 6px; background-color: #FFF; color: #1E293B; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                     {company_options_html}
                 </select>
+            </div>
+        </div>
+
+        <!-- 有料企業4社ボタン群 -->
+        <div style="margin-bottom: 12px;">
+            <div style="font-size: 11.5px; font-weight: 700; color: #4F46E5; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span class="pill pill-indigo" style="font-size: 10px;">有料出展 4社</span>
+                <span style="color: #64748B; font-weight: normal; font-size: 11px;">（バリュー高優先配席）</span>
+            </div>
+            <div class="comp-nav-container">
+                {paid_buttons_html}
+            </div>
+        </div>
+
+        <!-- 無料企業8社ボタン群 -->
+        <div>
+            <div style="font-size: 11.5px; font-weight: 700; color: #475569; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span class="pill pill-slate" style="font-size: 10px;">無料出展 8社</span>
+                <span style="color: #64748B; font-weight: normal; font-size: 11px;">（高低混合配席）</span>
+            </div>
+            <div class="comp-nav-container">
+                {free_buttons_html}
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔍 個別企業詳細カルテ -->
+    <div id="company-detail-card" class="section-card" style="border-top: 4px solid var(--primary);">
+        <div class="section-header" style="flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <div class="section-title" style="margin-bottom: 0;">
+                    🔍 【個別カルテ】<span id="cd-comp-name" style="color: var(--primary);">株式会社ベル</span>
+                </div>
+                <span id="cd-comp-plan" class="pill pill-indigo">有料出展</span>
+            </div>
+            <div style="font-size: 12.5px; color: #64748B;">
+                全体サマリー・層別比較と完全に同一の分析フレームワーク
             </div>
         </div>
 
@@ -331,8 +452,53 @@ company_detail_section_html = f"""
                     <tbody id="cd-tbody-comp-act">
                     </tbody>
                 </table>
-                <div id="cd-comp-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3;">
+                <div id="cd-comp-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #EEF2FF; border-left: 3px solid var(--primary); border-radius: 4px; color: #3730A3; margin-bottom: 14px;">
                 </div>
+
+                <!-- 統計的仮説検定アコーディオン（企業側） -->
+                <details class="stats-accordion">
+                    <summary class="stats-summary">
+                        <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                        <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                    </summary>
+                    <div class="stats-content">
+                        <!-- ① バリューフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="margin-bottom: 14px; font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp-test-v">
+                            </tbody>
+                        </table>
+
+                        <!-- ② パーソナリティフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp-test-p">
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
 
             <!-- 右カラム: 学生アクション別推移 -->
@@ -359,8 +525,53 @@ company_detail_section_html = f"""
                     <tbody id="cd-tbody-stud-act">
                     </tbody>
                 </table>
-                <div id="cd-stud-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E;">
+                <div id="cd-stud-act-summary" style="font-size: 11.5px; padding: 8px 12px; background: #FEF3C7; border-left: 3px solid var(--warning); border-radius: 4px; color: #92400E; margin-bottom: 14px;">
                 </div>
+
+                <!-- 統計的仮説検定アコーディオン（学生側） -->
+                <details class="stats-accordion">
+                    <summary class="stats-summary">
+                        <span>📊 統計的仮説検定の詳細（ANOVA / Welch t検定）</span>
+                        <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                    </summary>
+                    <div class="stats-content">
+                        <!-- ① バリューフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ① バリューフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="margin-bottom: 14px; font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud-test-v">
+                            </tbody>
+                        </table>
+
+                        <!-- ② パーソナリティフィット検定 -->
+                        <div style="margin-bottom: 6px; font-weight: 700; color: #1E293B; font-size: 12px;">
+                            ② パーソナリティフィットの統計的仮説検定（ANOVA &amp; Welch t検定）
+                        </div>
+                        <table style="font-size: 11px;">
+                            <thead>
+                                <tr>
+                                    <th>検定手法・対比</th>
+                                    <th>統計量</th>
+                                    <th>自由度 (df)</th>
+                                    <th>有意確率 (p値)</th>
+                                    <th>統計的判定</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud-test-p">
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
             </div>
         </div>
 
@@ -388,16 +599,41 @@ company_detail_section_html = f"""
                 <tbody id="cd-tbody-match-factors">
                 </tbody>
             </table>
+
+            <!-- マッチング成立要因の統計的仮説検定（Welch t検定）アコーディオン -->
+            <details class="stats-accordion" style="margin-bottom: 14px;">
+                <summary class="stats-summary">
+                    <span>📊 マッチング成立要因の統計的仮説検定（Welch t検定: 成約群 vs 未成立群）</span>
+                    <span style="font-size: 11px; color: #64748B; font-weight: normal;">タップで展開 ▼</span>
+                </summary>
+                <div class="stats-content">
+                    <table style="font-size: 11.5px;">
+                        <thead>
+                            <tr>
+                                <th>検証指標</th>
+                                <th>検定手法</th>
+                                <th>統計量</th>
+                                <th>自由度 (df)</th>
+                                <th>有意確率 (p値)</th>
+                                <th>統計的判定</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cd-tbody-match-test">
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+
             <div id="cd-match-summary" class="insight-box" style="margin-top: 0; font-size: 12.5px;">
             </div>
         </div>
     </div>
 """
 
-# JavaScript 定義
+# JavaScript 生成
 js_template = """
     // ==========================================
-    // 全12社個別カルテ 動的連動スクリプト
+    // 全12社個別カルテ 動的連動スクリプト (統計的仮説検定完全対応)
     // ==========================================
     const companyDetailsData = __COMPANY_DETAILS_JSON__;
     let compActChart = null;
@@ -414,6 +650,99 @@ js_template = """
         }
     }
 
+    function renderTestTableRows(testData, hasData) {
+        if (!hasData || !testData) {
+            return '<tr><td colspan="5" style="text-align: center; color: #9CA3AF; padding: 10px;">データ未算出のため検定対象外</td></tr>';
+        }
+        let html = '';
+        
+        // ANOVA
+        const anova = testData.anova;
+        if (anova.status === 'ok') {
+            const pStr = anova.p < 0.0001 ? 'p < 0.0001' : 'p = ' + anova.p.toFixed(4);
+            const pBold = anova.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+            let pill = '<span class="pill pill-slate">有意差なし (η²=' + anova.eta2.toFixed(3) + ')</span>';
+            if (anova.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+            else if (anova.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+            else if (anova.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [η²=' + anova.eta2.toFixed(3) + ']</span>';
+
+            html += '<tr style="background: #F8FAFC;">' +
+                '<td><strong>一元配置分散分析 (ANOVA)</strong></td>' +
+                '<td>F = ' + anova.f.toFixed(3) + '</td>' +
+                '<td>' + anova.df + '</td>' +
+                '<td>' + pBold + '</td>' +
+                '<td>' + pill + '</td>' +
+            '</tr>';
+        } else {
+            html += '<tr style="background: #F8FAFC;">' +
+                '<td><strong>一元配置分散分析 (ANOVA)</strong></td>' +
+                '<td colspan="4" style="color: #64748B;">' + anova.note + '</td>' +
+            '</tr>';
+        }
+
+        // Welch t検定 3対比
+        const pairs = [
+            { key: 't_very_none', label: 'Welch t検定 (なし vs めっちゃ知りたい)' },
+            { key: 't_know_none', label: 'Welch t検定 (なし vs 知りたい)' },
+            { key: 't_very_know', label: 'Welch t検定 (知りたい vs めっちゃ知りたい)' }
+        ];
+
+        pairs.forEach(p => {
+            const t = testData[p.key];
+            if (t.status === 'ok') {
+                const pStr = t.p < 0.0001 ? 'p < 0.0001' : 'p = ' + t.p.toFixed(4);
+                const pBold = t.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+                const sign = t.diff > 0 ? '+' : '';
+                let pill = '<span class="pill pill-slate">有意差なし [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                if (t.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                else if (t.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+                else if (t.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [差 ' + sign + t.diff.toFixed(2) + 'pt, d=' + t.d.toFixed(3) + ']</span>';
+
+                html += '<tr>' +
+                    '<td>' + p.label + '</td>' +
+                    '<td>t = ' + t.t.toFixed(3) + '</td>' +
+                    '<td>' + t.df.toFixed(1) + '</td>' +
+                    '<td>' + pBold + '</td>' +
+                    '<td>' + pill + '</td>' +
+                '</tr>';
+            } else {
+                html += '<tr>' +
+                    '<td>' + p.label + '</td>' +
+                    '<td colspan="4" style="color: #64748B;">' + t.note + '</td>' +
+                '</tr>';
+            }
+        });
+
+        return html;
+    }
+
+    function renderMatchTestRow(test, label) {
+        if (test.status === 'ok') {
+            const pStr = test.p < 0.0001 ? 'p < 0.0001' : 'p = ' + test.p.toFixed(4);
+            const pBold = test.p < 0.05 ? '<strong>' + pStr + '</strong>' : pStr;
+            const sign = test.diff > 0 ? '+' : '';
+            let pill = '<span class="pill pill-slate">有意差なし [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            if (test.p < 0.01) pill = '<span class="pill pill-indigo">非常に有意 (**) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            else if (test.p < 0.05) pill = '<span class="pill pill-green">有意 (*) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+            else if (test.p < 0.10) pill = '<span class="pill pill-amber">有意傾向 (†) [差 ' + sign + test.diff.toFixed(2) + 'pt, d=' + test.d.toFixed(3) + ']</span>';
+
+            return '<tr>' +
+                '<td><strong>' + label + '</strong></td>' +
+                '<td>Welch t検定 (成立群 vs 未成立群)</td>' +
+                '<td>t = ' + test.t.toFixed(3) + '</td>' +
+                '<td>' + test.df.toFixed(1) + '</td>' +
+                '<td>' + pBold + '</td>' +
+                '<td>' + pill + '</td>' +
+            '</tr>';
+        } else {
+            return '<tr>' +
+                '<td><strong>' + label + '</strong></td>' +
+                '<td>Welch t検定 (成立群 vs 未成立群)</td>' +
+                '<td colspan="4" style="color: #64748B;">' + test.note + '</td>' +
+            '</tr>';
+        }
+    }
+
     function selectCompany(idx, shouldScroll) {
         if (idx < 0 || idx >= companyDetailsData.length) return;
         const cd = companyDetailsData[idx];
@@ -422,15 +751,10 @@ js_template = """
         const sel = document.getElementById('company-selector');
         if (sel && parseInt(sel.value) !== idx) sel.value = idx;
 
-        // テーブル行ハイライトの同期
-        document.querySelectorAll('.company-table-row').forEach((row, i) => {
-            if (i === idx) {
-                row.classList.add('selected-row');
-                row.style.backgroundColor = '#EEF2FF';
-            } else {
-                row.classList.remove('selected-row');
-                row.style.backgroundColor = '';
-            }
+        // ピルボタンの同期
+        document.querySelectorAll('.comp-nav-btn').forEach((btn, i) => {
+            if (i === idx) btn.classList.add('active');
+            else btn.classList.remove('active');
         });
 
         // ヘッダー情報
@@ -515,6 +839,13 @@ js_template = """
         const compSumEl = document.getElementById('cd-comp-act-summary');
         if (compSumEl) compSumEl.innerHTML = compSummaryHtml;
 
+        // 企業検定テーブル展開
+        const compTestVEl = document.getElementById('cd-tbody-comp-test-v');
+        if (compTestVEl) compTestVEl.innerHTML = renderTestTableRows(cd.company_actions.test_v, true);
+        
+        const compTestPEl = document.getElementById('cd-tbody-comp-test-p');
+        if (compTestPEl) compTestPEl.innerHTML = renderTestTableRows(cd.company_actions.test_p, cd.company_actions.test_p.has_data);
+
         // テーブル生成: 学生アクション別
         let studTbodyHtml = '';
         acts.forEach(a => {
@@ -566,6 +897,13 @@ js_template = """
         const studSumEl = document.getElementById('cd-stud-act-summary');
         if (studSumEl) studSumEl.innerHTML = studSummaryHtml;
 
+        // 学生検定テーブル展開
+        const studTestVEl = document.getElementById('cd-tbody-stud-test-v');
+        if (studTestVEl) studTestVEl.innerHTML = renderTestTableRows(cd.student_actions.test_v, true);
+        
+        const studTestPEl = document.getElementById('cd-tbody-stud-test-p');
+        if (studTestPEl) studTestPEl.innerHTML = renderTestTableRows(cd.student_actions.test_p, cd.student_actions.test_p.has_data);
+
         // テーブル生成: マッチング成立要因
         const mf = cd.match_factors;
         let matchTbodyHtml = '';
@@ -600,6 +938,15 @@ js_template = """
         '</tr>';
         const matchTbody = document.getElementById('cd-tbody-match-factors');
         if (matchTbody) matchTbody.innerHTML = matchTbodyHtml;
+
+        // マッチング検定テーブル展開
+        const matchTestEl = document.getElementById('cd-tbody-match-test');
+        if (matchTestEl) {
+            let mTestHtml = '';
+            mTestHtml += renderMatchTestRow(mf.test_v, 'バリューフィット');
+            mTestHtml += renderMatchTestRow(mf.test_p, 'パーソナリティ親和性');
+            matchTestEl.innerHTML = mTestHtml;
+        }
 
         // マッチ要因サマリー
         let matchSummaryHtml = '';
@@ -756,6 +1103,11 @@ js_template = """
     }
 """
 company_detail_js = js_template.replace('__COMPANY_DETAILS_JSON__', company_details_json)
+
+print("Full Tab 3 components built successfully.")
+print("HTML length:", len(company_detail_section_html))
+print("JS length:", len(company_detail_js))
+
 
 
 # ============================================================
