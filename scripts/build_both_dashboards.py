@@ -658,14 +658,15 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                     </div>
                 </div>
                 <div>
-                    <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">マッチ成立 vs 未マッチのスコア差（実データ比較）</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">マッチング成立の要因分析（実データと回帰分析の統合）</h3>
                     <table>
                         <thead>
                             <tr>
-                                <th>指標</th>
-                                <th>マッチ成立 (128件)</th>
-                                <th>未マッチ (185件)</th>
-                                <th>スコアの差</th>
+                                <th>要因（ドライバー）</th>
+                                <th>成立群</th>
+                                <th>未成立群</th>
+                                <th>スコア差</th>
+                                <th>10pt上昇時の効果<br><span style="font-size: 11px; font-weight: normal; color: #6B7280;">(回帰オッズ比より)</span></th>
                                 <th>判定</th>
                             </tr>
                         </thead>
@@ -674,32 +675,34 @@ tab_dashboard_html = f"""<!DOCTYPE html>
                                 <td><strong>バリューフィット</strong></td>
                                 <td><strong>62.81</strong></td>
                                 <td>59.25</td>
-                                <td><strong style="color: var(--primary); font-size: 15px;">+3.56 pt</strong></td>
-                                <td><span class="pill pill-indigo">極めて有意 (p&lt;0.0001)</span></td>
+                                <td><strong style="color: var(--primary); font-size: 14px;">+3.56 pt</strong></td>
+                                <td><strong>約1.74倍 (+74%)</strong><br><span style="font-size: 11px; color: #64748B;">(1ptあたり +5.7%)</span></td>
+                                <td><span class="pill pill-indigo">極めて有意 (***)</span></td>
                             </tr>
                             <tr>
                                 <td><strong>パーソナリティ</strong></td>
                                 <td><strong>80.08</strong></td>
                                 <td>78.00</td>
-                                <td><strong style="color: #059669; font-size: 15px;">+2.08 pt</strong></td>
-                                <td><span class="pill pill-green">有意 (p=0.037)</span></td>
+                                <td><strong style="color: #059669; font-size: 14px;">+2.08 pt</strong></td>
+                                <td><strong>約1.34倍 (+34%)</strong><br><span style="font-size: 11px; color: #64748B;">(1ptあたり +3.0%)</span></td>
+                                <td><span class="pill pill-amber">有意傾向 (†)</span></td>
                             </tr>
                             <tr>
-                                <td><strong>出展区分別マッチ率</strong></td>
-                                <td>有料 <strong>45.9%</strong> (56/122)</td>
-                                <td>無料 <strong>37.7%</strong> (72/191)</td>
-                                <td><strong>+8.2 pt</strong></td>
-                                <td>事前高バリュー配席の成果</td>
+                                <td><strong>出展区分（有料企業）</strong></td>
+                                <td>45.9%</td>
+                                <td>37.7%</td>
+                                <td>+8.2 pt</td>
+                                <td><strong>ほぼ影響なし (約1.03倍)</strong><br><span style="font-size: 11px; color: #64748B;">(高バリュー配席を除くと差ゼロ)</span></td>
+                                <td><span class="pill pill-slate">有意差なし ❌</span></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <!-- 直感的ビジネスインパクト -->
-                    <div style="margin-top: 12px; padding: 12px 14px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; font-size: 12.5px; color: #166534; line-height: 1.6;">
-                        <div style="font-weight: 700; margin-bottom: 4px;">🚀 ひと目でわかるマッチ成立への影響（要約）:</div>
-                        <div>・<strong>バリューフィットが10pt上昇</strong> ──▶ マッチ成立確率が <strong style="color: #15803D; font-size: 13.5px;">約1.74倍（+74%）</strong> に跳ね上がる！</div>
-                        <div>・<strong>パーソナリティが10pt上昇</strong> ──▶ マッチ成立確率が <strong>約1.34倍（+34%）</strong> 底上げされる。</div>
-                        <div>・<strong>有料企業フラグ</strong> ──▶ 影響なし（有料だからマッチしたのではなく、事前の高バリュー配席の成果）。</div>
+                    <!-- 直感的ビジネスインパクト・算出根拠の要約 -->
+                    <div style="margin-top: 12px; padding: 12px 14px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+                        <div style="font-weight: 700; margin-bottom: 4px; color: #1E293B;">💡 「1.74倍」の算出根拠とインサイト（要約）:</div>
+                        <div>・<strong>なぜ「1.74倍」なのか？</strong>: 多変量ロジスティック回帰により、バリューが1pt上がるとマッチ成立オッズが <strong>+5.7%（オッズ比 1.057）</strong> 高まることが判明しています。したがって、スコアが10pt上がると 1.057 の10乗となり、成立確率は <strong style="color: var(--primary);">約1.74倍（+74%）</strong> に跳ね上がります。</div>
+                        <div>・<strong>有料企業の見かけの差（+8.2pt）の真相</strong>: 有料企業のマッチ率が高いのは「お金を払ったから」ではなく、<strong>「事前に高バリュー層を優先配席した成果」</strong>であり、配席の効果を統制すると出展区分自体の影響はゼロ（オッズ比1.026, p=0.92）になります。</div>
                     </div>
 
                     <!-- タップ開閉アコーディオン（詳細な統計的説明） -->
