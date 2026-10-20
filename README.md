@@ -7,8 +7,10 @@
 ## 🌐 インタラクティブ・Webダッシュボード & レポート
 スマートフォンやPCのブラウザから、グラフや各評価項目をインタラクティブに閲覧・操作できます。
 
-- 🎯 **[【最新】バリュー・パーソナリティ別マッチング分析ダッシュボードを開く](https://ryoga4645.github.io/asobiba-fes-2026-report/asobiba_fes_fit_analysis_report.html)**
-  - ミッションラリー全313接触における企業・学生のアクション特性、統計検定、多変量ロジスティック回帰、3×3マトリクスヒートマップ
+- 🎯 **[【最新・タブ切り替え対応】バリュー・パーソナリティ別マッチング分析ダッシュボード](https://ryoga4645.github.io/asobiba-fes-2026-report/asobiba_fes_fit_analysis_report.html)**
+  - タブ①「全体分析サマリー」/ タブ②「有料 vs 無料 比較」/ タブ③「全12社 個別カルテ」をワンクリックで切り替え可能
+- 🏢 **[【別ページ版】企業別・有料無料別マッチング詳細分析レポートを開く](https://ryoga4645.github.io/asobiba-fes-2026-report/company_fit_report.html)**
+  - 全12社のマッチ実績、バリュー選別感度（差+9.49pt等）、プロファイル分類特化ページ
 - 📊 **[参加・歩留まり総合Webダッシュボードを開く（GitHub Pages）](https://ryoga4645.github.io/asobiba-fes-2026-report/)**
   - 全体KPI、集客評価（統合版＆直接紹介別）、施策評価、ステータス別・学年別・大学別行動パターンを網羅
 - 👥 **[直接紹介者別（統合なし・全17名）特化レポートを開く](https://ryoga4645.github.io/asobiba-fes-2026-report/recruiter_direct_report.html)**
@@ -101,7 +103,8 @@
 ---
 
 ## 📁 構成ファイル
-- `asobiba_fes_fit_analysis_report.html` : 【最新】バリュー・パーソナリティ別マッチング分析ダッシュボード（Chart.js）
+- `asobiba_fes_fit_analysis_report.html` : 【最新】バリュー・パーソナリティ別マッチング分析ダッシュボード（タブ切り替え対応）
+- `company_fit_report.html` : 【最新】企業別カルテ・有料無料別特化Webレポート
 - `ASOBIBA_FES_バリュー_パーソナリティ分析レポート.md` : 【最新】バリュー・パーソナリティ別マッチング分析総合報告書
 - `scripts/analyze_fit_actions.py` : 統計分析実行スクリプト（ANOVA、Welch t検定、U検定、ロジスティック回帰）
 - `index.html` / `asobiba_fes_data_analysis_report.html` : 参加・歩留まり総合Webダッシュボード本体（Chart.js / Tailwind CSS）

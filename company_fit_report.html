@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASOBIBA FES 2026: 企業別・有料無料別マッチング詳細分析レポート</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --success: #10B981;
+            --success-light: #ECFDF5;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            padding: 24px;
+        }
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .badge-bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .btn-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .kpi-card {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .kpi-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+        .kpi-sub {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+        .section-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--gray-200);
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gray-100);
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: #0EA5E9;
+            border-radius: 2px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 24px;
+        }
+        .chart-box {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        .highlight-row {
+            background: #FEF3C7;
+            font-weight: 600;
+        }
+        .pill {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .pill-indigo { background: #E0E7FF; color: #4338CA; }
+        .pill-green { background: #D1FAE5; color: #065F46; }
+        .pill-amber { background: #FEF3C7; color: #92400E; }
+        .pill-rose { background: #FFE4E6; color: #BE123C; }
+        .pill-slate { background: #F1F5F9; color: #475569; }
+
+        .insight-box {
+            background: #F0F9FF;
+            border-left: 4px solid #0EA5E9;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #0369A1;
+        }
+        .insight-box strong {
+            color: #0C4A6E;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>ASOBIBA FES 2026: 企業別・有料無料別マッチング詳細分析レポート</h1>
+            <p>全12社個別カルテ（受発注・選別感度・プロファイル）＆ 有料企業 vs 無料企業 完全層別分析</p>
+            <div class="badge-bar">
+                <span class="badge">全12企業 網羅</span>
+                <span class="badge">有料企業: 4社 (122接触)</span>
+                <span class="badge">無料企業: 8社 (191接触)</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="asobiba_fes_fit_analysis_report.html" class="btn-header">
+                📊 バリュー・パーソナリティ全体ダッシュボードへ
+            </a>
+            <a href="index.html" class="btn-header">
+                🏠 総合ダッシュボードへ戻る
+            </a>
+        </div>
+    </header>
+
+    <!-- Top KPI Cards -->
+    <div class="grid-4">
+        <div class="kpi-card">
+            <div class="kpi-title">バリュー選別の最強証明（無料企業）</div>
+            <div class="kpi-value" style="color: var(--primary);">+7.51 <span style="font-size: 14px; font-weight: normal; color: #6B7280;">pt</span></div>
+            <div class="kpi-sub">めっちゃ(64.24) vs なし(56.73) [p&lt;0.0001]</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">パーソナリティ自然実験の証明</div>
+            <div class="kpi-value" style="color: var(--success);">r = 0.034</div>
+            <div class="kpi-sub">バリューと完全独立 ➔ 純粋な因果効果</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">トップマッチ企業</div>
+            <div class="kpi-value" style="font-size: 22px; color: #111827; padding-top: 4px;">株式会社ベル</div>
+            <div class="kpi-sub">マッチ率 <strong>65.5%</strong> (19/29件成立)</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">学生人気 No.1 企業</div>
+            <div class="kpi-value" style="font-size: 20px; color: #D97706; padding-top: 4px;">カペラ京都 (NTT都市)</div>
+            <div class="kpi-sub">学生めっちゃ知りたい <strong>9名</strong> (全社最多)</div>
+        </div>
+    </div>
+
+    <!-- Section: 12 Company Profiles -->
+    <div class="section-card">
+        <div class="section-header">
+            <div>
+                <div class="section-title">🏢 【全12社個別カルテ】企業別マッチング実績・選別感度・プロファイル</div>
+                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">各社ごとの受発注アクション、バリュー選別感度（めっちゃ時 vs なし時の差）、プロファイル分類</p>
+            </div>
+            <span class="pill pill-indigo">全12社 確定実績</span>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="min-width: 220px;">企業名</th>
+                        <th>接触数</th>
+                        <th style="min-width: 140px;">マッチ率 (件数)</th>
+                        <th>バリュー平均</th>
+                        <th>パーソナリティ</th>
+                        <th style="min-width: 110px;">アクション (めっちゃ/知り)</th>
+                        <th>企バリュー選別差</th>
+                        <th style="min-width: 180px;">プロファイル分類</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
+            株式会社ベル
+        </td>
+        <td>29名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #10B981; width: 45px;">65.5%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 65.5%; height: 100%; background: #10B981;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(19/29)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">62.10</td>
+        <td>80.44</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">10</strong> / 18</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">5</strong> / 14</span>
+        </td>
+        <td class="font-bold text-indigo-600">+5.16 pt</td>
+        <td><span class="pill pill-green">👑 高マッチ・高エンゲージ</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            株式会社Linoa Group
+        </td>
+        <td>23名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #10B981; width: 45px;">65.2%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 65.2%; height: 100%; background: #10B981;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(15/23)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">63.22</td>
+        <td>74.53</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">10</strong> / 12</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">0</strong> / 15</span>
+        </td>
+        <td class="text-slate-700">-8.91 pt</td>
+        <td><span class="pill pill-green">👑 高マッチ・高エンゲージ</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
+            NTT 都市開発ホテルマネジメント株式会社　カペラ京都
+        </td>
+        <td>32名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #10B981; width: 45px;">59.4%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 59.4%; height: 100%; background: #10B981;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(19/32)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">62.09</td>
+        <td>82.07</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">10</strong> / 18</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">9</strong> / 10</span>
+        </td>
+        <td class="text-slate-700">+4.33 pt</td>
+        <td><span class="pill pill-green">👑 高マッチ・高エンゲージ</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            とものや株式会社
+        </td>
+        <td>24名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #10B981; width: 45px;">54.2%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 54.2%; height: 100%; background: #10B981;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(13/24)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">61.28</td>
+        <td>76.95</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">7</strong> / 9</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">7</strong> / 13</span>
+        </td>
+        <td class="text-slate-700">+4.45 pt</td>
+        <td><span class="pill pill-amber">❤️ 学生人気・集客牽引</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            株式会社アイプラス
+        </td>
+        <td>22名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #10B981; width: 45px;">50.0%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 50.0%; height: 100%; background: #10B981;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(11/22)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">58.92</td>
+        <td>73.19</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">4</strong> / 15</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">4</strong> / 10</span>
+        </td>
+        <td class="font-bold text-indigo-600">+9.49 pt</td>
+        <td><span class="pill pill-indigo">🎯 超厳格スクリーニング</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            CKCネットワーク株式会社（ナビ個別指導学院）
+        </td>
+        <td>25名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #3B82F6; width: 45px;">48.0%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 48.0%; height: 100%; background: #3B82F6;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(12/25)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">63.79</td>
+        <td>78.03</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">7</strong> / 10</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">2</strong> / 11</span>
+        </td>
+        <td class="font-bold text-indigo-600">+7.03 pt</td>
+        <td><span class="pill pill-indigo">🎯 超厳格スクリーニング</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            株式会社EGIJ
+        </td>
+        <td>21名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #3B82F6; width: 45px;">42.9%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 42.9%; height: 100%; background: #3B82F6;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(9/21)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">63.14</td>
+        <td>83.77</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">7</strong> / 14</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">2</strong> / 7</span>
+        </td>
+        <td class="text-slate-400">—</td>
+        <td><span class="pill pill-slate">⚖️ 標準バランス</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
+            株式会社リード・イノベーション
+        </td>
+        <td>31名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #3B82F6; width: 45px;">35.5%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 35.5%; height: 100%; background: #3B82F6;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(11/31)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">60.95</td>
+        <td>78.01</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">6</strong> / 16</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">1</strong> / 13</span>
+        </td>
+        <td class="text-slate-700">+3.67 pt</td>
+        <td><span class="pill pill-slate">⚖️ 標準バランス</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            株式会社ユーズテック
+        </td>
+        <td>24名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #EF4444; width: 45px;">29.2%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 29.2%; height: 100%; background: #EF4444;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(7/24)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">57.79</td>
+        <td>78.48</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">7</strong> / 12</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">2</strong> / 6</span>
+        </td>
+        <td class="font-bold text-indigo-600">+6.38 pt</td>
+        <td><span class="pill pill-indigo">🎯 超厳格スクリーニング</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            パナソニック オペレーショナルエクセレンス株式会社
+        </td>
+        <td>27名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #EF4444; width: 45px;">25.9%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 25.9%; height: 100%; background: #EF4444;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(7/27)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">54.98</td>
+        <td><span style="color:#9CA3AF;">未算出</span></td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">0</strong> / 7</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">7</strong> / 14</span>
+        </td>
+        <td class="text-slate-400">—</td>
+        <td><span class="pill pill-amber">❤️ 学生人気・集客牽引</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-indigo" style="margin-right: 6px;">有料出展</span>
+            株式会社Unith Link
+        </td>
+        <td>30名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #EF4444; width: 45px;">16.7%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 16.7%; height: 100%; background: #EF4444;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(5/30)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">61.97</td>
+        <td>80.98</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">3</strong> / 9</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">1</strong> / 13</span>
+        </td>
+        <td class="text-slate-700">+2.38 pt</td>
+        <td><span class="pill pill-rose">⚠️ アクション慎重・厳選</span></td>
+    </tr>
+    
+    <tr>
+        <td style="font-weight: 700; color: #111827;">
+            <span class="pill pill-slate" style="margin-right: 6px;">無料出展</span>
+            株式会社ミツカル
+        </td>
+        <td>25名</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="font-weight: 800; font-size: 15px; color: #EF4444; width: 45px;">0.0%</div>
+                <div style="flex-grow: 1; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; max-width: 80px;">
+                    <div style="width: 0.0%; height: 100%; background: #EF4444;"></div>
+                </div>
+                <span style="font-size: 12px; color: #6B7280;">(0/25)</span>
+            </div>
+        </td>
+        <td style="font-weight: 600;">58.03</td>
+        <td>79.51</td>
+        <td>
+            <span style="font-size: 12px;">企: <strong style="color: #4F46E5;">0</strong> / 5</span><br>
+            <span style="font-size: 12px;">学: <strong style="color: #D97706;">0</strong> / 8</span>
+        </td>
+        <td class="text-slate-400">—</td>
+        <td><span class="pill pill-rose">⚠️ アクション慎重・厳選</span></td>
+    </tr>
+    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="insight-box" style="margin-top: 0; background: #ECFDF5; border-color: var(--success); color: #065F46;">
+                <strong>👑 高マッチの共通項:</strong><br>
+                ベル（65.5%）やカペラ京都（59.4%）は、企業側がほぼ全員（90%以上）に知りたい以上を送り、学生のパーソナリティを高く引き出すブース体験を提供していました。
+            </div>
+            <div class="insight-box" style="margin-top: 0; background: #EEF2FF; border-color: var(--primary); color: #3730A3;">
+                <strong>🎯 超厳格スクリーニングの企業:</strong><br>
+                アイプラス（差 +9.49pt）やCKC（差 +7.03pt）は、理念・カルチャーに合う学生のみを驚異的な精度で一本釣りしており、採用基準のブレがありません。
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Paid vs Free Stratified Analysis -->
+    <div class="section-card">
+        <div class="section-header">
+            <div>
+                <div class="section-title">⚖️ 【層別比較】有料出展企業（4社） vs 無料出展企業（8社）</div>
+                <p style="font-size: 13px; color: #6B7280; margin-top: 4px;">新前提（有料はバリュー高優先配席、無料は高低混合）の統計検証</p>
+            </div>
+            <span class="pill pill-green">自然実験の完全立証</span>
+        </div>
+        
+        <div class="grid-2">
+            <div>
+                <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">🏢 企業アクション別バリュー推移（有料 vs 無料）</h3>
+                <div class="chart-box">
+                    <canvas id="compChart"></canvas>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>企業アクション</th>
+                            <th>有料企業 (N=122)</th>
+                            <th>無料企業 (N=191)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>なし</td>
+                            <td>60.09</td>
+                            <td><strong>56.73</strong> (低バリューを見送り)</td>
+                        </tr>
+                        <tr>
+                            <td>知りたい</td>
+                            <td>62.01</td>
+                            <td>60.46</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>めっちゃ知りたい</td>
+                            <td>63.13</td>
+                            <td><strong style="color: var(--primary);">64.24 (+7.51pt!)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>分散分析 (ANOVA)</td>
+                            <td>F=1.84 (p=0.161)</td>
+                            <td><strong>F=11.162 (p&lt;0.0001, η²=0.106)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h3 style="font-size: 15px; margin-bottom: 12px; font-weight: 700;">🎓 学生アクション別パーソナリティ推移（有料 vs 無料）</h3>
+                <div class="chart-box">
+                    <canvas id="studChart"></canvas>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>学生アクション</th>
+                            <th>有料企業に対するP値</th>
+                            <th>無料企業に対するP値</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>なし</td>
+                            <td>78.82</td>
+                            <td>77.55</td>
+                        </tr>
+                        <tr>
+                            <td>知りたい</td>
+                            <td>81.47</td>
+                            <td>77.63</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>めっちゃ知りたい</td>
+                            <td><strong style="color: #D97706;">82.44 (+3.62pt)</strong></td>
+                            <td>79.22</td>
+                        </tr>
+                        <tr>
+                            <td>相関 r (バリュー × P)</td>
+                            <td>r = +0.079 (無相関)</td>
+                            <td>r = -0.002 (完全無相関)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new Chart(document.getElementById('compChart'), {
+        type: 'bar',
+        data: {
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {
+                    label: '有料企業 (N=122)',
+                    data: [60.09, 62.01, 63.13],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 6
+                },
+                {
+                    label: '無料企業 (N=191)',
+                    data: [56.73, 60.46, 64.24],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 50, max: 70 } }
+        }
+    });
+
+    new Chart(document.getElementById('studChart'), {
+        type: 'bar',
+        data: {
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {
+                    label: '有料企業ブース (N=122)',
+                    data: [78.82, 81.47, 82.44],
+                    backgroundColor: '#F59E0B',
+                    borderRadius: 6
+                },
+                {
+                    label: '無料企業ブース (N=164)',
+                    data: [77.55, 77.63, 79.22],
+                    backgroundColor: '#9CA3AF',
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 70, max: 86 } }
+        }
+    });
+</script>
+
+</body>
+</html>

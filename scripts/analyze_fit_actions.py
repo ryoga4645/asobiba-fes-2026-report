@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ASOBIBA FES 2026: バリューフィット・パーソナリティフィットとマッチング傾向の統計分析スクリプト
+- 全体分析
+- 有料企業 vs 無料企業 完全層別分析
+- 全12社別 個別データ分析
 外部ライブラリ非依存（Python標準ライブラリのみで動作）
 """
 
@@ -70,7 +73,6 @@ def calc_stats(data):
     }
 
 def welch_t_test(g1, g2):
-    """Welchのt検定（分散の等質性を仮定しない）"""
     n1, n2 = len(g1), len(g2)
     if n1 < 2 or n2 < 2:
         return {'t': 0.0, 'df': 0.0, 'p': 1.0, 'd': 0.0}
@@ -82,12 +84,10 @@ def welch_t_test(g1, g2):
         return {'t': 0.0, 'df': 0.0, 'p': 1.0, 'd': 0.0}
     t = (m1 - m2) / se
     
-    # Welch-Satterthwaiteの自由度
     df = ((v1 / n1 + v2 / n2) ** 2) / (
         ((v1 / n1) ** 2) / (n1 - 1) + ((v2 / n2) ** 2) / (n2 - 1)
     )
     
-    # Cohen's d (効果量)
     pooled_s = math.sqrt(((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2))
     d = (m1 - m2) / pooled_s if pooled_s > 0 else 0.0
     
@@ -97,7 +97,6 @@ def welch_t_test(g1, g2):
     return {'t': round(t, 3), 'df': round(df, 1), 'p': round(p, 4), 'd': round(d, 3)}
 
 def mann_whitney_u(g1, g2):
-    """マン・ホイットニーのU検定（ノンパラメトリック検定）"""
     n1, n2 = len(g1), len(g2)
     if n1 == 0 or n2 == 0:
         return {'u': 0.0, 'z': 0.0, 'p': 1.0, 'r': 0.0}
@@ -125,12 +124,11 @@ def mann_whitney_u(g1, g2):
     sigma_u = math.sqrt((n1 * n2 * (n1 + n2 + 1)) / 12.0)
     z = (u - mu_u) / sigma_u if sigma_u > 0 else 0.0
     p = 2.0 * (1.0 - normal_cdf(abs(z)))
-    r = abs(z) / math.sqrt(n1 + n2) # 効果量 r
+    r = abs(z) / math.sqrt(n1 + n2)
     
     return {'u': round(u, 1), 'z': round(z, 3), 'p': round(p, 4), 'r': round(r, 3)}
 
 def one_way_anova(groups):
-    """一元配置分散分析（ANOVA）"""
     valid_groups = [g for g in groups if len(g) > 0]
     k = len(valid_groups)
     total_n = sum(len(g) for g in valid_groups)
@@ -170,7 +168,6 @@ def one_way_anova(groups):
     }
 
 def spearman_rank_correlation(x, y):
-    """スピアマンの順位相関係数"""
     n = len(x)
     if n < 3:
         return {'rho': 0.0, 'p': 1.0}
@@ -204,6 +201,16 @@ def spearman_rank_correlation(x, y):
         p = 2.0 * (1.0 - normal_cdf(abs(t)))
         
     return {'rho': round(rho, 3), 'p': round(p, 4)}
+
+def pearson_correlation(x, y):
+    n = len(x)
+    if n < 2:
+        return 0.0
+    mx, my = mean(x), mean(y)
+    cov = sum((x[i] - mx) * (y[i] - my) for i in range(n)) / (n - 1)
+    sx = std_dev(x)
+    sy = std_dev(y)
+    return round(cov / (sx * sy), 3) if sx > 0 and sy > 0 else 0.0
 
 # ==========================================
 # 2. ロジスティック回帰（Newton-Raphson）
@@ -380,136 +387,61 @@ def load_and_preprocess_data():
     return processed
 
 # ==========================================
-# 4. 主要分析の実行
+# 4. サブセット分析（全体、有料、無料用汎用関数）
 # ==========================================
 
-def run_analysis():
-    data = load_and_preprocess_data()
-    total_count = len(data)
-    valid_p_data = [d for d in data if d['personality_fit'] is not None]
+def analyze_subset(subset, name="subset"):
+    count = len(subset)
+    valid_p = [d for d in subset if d['personality_fit'] is not None]
     
-    print("=" * 60)
-    print(f"ASOBIBA FES 2026 データ分析実行（総数: {total_count}件, パーソナリティ有効: {len(valid_p_data)}件）")
-    print("=" * 60)
-    
-    # 分析1: 企業アクション別
-    comp_groups_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-    comp_groups_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-    
-    for d in data:
-        comp_groups_v[d['company_action']].append(d['value_fit'])
+    # 企業アクション別
+    c_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
+    c_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
+    for d in subset:
+        c_v[d['company_action']].append(d['value_fit'])
         if d['personality_fit'] is not None:
-            comp_groups_p[d['company_action']].append(d['personality_fit'])
+            c_p[d['company_action']].append(d['personality_fit'])
             
-    stats_c_v = {k: calc_stats(v) for k, v in comp_groups_v.items()}
-    stats_c_p = {k: calc_stats(v) for k, v in comp_groups_p.items()}
+    stats_c_v = {k: calc_stats(v) for k, v in c_v.items()}
+    stats_c_p = {k: calc_stats(v) for k, v in c_p.items()}
     
-    anova_c_v = one_way_anova([comp_groups_v['なし'], comp_groups_v['知りたい'], comp_groups_v['めっちゃ知りたい']])
-    anova_c_p = one_way_anova([comp_groups_p['なし'], comp_groups_p['知りたい'], comp_groups_p['めっちゃ知りたい']])
+    anova_c_v = one_way_anova([c_v['なし'], c_v['知りたい'], c_v['めっちゃ知りたい']])
+    anova_c_p = one_way_anova([c_p['なし'], c_p['知りたい'], c_p['めっちゃ知りたい']])
     
-    t_c_v_none_know = welch_t_test(comp_groups_v['知りたい'], comp_groups_v['なし'])
-    t_c_v_know_very = welch_t_test(comp_groups_v['めっちゃ知りたい'], comp_groups_v['知りたい'])
-    t_c_v_none_very = welch_t_test(comp_groups_v['めっちゃ知りたい'], comp_groups_v['なし'])
+    t_c_v_very_vs_none = welch_t_test(c_v['めっちゃ知りたい'], c_v['なし'])
+    sp_c_v = spearman_rank_correlation([d['company_score'] for d in subset], [d['value_fit'] for d in subset])
+    sp_c_p = spearman_rank_correlation([d['company_score'] for d in valid_p], [d['personality_fit'] for d in valid_p])
     
-    mw_c_v_none_know = mann_whitney_u(comp_groups_v['知りたい'], comp_groups_v['なし'])
-    mw_c_v_know_very = mann_whitney_u(comp_groups_v['めっちゃ知りたい'], comp_groups_v['知りたい'])
-    mw_c_v_none_very = mann_whitney_u(comp_groups_v['めっちゃ知りたい'], comp_groups_v['なし'])
-    
-    sp_c_v = spearman_rank_correlation([d['company_score'] for d in data], [d['value_fit'] for d in data])
-    sp_c_p = spearman_rank_correlation([d['company_score'] for d in valid_p_data], [d['personality_fit'] for d in valid_p_data])
-    
-    # 分析2: 学生アクション別
-    stud_groups_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-    stud_groups_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-    
-    for d in data:
-        stud_groups_v[d['student_action']].append(d['value_fit'])
+    # 学生アクション別
+    s_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
+    s_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
+    for d in subset:
+        s_v[d['student_action']].append(d['value_fit'])
         if d['personality_fit'] is not None:
-            stud_groups_p[d['student_action']].append(d['personality_fit'])
+            s_p[d['student_action']].append(d['personality_fit'])
             
-    stats_s_v = {k: calc_stats(v) for k, v in stud_groups_v.items()}
-    stats_s_p = {k: calc_stats(v) for k, v in stud_groups_p.items()}
+    stats_s_v = {k: calc_stats(v) for k, v in s_v.items()}
+    stats_s_p = {k: calc_stats(v) for k, v in s_p.items()}
     
-    anova_s_v = one_way_anova([stud_groups_v['なし'], stud_groups_v['知りたい'], stud_groups_v['めっちゃ知りたい']])
-    anova_s_p = one_way_anova([stud_groups_p['なし'], stud_groups_p['知りたい'], stud_groups_p['めっちゃ知りたい']])
+    anova_s_v = one_way_anova([s_v['なし'], s_v['知りたい'], s_v['めっちゃ知りたい']])
+    anova_s_p = one_way_anova([s_p['なし'], s_p['知りたい'], s_p['めっちゃ知りたい']])
     
-    t_s_p_none_know = welch_t_test(stud_groups_p['知りたい'], stud_groups_p['なし'])
-    t_s_p_know_very = welch_t_test(stud_groups_p['めっちゃ知りたい'], stud_groups_p['知りたい'])
-    t_s_p_none_very = welch_t_test(stud_groups_p['めっちゃ知りたい'], stud_groups_p['なし'])
+    t_s_p_very_vs_none = welch_t_test(s_p['めっちゃ知りたい'], s_p['なし'])
+    sp_s_v = spearman_rank_correlation([d['student_score'] for d in subset], [d['value_fit'] for d in subset])
+    sp_s_p = spearman_rank_correlation([d['student_score'] for d in valid_p], [d['personality_fit'] for d in valid_p])
     
-    mw_s_p_none_know = mann_whitney_u(stud_groups_p['知りたい'], stud_groups_p['なし'])
-    mw_s_p_know_very = mann_whitney_u(stud_groups_p['めっちゃ知りたい'], stud_groups_p['知りたい'])
-    mw_s_p_none_very = mann_whitney_u(stud_groups_p['めっちゃ知りたい'], stud_groups_p['なし'])
+    # マッチ別
+    m_v = {'マッチ済み': [d['value_fit'] for d in subset if d['is_matched'] == 1],
+           '未マッチ': [d['value_fit'] for d in subset if d['is_matched'] == 0]}
+    m_p = {'マッチ済み': [d['personality_fit'] for d in valid_p if d['is_matched'] == 1],
+           '未マッチ': [d['personality_fit'] for d in valid_p if d['is_matched'] == 0]}
+           
+    stats_m_v = {k: calc_stats(v) for k, v in m_v.items()}
+    stats_m_p = {k: calc_stats(v) for k, v in m_p.items()}
+    t_m_v = welch_t_test(m_v['マッチ済み'], m_v['未マッチ'])
+    t_m_p = welch_t_test(m_p['マッチ済み'], m_p['未マッチ'])
     
-    sp_s_v = spearman_rank_correlation([d['student_score'] for d in data], [d['value_fit'] for d in data])
-    sp_s_p = spearman_rank_correlation([d['student_score'] for d in valid_p_data], [d['personality_fit'] for d in valid_p_data])
-    
-    # 分析3: マッチング成立要因
-    match_groups_v = {'マッチ済み': [], '未マッチ': []}
-    match_groups_p = {'マッチ済み': [], '未マッチ': []}
-    
-    for d in data:
-        key = 'マッチ済み' if d['is_matched'] == 1 else '未マッチ'
-        match_groups_v[key].append(d['value_fit'])
-        if d['personality_fit'] is not None:
-            match_groups_p[key].append(d['personality_fit'])
-            
-    stats_m_v = {k: calc_stats(v) for k, v in match_groups_v.items()}
-    stats_m_p = {k: calc_stats(v) for k, v in match_groups_p.items()}
-    
-    t_m_v = welch_t_test(match_groups_v['マッチ済み'], match_groups_v['未マッチ'])
-    mw_m_v = mann_whitney_u(match_groups_v['マッチ済み'], match_groups_v['未マッチ'])
-    
-    t_m_p = welch_t_test(match_groups_p['マッチ済み'], match_groups_p['未マッチ'])
-    mw_m_p = mann_whitney_u(match_groups_p['マッチ済み'], match_groups_p['未マッチ'])
-    
-    # 分析4: ロジスティック回帰
-    # 目的変数: マッチ成立 (1/0)
-    X_reg = []
-    y_reg = []
-    for d in valid_p_data:
-        X_reg.append([1.0, d['value_fit'], d['personality_fit'], float(d['is_paid'])])
-        y_reg.append(d['is_matched'])
-        
-    logit_res = logistic_regression(X_reg, y_reg)
-    logit_names = ['切片', 'バリューフィット', 'パーソナリティフィット', '有料出展企業フラグ']
-    logit_table = []
-    for name, res in zip(logit_names, logit_res):
-        logit_table.append({
-            'variable': name,
-            **res
-        })
-        
-    # 分析5: 層別集計
-    paid_data = [d for d in data if d['is_paid'] == 1]
-    free_data = [d for d in data if d['is_paid'] == 0]
-    
-    def get_stratified_stats(subset):
-        c_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-        c_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-        s_v = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-        s_p = {'なし': [], '知りたい': [], 'めっちゃ知りたい': []}
-        for d in subset:
-            c_v[d['company_action']].append(d['value_fit'])
-            s_v[d['student_action']].append(d['value_fit'])
-            if d['personality_fit'] is not None:
-                c_p[d['company_action']].append(d['personality_fit'])
-                s_p[d['student_action']].append(d['personality_fit'])
-        return {
-            'count': len(subset),
-            'match_rate': round(sum(d['is_matched'] for d in subset) / len(subset) * 100, 1),
-            'c_v_means': {k: round(mean(v), 2) for k, v in c_v.items()},
-            'c_p_means': {k: round(mean(v), 2) for k, v in c_p.items()},
-            's_v_means': {k: round(mean(v), 2) for k, v in s_v.items()},
-            's_p_means': {k: round(mean(v), 2) for k, v in s_p.items()}
-        }
-        
-    stratified = {
-        'paid': get_stratified_stats(paid_data),
-        'free': get_stratified_stats(free_data)
-    }
-    
-    # 分析6: 3×3マトリクス
+    # 3x3マトリクス
     matrix_3x3 = []
     v_tiers = [('低 (<58.0)', lambda v: v < 58), ('中 (58.0〜63.9)', lambda v: 58 <= v < 64), ('高 (>=64.0)', lambda v: v >= 64)]
     p_tiers = [('高 (>=82.0)', lambda p: p >= 82), ('中 (76.0〜81.9)', lambda p: 76 <= p < 82), ('低 (<76.0)', lambda p: p < 76)]
@@ -517,7 +449,7 @@ def run_analysis():
     for p_name, p_cond in p_tiers:
         row = []
         for v_name, v_cond in v_tiers:
-            cell_items = [d for d in valid_p_data if v_cond(d['value_fit']) and p_cond(d['personality_fit'])]
+            cell_items = [d for d in valid_p if v_cond(d['value_fit']) and p_cond(d['personality_fit'])]
             n = len(cell_items)
             matches = sum(d['is_matched'] for d in cell_items)
             match_rate = round(matches / n * 100, 1) if n > 0 else 0.0
@@ -525,36 +457,30 @@ def run_analysis():
             comp_very_rate = round(comp_very / n * 100, 1) if n > 0 else 0.0
             stud_know = sum(1 for d in cell_items if d['student_action'] in ('知りたい', 'めっちゃ知りたい'))
             stud_know_rate = round(stud_know / n * 100, 1) if n > 0 else 0.0
-            
             row.append({
-                'v_tier': v_name,
-                'p_tier': p_name,
-                'count': n,
-                'matches': matches,
-                'match_rate': match_rate,
-                'comp_very_rate': comp_very_rate,
-                'stud_know_rate': stud_know_rate
+                'v_tier': v_name, 'p_tier': p_name,
+                'count': n, 'matches': matches, 'match_rate': match_rate,
+                'comp_very_rate': comp_very_rate, 'stud_know_rate': stud_know_rate
             })
         matrix_3x3.append(row)
         
-    output_data = {
-        'total_count': total_count,
-        'valid_p_count': len(valid_p_data),
+    corr_vp = pearson_correlation([d['value_fit'] for d in valid_p], [d['personality_fit'] for d in valid_p])
+    
+    return {
+        'name': name,
+        'count': count,
+        'valid_p_count': len(valid_p),
+        'match_count': sum(d['is_matched'] for d in subset),
+        'match_rate': round(sum(d['is_matched'] for d in subset) / count * 100, 1),
+        'value_stats': calc_stats([d['value_fit'] for d in subset]),
+        'personality_stats': calc_stats([d['personality_fit'] for d in valid_p]),
+        'value_personality_corr': corr_vp,
         'company_analysis': {
             'stats_value': stats_c_v,
             'stats_personality': stats_c_p,
             'anova_value': anova_c_v,
             'anova_personality': anova_c_p,
-            'welch_value': {
-                'know_vs_none': t_c_v_none_know,
-                'very_vs_know': t_c_v_know_very,
-                'very_vs_none': t_c_v_none_very
-            },
-            'mann_whitney_value': {
-                'know_vs_none': mw_c_v_none_know,
-                'very_vs_know': mw_c_v_know_very,
-                'very_vs_none': mw_c_v_none_very
-            },
+            't_very_vs_none': t_c_v_very_vs_none,
             'spearman_value': sp_c_v,
             'spearman_personality': sp_c_p
         },
@@ -563,16 +489,7 @@ def run_analysis():
             'stats_personality': stats_s_p,
             'anova_value': anova_s_v,
             'anova_personality': anova_s_p,
-            'welch_personality': {
-                'know_vs_none': t_s_p_none_know,
-                'very_vs_know': t_s_p_know_very,
-                'very_vs_none': t_s_p_none_very
-            },
-            'mann_whitney_personality': {
-                'know_vs_none': mw_s_p_none_know,
-                'very_vs_know': mw_s_p_know_very,
-                'very_vs_none': mw_s_p_none_very
-            },
+            't_very_vs_none': t_s_p_very_vs_none,
             'spearman_value': sp_s_v,
             'spearman_personality': sp_s_p
         },
@@ -580,21 +497,154 @@ def run_analysis():
             'stats_value': stats_m_v,
             'stats_personality': stats_m_p,
             'welch_value': t_m_v,
-            'mann_whitney_value': mw_m_v,
-            'welch_personality': t_m_p,
-            'mann_whitney_personality': mw_m_p,
-            'logistic_regression': logit_table
+            'welch_personality': t_m_p
         },
-        'stratified_analysis': stratified,
         'matrix_3x3': matrix_3x3
+    }
+
+# ==========================================
+# 5. 全12社別 個別データ分析
+# ==========================================
+
+def analyze_companies(data):
+    companies = sorted(list(set(d['company'] for d in data)))
+    
+    paid_companies = {
+        '株式会社リード・イノベーション',
+        '株式会社Unith Link',
+        '株式会社ベル',
+        'NTT 都市開発ホテルマネジメント株式会社　カペラ京都'
+    }
+    
+    company_profiles = []
+    
+    for c in companies:
+        c_data = [d for d in data if d['company'] == c]
+        n = len(c_data)
+        matches = sum(d['is_matched'] for d in c_data)
+        match_rate = round(matches / n * 100, 1)
+        
+        is_paid = 1 if c in paid_companies else 0
+        
+        c_very = sum(1 for d in c_data if d['company_action'] == 'めっちゃ知りたい')
+        c_know = sum(1 for d in c_data if d['company_action'] == '知りたい')
+        c_none = sum(1 for d in c_data if d['company_action'] == 'なし')
+        
+        s_very = sum(1 for d in c_data if d['student_action'] == 'めっちゃ知りたい')
+        s_know = sum(1 for d in c_data if d['student_action'] == '知りたい')
+        s_none = sum(1 for d in c_data if d['student_action'] == 'なし')
+        
+        vf_all = [d['value_fit'] for d in c_data]
+        pf_all = [d['personality_fit'] for d in c_data if d['personality_fit'] is not None]
+        
+        vf_stats = calc_stats(vf_all)
+        pf_stats = calc_stats(pf_all) if pf_all else None
+        
+        vf_very = [d['value_fit'] for d in c_data if d['company_action'] == 'めっちゃ知りたい']
+        vf_know = [d['value_fit'] for d in c_data if d['company_action'] == '知りたい']
+        vf_none = [d['value_fit'] for d in c_data if d['company_action'] == 'なし']
+        
+        m_very = round(mean(vf_very), 2) if vf_very else None
+        m_know = round(mean(vf_know), 2) if vf_know else None
+        m_none = round(mean(vf_none), 2) if vf_none else None
+        diff_very_none = round(m_very - m_none, 2) if (m_very is not None and m_none is not None) else None
+        
+        if pf_all:
+            pf_know_plus = [d['personality_fit'] for d in c_data if d['student_action'] in ('知りたい', 'めっちゃ知りたい') and d['personality_fit'] is not None]
+            pf_none_s = [d['personality_fit'] for d in c_data if d['student_action'] == 'なし' and d['personality_fit'] is not None]
+            s_pf_know_mean = round(mean(pf_know_plus), 2) if pf_know_plus else None
+            s_pf_none_mean = round(mean(pf_none_s), 2) if pf_none_s else None
+            diff_stud_p = round(s_pf_know_mean - s_pf_none_mean, 2) if (s_pf_know_mean is not None and s_pf_none_mean is not None) else None
+        else:
+            s_pf_know_mean, s_pf_none_mean, diff_stud_p = None, None, None
+            
+        if match_rate >= 55.0:
+            category = "高マッチ・高エンゲージメント型"
+        elif diff_very_none is not None and diff_very_none >= 6.0:
+            category = "超厳格バリュースクリーニング型"
+        elif (s_very + s_know) / n >= 0.65:
+            category = "学生人気・集客牽引型"
+        elif c_none / n >= 0.50:
+            category = "アクション慎重・厳選型"
+        else:
+            category = "標準バランス型"
+            
+        company_profiles.append({
+            'company': c,
+            'is_paid': is_paid,
+            'plan_type': '有料出展' if is_paid else '無料出展',
+            'count': n,
+            'matches': matches,
+            'match_rate': match_rate,
+            'category': category,
+            'company_actions': {
+                'very': c_very, 'know': c_know, 'none': c_none,
+                'very_rate': round(c_very / n * 100, 1),
+                'active_rate': round((c_very + c_know) / n * 100, 1)
+            },
+            'student_actions': {
+                'very': s_very, 'know': s_know, 'none': s_none,
+                'very_rate': round(s_very / n * 100, 1),
+                'active_rate': round((s_very + s_know) / n * 100, 1)
+            },
+            'value_stats': vf_stats,
+            'personality_stats': pf_stats,
+            'value_screening': {
+                'mean_very': m_very,
+                'mean_know': m_know,
+                'mean_none': m_none,
+                'diff_very_none': diff_very_none
+            },
+            'student_personality_reaction': {
+                'mean_know_plus': s_pf_know_mean,
+                'mean_none': s_pf_none_mean,
+                'diff': diff_stud_p
+            }
+        })
+        
+    company_profiles.sort(key=lambda x: x['match_rate'], reverse=True)
+    return company_profiles
+
+# ==========================================
+# 6. メイン実行
+# ==========================================
+
+def run_analysis():
+    data = load_and_preprocess_data()
+    paid_data = [d for d in data if d['is_paid'] == 1]
+    free_data = [d for d in data if d['is_paid'] == 0]
+    
+    print("=" * 60)
+    print(f"ASOBIBA FES 2026 拡張データ分析実行")
+    print(f"全体: {len(data)}件 | 有料企業: {len(paid_data)}件 | 無料企業: {len(free_data)}件")
+    print("=" * 60)
+    
+    overall_res = analyze_subset(data, name="overall")
+    paid_res = analyze_subset(paid_data, name="paid")
+    free_res = analyze_subset(free_data, name="free")
+    company_profiles = analyze_companies(data)
+    
+    valid_p_data = [d for d in data if d['personality_fit'] is not None]
+    X_reg = [[1.0, d['value_fit'], d['personality_fit'], float(d['is_paid'])] for d in valid_p_data]
+    y_reg = [d['is_matched'] for d in valid_p_data]
+    logit_res = logistic_regression(X_reg, y_reg)
+    logit_names = ['切片', 'バリューフィット', 'パーソナリティフィット', '有料出展企業フラグ']
+    logit_table = [{'variable': name, **res} for name, res in zip(logit_names, logit_res)]
+    
+    output = {
+        'overall': overall_res,
+        'paid_analysis': paid_res,
+        'free_analysis': free_res,
+        'company_profiles': company_profiles,
+        'logistic_regression': logit_table
     }
     
     os.makedirs('scripts', exist_ok=True)
     with open('scripts/analysis_results.json', 'w', encoding='utf-8') as f:
-        json.dump(output_data, f, ensure_ascii=False, indent=2)
+        json.dump(output, f, ensure_ascii=False, indent=2)
         
-    print("\n[OK] 分析完了！結果を scripts/analysis_results.json に出力しました。")
-    return output_data
+    print("[OK] 分析完了！scripts/analysis_results.json を更新しました。")
+    return output
 
 if __name__ == '__main__':
     run_analysis()
