@@ -256,6 +256,13 @@ def build_html():
             flex-direction: column;
         }}
 
+        .grid-3 {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }}
+
         .grid-4 {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -528,26 +535,66 @@ def build_html():
     <!-- ============================================================= -->
     <div id="tab-overall" class="tab-pane active">
         <!-- Top KPI Cards: 基本統計量 (実測値) -->
-        <div class="grid-4">
+        <div class="grid-3">
             <div class="kpi-card">
-                <div class="kpi-title">バリューフィット度 平均値</div>
-                <div class="kpi-value">{fmt_num(kpi['value_fit']['mean'])}</div>
-                <div class="kpi-sub">中央値: <strong>{fmt_num(kpi['value_fit']['median'])}</strong> / SD: ±{fmt_num(kpi['value_fit']['std'])} (N={kpi['value_fit']['N']})</div>
+                <div class="kpi-title">バリューフィット度</div>
+                <div class="kpi-value" style="margin-bottom: 10px;">
+                    {fmt_num(kpi['value_fit']['mean'])}
+                    <span style="font-size: 13px; font-weight: 600; color: var(--gray-500); margin-left: 4px;">(平均値)</span>
+                </div>
+                <div class="kpi-sub" style="display: flex; flex-direction: column; gap: 5px; border-top: 1px solid var(--gray-200); padding-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>中央値</span><strong>{fmt_num(kpi['value_fit']['median'])}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>標準偏差 (SD)</span><strong>±{fmt_num(kpi['value_fit']['std'])}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>実測範囲</span><strong>{fmt_num(kpi['value_fit']['min'])} 〜 {fmt_num(kpi['value_fit']['max'])}</strong>
+                    </div>
+                    <div style="font-size: 11px; color: var(--gray-400); text-align: right; margin-top: 2px;">
+                        サンプル数: N={kpi['value_fit']['N']}
+                    </div>
+                </div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-title">バリューフィット度 実測範囲</div>
-                <div class="kpi-value" style="font-size: 20px; padding-top: 4px;">{fmt_num(kpi['value_fit']['min'])} 〜 {fmt_num(kpi['value_fit']['max'])}</div>
-                <div class="kpi-sub">※0〜100の尺度ではありません</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">パーソナリティフィット度 平均値</div>
-                <div class="kpi-value">{fmt_num(kpi['personality_fit']['mean'])}</div>
-                <div class="kpi-sub">中央値: <strong>{fmt_num(kpi['personality_fit']['median'])}</strong> / SD: ±{fmt_num(kpi['personality_fit']['std'])} (N={kpi['personality_fit']['N']})</div>
+                <div class="kpi-title">パーソナリティフィット度</div>
+                <div class="kpi-value" style="margin-bottom: 10px;">
+                    {fmt_num(kpi['personality_fit']['mean'])}
+                    <span style="font-size: 13px; font-weight: 600; color: var(--gray-500); margin-left: 4px;">(平均値)</span>
+                </div>
+                <div class="kpi-sub" style="display: flex; flex-direction: column; gap: 5px; border-top: 1px solid var(--gray-200); padding-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>中央値</span><strong>{fmt_num(kpi['personality_fit']['median'])}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>標準偏差 (SD)</span><strong>±{fmt_num(kpi['personality_fit']['std'])}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>実測範囲</span><strong>{fmt_num(kpi['personality_fit']['min'])} 〜 {fmt_num(kpi['personality_fit']['max'])}</strong>
+                    </div>
+                    <div style="font-size: 11px; color: var(--gray-400); text-align: right; margin-top: 2px;">
+                        サンプル数: N={kpi['personality_fit']['N']}
+                    </div>
+                </div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">マッチング成立率（全体）</div>
-                <div class="kpi-value" style="color: var(--success);">{fmt_pct(kpi['matching']['matched_all_pct'])}</div>
-                <div class="kpi-sub">全313件中 <strong>{kpi['matching']['matched_all']}件</strong> 成立 (パーソナリティあり: {fmt_pct(kpi['matching']['matched_pers_pct'])}, {kpi['matching']['matched_pers']}/{kpi['matching']['N_pers']})</div>
+                <div class="kpi-value" style="color: var(--success); margin-bottom: 10px;">
+                    {fmt_pct(kpi['matching']['matched_all_pct'])}
+                    <span style="font-size: 13px; font-weight: 600; color: var(--gray-500); margin-left: 4px;">(成立率)</span>
+                </div>
+                <div class="kpi-sub" style="display: flex; flex-direction: column; gap: 5px; border-top: 1px solid var(--gray-200); padding-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>成立数</span><strong>{kpi['matching']['matched_all']} 件</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>総ペア数</span><strong>{kpi['matching']['N_all']} 件</strong>
+                    </div>
+                    <div style="margin-top: 6px; font-size: 11px; color: var(--gray-500); line-height: 1.3;">
+                        ※パーソナリティ有効ペア: {fmt_pct(kpi['matching']['matched_pers_pct'])} ({kpi['matching']['matched_pers']}/{kpi['matching']['N_pers']}件)
+                    </div>
+                </div>
             </div>
         </div>
 
