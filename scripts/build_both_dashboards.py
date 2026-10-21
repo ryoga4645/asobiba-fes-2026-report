@@ -1446,68 +1446,62 @@ def build_html():
             </div>
         </div>
 
-        <!-- Section 3: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
+        <!-- Section 3: 💎 有料企業 要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🎯 【区分別要因分析】出展区分ごとの要因分析（要点まとめ ＆ 詳細モデル）</div>
-                    <div class="section-desc">有料企業（N=122）および無料企業（N=191/164）におけるスコア影響度の要約と回帰モデル</div>
+                    <div class="section-title">🎯 【有料企業：要因分析】スコアがアクション選択に与える影響（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">有料企業4社（122件）における企業側および学生側のアクション選択への各スコア影響度（ロジット回帰）</div>
                 </div>
-                <span class="pill pill-indigo">区分別要因分析</span>
+                <span class="pill pill-indigo">有料企業要因分析</span>
             </div>
 
-            <!-- 前面：要点まとめ比較テーブル ＆ インパクトグラフ -->
+            <!-- 前面：直感的な要点まとめ（表 ＆ 視覚化グラフ） -->
             <div class="grid-2" style="margin-bottom: 20px;">
-                <!-- 左：要点まとめ比較テーブル -->
+                <!-- 左：要点まとめ表 -->
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業群：スコア10pt上昇時の選択への影響（要点）</h3>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 22%;">出展区分</th>
-                                    <th style="width: 38%;">バリューの影響（10pt上昇）</th>
-                                    <th style="width: 40%;">パーソナリティの影響 ＆ 特徴</th>
+                                    <th style="width: 26%;">評価要因</th>
+                                    <th style="width: 37%;">🏢 企業側の選択への影響</th>
+                                    <th style="width: 37%;">🎓 学生側の選択への影響</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="background: #EEF2FF;">
+                                <tr>
+                                    <td><strong>バリュー<br>フィット度</strong></td>
                                     <td>
-                                        <strong style="color: var(--primary);">💎 有料企業群</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500);">(4社・122件)</span>
-                                    </td>
-                                    <td>
-                                        <span style="color: var(--primary); font-size: 13.5px; font-weight: 700;">知りたい以上：約 1.78 倍 (†)</span><br>
-                                        <span style="color: var(--primary); font-size: 13.5px; font-weight: 700;">めっちゃ知りたい：約 2.17 倍 (†)</span>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            事前マッチングにより元々高バリュー層が集中的に配席されていたため、倍率効果はマイルドに表れる。
+                                        <strong style="color: var(--primary); font-size: 14px;">約 1.8 〜 2.2 倍</strong><br>
+                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">有意傾向 (†)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>1.78倍†</strong>、めっちゃ知りたいで <strong>2.17倍†</strong>。事前配席でベースが高い中、一定の選考寄与。
                                         </div>
                                     </td>
                                     <td>
-                                        <span style="color: var(--gray-700); font-size: 13px;">知りたい以上：約 0.98 倍</span><br>
-                                        <span style="color: var(--gray-700); font-size: 13px;">めっちゃ知りたい：約 0.95 倍</span>
-                                        <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.35;">
-                                            統計的有意差なし（企業の選定にスコア連動なし）。
+                                        <strong style="color: #0284C7; font-size: 14px;">約 1.6 〜 2.0 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">有意な影響 (*)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>2.04倍*</strong>（p=0.0185）、知りたいで <strong>2.23倍*</strong>。学生側もバリュー高を明確に選好。
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><strong>パーソナリティ<br>フィット度</strong></td>
                                     <td>
-                                        <strong style="color: #0F766E;">🌱 無料企業群</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500);">(8社・191件 / P有効164件)</span>
-                                    </td>
-                                    <td>
-                                        <strong style="color: #0F766E; font-size: 13.5px;">知りたい以上：約 2.06 倍 (***)</strong><br>
-                                        <strong style="color: #0F766E; font-size: 13.5px;">めっちゃ知りたい：約 3.22 倍 (***)</strong>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            企業の完全な自由選択が行われたため、バリューフィット度が最高のアクション選択を強力に牽引。
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 0.95 〜 0.98 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上 <strong>0.98倍</strong>、めっちゃ知りたい <strong>0.95倍</strong>。企業の選定にスコア連動なし。
                                         </div>
                                     </td>
                                     <td>
-                                        <span style="color: var(--gray-700); font-size: 13px;">知りたい以上：約 1.16 倍</span><br>
-                                        <span style="color: var(--gray-700); font-size: 13px;">めっちゃ知りたい：約 0.97 倍</span>
-                                        <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.35;">
-                                            統計的有意差なし（バリュー主導の選定傾向が鮮明）。
+                                        <strong style="color: var(--amber-600); font-size: 14px;">約 1.6 〜 1.9 倍</strong><br>
+                                        <span class="pill pill-amber" style="font-size: 10px; margin-top: 3px;">有意な影響 (*)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>1.64倍*</strong>（p=0.0435）、めっちゃ知りたいで <strong>1.90倍</strong>。有料企業宛では学生が相性を重視。
                                         </div>
                                     </td>
                                 </tr>
@@ -1519,14 +1513,14 @@ def build_html():
                     </div>
                 </div>
 
-                <!-- 右：視覚的インパクト比較グラフ -->
+                <!-- 右：視覚的インパクトグラフ -->
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 区分別 選択倍率インパクト比較（有料 vs 無料 / 基準=1.0倍）</h3>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 有料企業群：10pt上昇時の選択倍率インパクト（基準=1.0倍）</h3>
                     <div class="chart-box" style="height: 270px;">
-                        <canvas id="chart-strat-impact"></canvas>
+                        <canvas id="chart-strat-paid-impact"></canvas>
                     </div>
                     <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
-                        ※赤線（1.0倍）より右に大きく伸びるほど強いプラス影響。無料企業の「めっちゃ知りたい」バリューOR（3.22倍***）が最も顕著。
+                        ※赤線（1.0倍）より右に伸びるほど強いプラス影響。有料企業宛の学生はバリュー（2.04倍*）とパーソナリティ（1.64倍*）の両方に有意連動。
                     </div>
                 </div>
             </div>
@@ -1534,11 +1528,11 @@ def build_html():
             <!-- 専門的な詳細アコーディオン -->
             <details class="stats-details">
                 <summary class="stats-summary">
-                    <span>📊 有料企業・無料企業別の詳細統計データ（オッズ比・95%信頼区間・p値）を展開する</span>
+                    <span>📊 有料企業群の詳細統計データ（オッズ比・95%信頼区間・p値：企業 ＆ 学生）を展開する</span>
                     <span class="pill pill-indigo">クリックで開閉</span>
                 </summary>
                 <div class="stats-content">
-                    <!-- 有料企業回帰 -->
+                    <!-- 有料：企業回帰 -->
                     <div style="margin-bottom: 24px;">
                         <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 有料企業 (N=122) における企業アクション回帰詳細</h3>
                         <div class="table-container">
@@ -1569,8 +1563,136 @@ def build_html():
                         </div>
                     </div>
 
-                    <!-- 無料企業回帰 -->
+                    <!-- 有料：学生回帰 -->
                     <div>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 有料企業宛 (N=122) における学生アクション回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 24%;">モデル / 説明変数</th>
+                                        <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>バリューフィット度 (単変量)</td>
+                                        <td><strong>OR {fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['paid']['student']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['paid']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>パーソナリティフィット度 (単変量)</td>
+                                        <td><strong>OR {fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['paid']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="summary-box">
+                <strong class="title">📝 有料企業群（N=122）の要因分析まとめ:</strong>
+                <ul>
+                    <li><strong>企業側</strong>：事前マッチングにより元々高バリュー層が集中的に配席されていたため、スコア上昇の倍率効果は「めっちゃ知りたい」で OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 2)}（p = 0.0651†）のマイルドな有意傾向にとどまります。パーソナリティは選択に影響を与えていません。</li>
+                    <li><strong>学生側</strong>：有料企業宛の学生は、バリューフィット度（知りたい以上 OR {fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 2)}*）およびパーソナリティフィット度（知りたい以上 OR {fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 2)}*）の<strong>双方に対して統計的有意に連動してアクションを選択</strong>しています。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: 🌱 無料企業 要因分析（要点まとめ ＆ 詳細モデル） -->
+        <div class="section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">🎯 【無料企業：要因分析】スコアがアクション選択に与える影響（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">無料企業8社（191件 / パーソナリティ有効164件）における企業側および学生側のアクション選択への各スコア影響度（ロジット回帰）</div>
+                </div>
+                <span class="pill pill-cyan">無料企業要因分析</span>
+            </div>
+
+            <!-- 前面：直感的な要点まとめ（表 ＆ 視覚化グラフ） -->
+            <div class="grid-2" style="margin-bottom: 20px;">
+                <!-- 左：要点まとめ表 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 無料企業群：スコア10pt上昇時の選択への影響（要点）</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 26%;">評価要因</th>
+                                    <th style="width: 37%;">🏢 企業側の選択への影響</th>
+                                    <th style="width: 37%;">🎓 学生側の選択への影響</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>バリュー<br>フィット度</strong></td>
+                                    <td>
+                                        <strong style="color: #0F766E; font-size: 14px;">約 2.1 〜 3.2 倍</strong><br>
+                                        <span class="pill pill-cyan" style="font-size: 10px; margin-top: 3px;">極めて強い影響 (***)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>2.06倍***</strong>、めっちゃ知りたいで <strong>3.22倍***</strong>。完全自由選択によりバリューが最強の決定打に。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.1 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上 <strong>1.07倍</strong>、めっちゃ知りたい <strong>1.00倍</strong>。無料企業宛の学生アクションはバリューに連動せず。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>パーソナリティ<br>フィット度</strong></td>
+                                    <td>
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.2 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上 <strong>1.16倍</strong>、めっちゃ知りたい <strong>0.97倍</strong>。企業の選定にスコア連動なし。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.3 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上 <strong>1.05倍</strong>、めっちゃ知りたい <strong>1.25倍</strong>。統計的有意差は見られず。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※「影響度（倍率）」はロジスティック回帰のオッズ比（OR）に基づき、スコアが10pt上昇した際のアクション選択確率の上昇度合いを示しています。
+                    </div>
+                </div>
+
+                <!-- 右：視覚的インパクトグラフ -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 無料企業群：10pt上昇時の選択倍率インパクト（基準=1.0倍）</h3>
+                    <div class="chart-box" style="height: 270px;">
+                        <canvas id="chart-strat-free-impact"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※赤線（1.0倍）より右に大きく伸びるほど強いプラス影響。無料企業側のバリュー選択オッズ（3.22倍***）が全群の中で最も突出。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 専門的な詳細アコーディオン -->
+            <details class="stats-details">
+                <summary class="stats-summary">
+                    <span>📊 無料企業群の詳細統計データ（オッズ比・95%信頼区間・p値：企業 ＆ 学生）を展開する</span>
+                    <span class="pill pill-cyan">クリックで開閉</span>
+                </summary>
+                <div class="stats-content">
+                    <!-- 無料：企業回帰 -->
+                    <div style="margin-bottom: 24px;">
                         <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 無料企業 (N=191 / 164) における企業アクション回帰詳細</h3>
                         <div class="table-container">
                             <table>
@@ -1599,15 +1721,45 @@ def build_html():
                             </table>
                         </div>
                     </div>
+
+                    <!-- 無料：学生回帰 -->
+                    <div>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 無料企業宛 (N=191 / 164) における学生アクション回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 24%;">モデル / 説明変数</th>
+                                        <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>バリューフィット度 (単変量)</td>
+                                        <td>OR {fmt_num(reg['free']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['free']['student']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>パーソナリティフィット度 (単変量)</td>
+                                        <td>OR {fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['free']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </details>
 
             <div class="summary-box">
-                <strong class="title">📝 データまとめ（区分別の回帰分析結果）:</strong>
+                <strong class="title">📝 無料企業群（N=191 / 164）の要因分析まとめ:</strong>
                 <ul>
-                    <li><strong>無料企業群</strong>：バリューフィット度の上昇に伴う選択オッズ比が極めて顕著であり、2値で OR {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 2)}（p &lt; 0.0001***）、多項の「めっちゃ知りたい」で OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 2)}（p &lt; 0.0001***）と大幅な上昇を示しています。</li>
-                    <li><strong>有料企業群</strong>：高バリュー層が優先配席されていたため全体にベースが高く、バリューフィット度の「めっちゃ知りたい」オッズ比は OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 2)}（p = 0.0651†）の有意傾向にとどまります。</li>
-                    <li>両区分ともに、パーソナリティフィット度は企業の選択オッズに対して統計的有意差を持ちません。</li>
+                    <li><strong>企業側</strong>：完全自由選択のためバリューフィット度の上昇に伴う選択オッズ比が極めて顕著であり、2値で OR {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 2)}（p &lt; 0.0001***）、多項の「めっちゃ知りたい」で OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 2)}（p &lt; 0.0001***）と全群中最大の決定力を示します。</li>
+                    <li><strong>学生側</strong>：無料企業宛の学生アクションは、バリューフィット度（OR 1.07）およびパーソナリティフィット度（OR 1.05）ともに統計的有意差を持たず、スコア連動はマイルドにとどまっています。</li>
                 </ul>
             </div>
         </div>
@@ -2015,41 +2167,116 @@ def build_html():
         }}
     }});
 
-    // 5. Stratified Impact
-    new Chart(document.getElementById('chart-strat-impact'), {{
+    // 5. Paid Impact Chart
+    new Chart(document.getElementById('chart-strat-paid-impact'), {{
         type: 'bar',
         data: {{
             labels: [
-                '有料企業：バリュー (めっちゃ知りたい)',
-                '無料企業：バリュー (めっちゃ知りたい)',
-                '有料企業：バリュー (知りたい以上)',
-                '無料企業：バリュー (知りたい以上)',
-                '有料企業：パーソナリティ (めっちゃ知りたい)',
-                '無料企業：パーソナリティ (めっちゃ知りたい)',
-                '有料企業：パーソナリティ (知りたい以上)',
-                '無料企業：パーソナリティ (知りたい以上)'
+                '企業：バリュー (めっちゃ知りたい)',
+                '企業：バリュー (知りたい以上)',
+                '企業：パーソナリティ (めっちゃ知りたい)',
+                '企業：パーソナリティ (知りたい以上)',
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)',
+                '学生：バリュー (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
                     {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}
+                    {fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
                     '#4F46E5',
-                    '#0D9488',
                     '#6366F1',
-                    '#14B8A6',
-                    '#A5B4FC',
-                    '#5EEAD4',
                     '#CBD5E1',
-                    '#94A3B8'
+                    '#94A3B8',
+                    '#D97706',
+                    '#F59E0B',
+                    '#0284C7',
+                    '#38BDF8'
+                ],
+                borderRadius: 4
+            }}]
+        }},
+        options: {{
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {{
+                legend: {{ display: false }},
+                tooltip: {{
+                    callbacks: {{
+                        label: function(context) {{
+                            return '選択倍率: ' + context.parsed.x.toFixed(2) + ' 倍';
+                        }}
+                    }}
+                }}
+            }},
+            scales: {{
+                x: {{
+                    min: 0,
+                    max: 3.5,
+                    grid: {{
+                        color: function(context) {{
+                            return context.tick.value === 1.0 ? '#EF4444' : '#E2E8F0';
+                        }},
+                        lineWidth: function(context) {{
+                            return context.tick.value === 1.0 ? 2 : 1;
+                        }}
+                    }},
+                    title: {{
+                        display: true,
+                        text: '← 影響なし (1.0倍) | 選択されやすくなる (倍率) →',
+                        font: {{ size: 10, weight: 'bold' }}
+                    }}
+                }}
+            }}
+        }}
+    }});
+
+    // 6. Free Impact Chart
+    new Chart(document.getElementById('chart-strat-free-impact'), {{
+        type: 'bar',
+        data: {{
+            labels: [
+                '企業：バリュー (めっちゃ知りたい)',
+                '企業：バリュー (知りたい以上)',
+                '企業：パーソナリティ (めっちゃ知りたい)',
+                '企業：パーソナリティ (知りたい以上)',
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)',
+                '学生：バリュー (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)'
+            ],
+            datasets: [{{
+                label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
+                data: [
+                    {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
+                ],
+                backgroundColor: [
+                    '#0D9488',
+                    '#14B8A6',
+                    '#CBD5E1',
+                    '#94A3B8',
+                    '#D97706',
+                    '#F59E0B',
+                    '#0284C7',
+                    '#38BDF8'
                 ],
                 borderRadius: 4
             }}]
@@ -2090,7 +2317,7 @@ def build_html():
         }}
     }});
 
-        // Company Detail Data
+    // Company Detail Data
     const companiesData = {json.dumps(comps, ensure_ascii=False)};
     let compChartInst = null;
     let studChartInst = null;
