@@ -1576,9 +1576,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span style="color: var(--gray-500); font-size: 12px;">約 0.98 倍（有意差なし）</span>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            企業アクションには有意差なし。一方、学生からのアクションではP平均が大きく押し上がる傾向。
+                                        <span style="color: var(--gray-700); font-size: 13px;">知りたい以上：約 0.98 倍</span><br>
+                                        <span style="color: var(--gray-700); font-size: 13px;">めっちゃ知りたい：約 0.95 倍</span>
+                                        <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.35;">
+                                            統計的有意差なし（企業の選定にスコア連動なし）。
                                         </div>
                                     </td>
                                 </tr>
@@ -1595,9 +1596,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span style="color: var(--gray-500); font-size: 12px;">約 1.16 倍（有意差なし）</span>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            パーソナリティは選択確率を左右しておらず、バリュー主導の選定傾向が鮮明。
+                                        <span style="color: var(--gray-700); font-size: 13px;">知りたい以上：約 1.16 倍</span><br>
+                                        <span style="color: var(--gray-700); font-size: 13px;">めっちゃ知りたい：約 0.97 倍</span>
+                                        <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.35;">
+                                            統計的有意差なし（バリュー主導の選定傾向が鮮明）。
                                         </div>
                                     </td>
                                 </tr>
@@ -1612,7 +1614,7 @@
                 <!-- 右：視覚的インパクト比較グラフ -->
                 <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 区分別 選択倍率インパクト比較（有料 vs 無料 / 基準=1.0倍）</h3>
-                    <div class="chart-box" style="height: 230px;">
+                    <div class="chart-box" style="height: 270px;">
                         <canvas id="chart-strat-impact"></canvas>
                     </div>
                     <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
@@ -2261,6 +2263,8 @@
                 '無料企業：バリュー (めっちゃ知りたい)',
                 '有料企業：バリュー (知りたい以上)',
                 '無料企業：バリュー (知りたい以上)',
+                '有料企業：パーソナリティ (めっちゃ知りたい)',
+                '無料企業：パーソナリティ (めっちゃ知りたい)',
                 '有料企業：パーソナリティ (知りたい以上)',
                 '無料企業：パーソナリティ (知りたい以上)'
             ],
@@ -2271,6 +2275,8 @@
                     3.224,
                     1.782,
                     2.059,
+                    0.947,
+                    0.974,
                     0.977,
                     1.165
                 ],
@@ -2279,6 +2285,8 @@
                     '#0D9488',
                     '#6366F1',
                     '#14B8A6',
+                    '#A5B4FC',
+                    '#5EEAD4',
                     '#CBD5E1',
                     '#94A3B8'
                 ],
