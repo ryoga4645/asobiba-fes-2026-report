@@ -1300,6 +1300,7 @@
     <!-- TAB 2: 有料出展 vs 無料出展 区分別分析 -->
     <!-- ============================================================= -->
     <div id="tab-stratified" class="tab-pane">
+        <!-- Section 1: 区分別実態（有料 vs 無料） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
@@ -1309,25 +1310,46 @@
                 <span class="pill pill-slate">区分別記述統計</span>
             </div>
 
-            <div class="grid-2">
-                <!-- 企業アクション (有料 vs 無料) -->
+            <!-- 上段: 比較グラフ2列 -->
+            <div class="grid-2" style="margin-bottom: 24px;">
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料</h3>
-                    <div class="table-container">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料のフィット度推移</h3>
+                    <div class="chart-box" style="height: 220px;">
+                        <canvas id="chart-strat-comp"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※無料企業では「めっちゃ知りたい」選択時のバリュー平均が <strong>64.24</strong> と急上昇（なし: 56.73から+7.5pt）。有料企業は全体ベースが高い（60.09〜63.13）。
+                    </div>
+                </div>
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料企業宛 vs 無料企業宛の推移</h3>
+                    <div class="chart-box" style="height: 220px;">
+                        <canvas id="chart-strat-stud"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※学生から有料企業宛の「めっちゃ知りたい」では、パーソナリティ平均が <strong>82.44</strong>（なし: 78.82から+3.6pt）と最も高くなっています。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下段: 有料出展企業 vs 無料出展企業のすっきり分割テーブル -->
+            <div class="grid-2">
+                <!-- 有料企業カード -->
+                <div class="sub-card" style="border-top: 3px solid #6366F1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin: 0;">💎 有料出展企業の実態（4社・122件）</h3>
+                        <span class="pill pill-indigo" style="font-size: 11px;">事前マッチング配席</span>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🏢 企業側アクションの推移</div>
+                    <div class="table-container" style="margin-bottom: 16px;">
                         <table>
                             <thead>
                                 <tr>
-                                    <th rowspan="2">区分 / アクション</th>
-                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
-                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
-                                </tr>
-                                <tr>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1336,60 +1358,38 @@
                                     <td>32件 (26.2%)</td>
                                     <td>60.09</td>
                                     <td>80.48</td>
-                                    <td>65件 (34.0%)</td>
-                                    <td>56.73</td>
-                                    <td>76.93</td>
                                 </tr>
                                 <tr>
                                     <td>知りたい</td>
                                     <td>61件 (50.0%)</td>
                                     <td>62.01</td>
                                     <td>80.44</td>
-                                    <td>84件 (44.0%)</td>
-                                    <td>60.46</td>
-                                    <td>78.80</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>めっちゃ知りたい</td>
                                     <td>29件 (23.8%)</td>
-                                    <td>63.13</td>
+                                    <td><strong>63.13</strong></td>
                                     <td>80.15</td>
-                                    <td>42件 (22.0%)</td>
-                                    <td><strong>64.24</strong></td>
-                                    <td>76.73</td>
                                 </tr>
                                 <tr style="background: #F1F5F9; font-weight: 700;">
-                                    <td>知りたい以上 (2値)</td>
+                                    <td>知りたい以上</td>
                                     <td>90件 (73.8%)</td>
                                     <td>62.37</td>
                                     <td>80.34</td>
-                                    <td>126件 (66.0%)</td>
-                                    <td>61.72</td>
-                                    <td>78.07</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
 
-                <!-- 学生アクション (有料 vs 無料) -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料 vs 無料</h3>
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🎓 学生側アクションの推移</div>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th rowspan="2">区分 / アクション</th>
-                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
-                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
-                                </tr>
-                                <tr>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1398,33 +1398,109 @@
                                     <td>56件 (45.9%)</td>
                                     <td>60.28</td>
                                     <td>78.82</td>
-                                    <td>83件 (43.5%)</td>
-                                    <td>59.75</td>
-                                    <td>77.55</td>
                                 </tr>
                                 <tr>
                                     <td>知りたい</td>
                                     <td>50件 (41.0%)</td>
                                     <td>63.37</td>
                                     <td>81.47</td>
-                                    <td>84件 (44.0%)</td>
-                                    <td>60.36</td>
-                                    <td>77.63</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>めっちゃ知りたい</td>
                                     <td>16件 (13.1%)</td>
                                     <td>62.02</td>
                                     <td><strong>82.44</strong></td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上</td>
+                                    <td>66件 (54.1%)</td>
+                                    <td>63.05</td>
+                                    <td>81.70</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 無料企業カード -->
+                <div class="sub-card" style="border-top: 3px solid #06B6D4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin: 0;">🌱 無料出展企業の実態（8社・191件 / P有効164件）</h3>
+                        <span class="pill pill-cyan" style="font-size: 11px;">完全自由配席</span>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🏢 企業側アクションの推移</div>
+                    <div class="table-container" style="margin-bottom: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>65件 (34.0%)</td>
+                                    <td>56.73</td>
+                                    <td>76.93</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>84件 (44.0%)</td>
+                                    <td>60.46</td>
+                                    <td>78.80</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>42件 (22.0%)</td>
+                                    <td><strong>64.24</strong></td>
+                                    <td>76.73</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上</td>
+                                    <td>126件 (66.0%)</td>
+                                    <td>61.72</td>
+                                    <td>78.07</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🎓 学生側アクションの推移</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>83件 (43.5%)</td>
+                                    <td>59.75</td>
+                                    <td>77.55</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>84件 (44.0%)</td>
+                                    <td>60.36</td>
+                                    <td>77.63</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
                                     <td>24件 (12.6%)</td>
                                     <td>59.77</td>
                                     <td>79.22</td>
                                 </tr>
                                 <tr style="background: #F1F5F9; font-weight: 700;">
-                                    <td>知りたい以上 (2値)</td>
-                                    <td>66件 (54.1%)</td>
-                                    <td>63.05</td>
-                                    <td>81.70</td>
+                                    <td>知りたい以上</td>
                                     <td>108件 (56.5%)</td>
                                     <td>60.23</td>
                                     <td>77.94</td>
@@ -1436,7 +1512,7 @@
             </div>
         </div>
 
-        <!-- Section: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
+        <!-- Section 2: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
@@ -1446,46 +1522,76 @@
                 <span class="pill pill-indigo">区分別要因分析</span>
             </div>
 
-            <!-- 前面：区分別の要点まとめ比較テーブル -->
-            <div class="sub-card" style="margin-bottom: 20px;">
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 18%;">出展区分</th>
-                                <th style="width: 25%;">バリューの影響（10pt上昇）</th>
-                                <th style="width: 25%;">パーソナリティの影響</th>
-                                <th style="width: 32%;">実態のポイント</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #F8FAFC;">
-                                <td><strong>無料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=191 / 164)</span></td>
-                                <td>
-                                    <strong style="color: var(--primary); font-size: 13.5px;">知りたい以上：約 2.87 倍 (***)</strong><br>
-                                    <strong style="color: var(--primary); font-size: 13.5px;">めっちゃ知りたい：約 3.98 倍 (***)</strong>
-                                </td>
-                                <td>
-                                    <span style="color: var(--gray-500); font-size: 12px;">約 0.9 〜 1.1 倍</span><br>
-                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
-                                </td>
-                                <td style="font-size: 11.5px; line-height: 1.4;">企業の完全な自由選択が行われたため、バリューフィット度の高さがアクション選択の極めて強力な決定打となっている。</td>
-                            </tr>
-                            <tr>
-                                <td><strong>有料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=122)</span></td>
-                                <td>
-                                    <span style="color: var(--gray-700); font-size: 12.5px;">知りたい以上：約 1.34 倍</span><br>
-                                    <span style="color: var(--gray-700); font-size: 12.5px;">めっちゃ知りたい：約 1.94 倍 (†)</span>
-                                </td>
-                                <td>
-                                    <span style="color: var(--gray-500); font-size: 12px;">約 1.1 〜 1.2 倍</span><br>
-                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
-                                </td>
-                                <td style="font-size: 11.5px; line-height: 1.4;">事前マッチングにより元々高バリュー層が集中的に配席されていたため、スコア上昇による選択確率の跳ね上がり倍率がマイルドに表れている。</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- 前面：要点まとめ比較テーブル ＆ インパクトグラフ -->
+            <div class="grid-2" style="margin-bottom: 20px;">
+                <!-- 左：要点まとめ比較テーブル -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%;">出展区分</th>
+                                    <th style="width: 38%;">バリューの影響（10pt上昇）</th>
+                                    <th style="width: 40%;">パーソナリティの影響 ＆ 特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #F0FDFA;">
+                                    <td>
+                                        <strong style="color: #0F766E;">🌱 無料企業群</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500);">(8社・191件 / P有効164件)</span>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #0F766E; font-size: 13.5px;">知りたい以上：約 2.06 倍 (***)</strong><br>
+                                        <strong style="color: #0F766E; font-size: 13.5px;">めっちゃ知りたい：約 3.22 倍 (***)</strong>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            企業の完全な自由選択が行われたため、バリューフィット度が最高のアクション選択を強力に牽引。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--gray-500); font-size: 12px;">約 1.16 倍（有意差なし）</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            パーソナリティは選択確率を左右しておらず、バリュー主導の選定傾向が鮮明。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="color: var(--primary);">💎 有料企業群</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500);">(4社・122件)</span>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">知りたい以上：約 1.78 倍 (†)</span><br>
+                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">めっちゃ知りたい：約 2.17 倍 (†)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            事前マッチングにより元々高バリュー層が集中的に配席されていたため、倍率効果はマイルドに表れる。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--gray-500); font-size: 12px;">約 0.98 倍（有意差なし）</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            企業アクションには有意差なし。一方、学生からのアクションではP平均が大きく押し上がる傾向。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※「影響度（倍率）」はロジスティック回帰のオッズ比（OR）に基づき、スコアが10pt上昇した際のアクション選択確率の上昇度合いを示しています。
+                    </div>
+                </div>
+
+                <!-- 右：視覚的インパクト比較グラフ -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 区分別 選択倍率インパクト比較（有料 vs 無料 / 基準=1.0倍）</h3>
+                    <div class="chart-box" style="height: 230px;">
+                        <canvas id="chart-strat-impact"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※赤線（1.0倍）より右に大きく伸びるほど強いプラス影響。無料企業の「めっちゃ知りたい」バリューOR（3.22倍***）が最も顕著。
+                    </div>
                 </div>
             </div>
 
@@ -2011,32 +2117,111 @@
         }
     });
 
-    // Logit Impact Chart
-    new Chart(document.getElementById('chart-logit-impact'), {
+    // Stratified Comparison Charts (Tab 2)
+    new Chart(document.getElementById('chart-strat-comp'), {
+        type: 'bar',
+        data: {
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {
+                    label: '有料企業：バリュー平均',
+                    data: [60.092812499999994, 62.01180327868851, 63.1341379310345],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                },
+                {
+                    label: '無料企業：バリュー平均',
+                    data: [56.72738461538463, 60.457499999999996, 64.2395238095238],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                },
+                {
+                    label: '有料企業：P平均',
+                    data: [80.48156250000002, 80.43622950819675, 80.15275862068965],
+                    backgroundColor: '#94A3B8',
+                    borderRadius: 4
+                },
+                {
+                    label: '無料企業：P平均',
+                    data: [76.92888888888888, 78.80337662337662, 76.7297619047619],
+                    backgroundColor: '#CBD5E1',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 50, max: 85 } }
+        }
+    });
+
+    new Chart(document.getElementById('chart-strat-stud'), {
+        type: 'bar',
+        data: {
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {
+                    label: '有料企業宛：バリュー平均',
+                    data: [60.276785714285744, 63.37459999999997, 62.021875],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                },
+                {
+                    label: '無料企業宛：バリュー平均',
+                    data: [59.747469879518064, 60.35940476190478, 59.7725],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                },
+                {
+                    label: '有料企業宛：P平均',
+                    data: [78.82107142857144, 81.47000000000001, 82.435625],
+                    backgroundColor: '#F59E0B',
+                    borderRadius: 4
+                },
+                {
+                    label: '無料企業宛：P平均',
+                    data: [77.54935064935064, 77.63128571428571, 79.22470588235292],
+                    backgroundColor: '#FCD34D',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { min: 50, max: 85 } }
+        }
+    });
+
+    new Chart(document.getElementById('chart-strat-impact'), {
         type: 'bar',
         data: {
             labels: [
-                '企業：バリュー (めっちゃ知りたい)',
-                '企業：バリュー (知りたい以上)',
-                '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：バリュー (知りたい以上)',
-                '企業：パーソナリティ (知りたい以上)'
+                '無料企業：バリュー (めっちゃ知りたい)',
+                '有料企業：バリュー (めっちゃ知りたい)',
+                '無料企業：バリュー (知りたい以上)',
+                '有料企業：バリュー (知りたい以上)',
+                '無料企業：パーソナリティ (知りたい以上)',
+                '有料企業：パーソナリティ (知りたい以上)'
             ],
             datasets: [{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    2.908,
-                    2.027,
-                    1.490,
-                    1.248,
-                    1.096
+                    3.224,
+                    2.170,
+                    2.059,
+                    1.782,
+                    1.165,
+                    0.977
                 ],
                 backgroundColor: [
+                    '#0D9488',
                     '#4F46E5',
+                    '#14B8A6',
                     '#6366F1',
-                    '#F59E0B',
-                    '#06B6D4',
-                    '#94A3B8'
+                    '#94A3B8',
+                    '#CBD5E1'
                 ],
                 borderRadius: 4
             }]
@@ -2058,7 +2243,7 @@
             scales: {
                 x: {
                     min: 0,
-                    max: 3.5,
+                    max: 3.8,
                     grid: {
                         color: function(context) {
                             return context.tick.value === 1.0 ? '#EF4444' : '#E2E8F0';
@@ -2077,8 +2262,7 @@
         }
     });
 
-
-    // Company Detail Data
+        // Company Detail Data
     const companiesData = [{"name": "株式会社ベル", "is_paid": 1, "count": 29, "match_count": 19, "match_rate": 65.51724137931035, "v_mean": 62.10103448275862, "v_std": 6.371546316480341, "p_mean": 80.43931034482759, "p_std": 7.353949828413145, "p_n": 29, "v_diff_high_minus_none": 5.162000000000006, "company_actions": {"なし": {"count": 1, "pct": 3.4482758620689653, "v_mean": 57.82, "p_mean": 90.95}, "知りたい": {"count": 18, "pct": 62.06896551724138, "v_mean": 61.849444444444444, "p_mean": 80.95722222222224}, "めっちゃ知りたい": {"count": 10, "pct": 34.48275862068966, "v_mean": 62.982000000000006, "p_mean": 78.45599999999999}, "知りたい以上": {"count": 28, "pct": 96.55172413793105}}, "student_actions": {"なし": {"count": 10, "pct": 34.48275862068966, "v_mean": 61.129, "p_mean": 79.00800000000001}, "知りたい": {"count": 14, "pct": 48.275862068965516, "v_mean": 64.39642857142857, "p_mean": 81.46285714285715}, "めっちゃ知りたい": {"count": 5, "pct": 17.24137931034483, "v_mean": 57.617999999999995, "p_mean": 80.43599999999999}, "知りたい以上": {"count": 19, "pct": 65.51724137931035}}}, {"name": "NTT 都市開発ホテルマネジメント株式会社　カペラ京都", "is_paid": 1, "count": 32, "match_count": 19, "match_rate": 59.375, "v_mean": 62.094375, "v_std": 6.7164885879165235, "p_mean": 82.06500000000001, "p_std": 7.5276942449306015, "p_n": 32, "v_diff_high_minus_none": 4.322000000000017, "company_actions": {"なし": {"count": 4, "pct": 12.5, "v_mean": 59.114999999999995, "p_mean": 84.20750000000001}, "知りたい": {"count": 18, "pct": 56.25, "v_mean": 62.01055555555555, "p_mean": 82.44666666666669}, "めっちゃ知りたい": {"count": 10, "pct": 31.25, "v_mean": 63.43700000000001, "p_mean": 80.52099999999999}, "知りたい以上": {"count": 28, "pct": 87.5}}, "student_actions": {"なし": {"count": 13, "pct": 40.625, "v_mean": 60.49846153846154, "p_mean": 80.61}, "知りたい": {"count": 10, "pct": 31.25, "v_mean": 63.178, "p_mean": 83.631}, "めっちゃ知りたい": {"count": 9, "pct": 28.125, "v_mean": 63.19555555555556, "p_mean": 82.42666666666668}, "知りたい以上": {"count": 19, "pct": 59.375}}}, {"name": "株式会社リード・イノベーション", "is_paid": 1, "count": 31, "match_count": 11, "match_rate": 35.483870967741936, "v_mean": 60.948387096774205, "v_std": 6.4898089837191115, "p_mean": 78.01064516129033, "p_std": 7.860991428347899, "p_n": 31, "v_diff_high_minus_none": 3.6683333333333294, "company_actions": {"なし": {"count": 9, "pct": 29.03225806451613, "v_mean": 59.13333333333334, "p_mean": 74.47444444444444}, "知りたい": {"count": 16, "pct": 51.61290322580645, "v_mean": 61.274375, "p_mean": 79.059375}, "めっちゃ知りたい": {"count": 6, "pct": 19.35483870967742, "v_mean": 62.80166666666667, "p_mean": 80.51833333333333}, "知りたい以上": {"count": 22, "pct": 70.96774193548387}}, "student_actions": {"なし": {"count": 17, "pct": 54.83870967741935, "v_mean": 58.53235294117648, "p_mean": 74.37235294117647}, "知りたい": {"count": 13, "pct": 41.935483870967744, "v_mean": 63.573076923076925, "p_mean": 82.07846153846154}, "めっちゃ知りたい": {"count": 1, "pct": 3.225806451612903, "v_mean": 67.9, "p_mean": 86.98}, "知りたい以上": {"count": 14, "pct": 45.16129032258065}}}, {"name": "株式会社Unith Link", "is_paid": 1, "count": 30, "match_count": 5, "match_rate": 16.666666666666664, "v_mean": 61.97433333333333, "v_std": 6.1327148082672345, "p_mean": 80.97666666666666, "p_std": 8.05423098635799, "p_n": 30, "v_diff_high_minus_none": 2.380555555555553, "company_actions": {"なし": {"count": 18, "pct": 60.0, "v_mean": 60.91611111111112, "p_mean": 82.07555555555558}, "知りたい": {"count": 9, "pct": 30.0, "v_mean": 63.650000000000006, "p_mean": 77.82111111111112}, "めっちゃ知りたい": {"count": 3, "pct": 10.0, "v_mean": 63.296666666666674, "p_mean": 83.85000000000001}, "知りたい以上": {"count": 12, "pct": 40.0}}, "student_actions": {"なし": {"count": 16, "pct": 53.333333333333336, "v_mean": 61.417500000000004, "p_mean": 81.97750000000002}, "知りたい": {"count": 13, "pct": 43.333333333333336, "v_mean": 62.22692307692308, "p_mean": 79.20692307692308}, "めっちゃ知りたい": {"count": 1, "pct": 3.3333333333333335, "v_mean": 67.6, "p_mean": 87.97}, "知りたい以上": {"count": 14, "pct": 46.66666666666667}}}, {"name": "株式会社Linoa Group", "is_paid": 0, "count": 23, "match_count": 15, "match_rate": 65.21739130434783, "v_mean": 63.22434782608695, "v_std": 6.9666020320898046, "p_mean": 74.52695652173914, "p_std": 10.073667940266395, "p_n": 23, "v_diff_high_minus_none": -8.908000000000001, "company_actions": {"なし": {"count": 1, "pct": 4.3478260869565215, "v_mean": 71.84, "p_mean": 86.0}, "知りたい": {"count": 12, "pct": 52.17391304347826, "v_mean": 62.75000000000001, "p_mean": 76.19583333333334}, "めっちゃ知りたい": {"count": 10, "pct": 43.47826086956522, "v_mean": 62.932, "p_mean": 71.377}, "知りたい以上": {"count": 22, "pct": 95.65217391304347}}, "student_actions": {"なし": {"count": 8, "pct": 34.78260869565217, "v_mean": 64.03999999999999, "p_mean": 74.90375}, "知りたい": {"count": 15, "pct": 65.21739130434783, "v_mean": 62.789333333333325, "p_mean": 74.326}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 15, "pct": 65.21739130434783}}}, {"name": "とものや株式会社", "is_paid": 0, "count": 24, "match_count": 13, "match_rate": 54.166666666666664, "v_mean": 61.27541666666667, "v_std": 9.168165611964357, "p_mean": 76.94791666666667, "p_std": 7.761265573158894, "p_n": 24, "v_diff_high_minus_none": 4.450000000000003, "company_actions": {"なし": {"count": 8, "pct": 33.33333333333333, "v_mean": 61.3, "p_mean": 72.67999999999999}, "知りたい": {"count": 9, "pct": 37.5, "v_mean": 57.77333333333334, "p_mean": 80.12555555555555}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 65.75, "p_mean": 77.74}, "知りたい以上": {"count": 16, "pct": 66.66666666666667}}, "student_actions": {"なし": {"count": 4, "pct": 16.666666666666664, "v_mean": 63.529999999999994, "p_mean": 70.46000000000001}, "知りたい": {"count": 13, "pct": 54.166666666666664, "v_mean": 61.16846153846154, "p_mean": 78.20076923076923}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 60.18571428571429, "p_mean": 78.32857142857142}, "知りたい以上": {"count": 20, "pct": 83.33333333333333}}}, {"name": "株式会社アイプラス", "is_paid": 0, "count": 22, "match_count": 11, "match_rate": 50.0, "v_mean": 58.91590909090908, "v_std": 9.265182474029116, "p_mean": 73.18636363636364, "p_std": 9.199444364926428, "p_n": 22, "v_diff_high_minus_none": 9.495833333333344, "company_actions": {"なし": {"count": 3, "pct": 13.636363636363635, "v_mean": 53.73666666666666, "p_mean": 74.06666666666666}, "知りたい": {"count": 15, "pct": 68.18181818181817, "v_mean": 58.800666666666665, "p_mean": 73.264}, "めっちゃ知りたい": {"count": 4, "pct": 18.181818181818183, "v_mean": 63.2325, "p_mean": 72.235}, "知りたい以上": {"count": 19, "pct": 86.36363636363636}}, "student_actions": {"なし": {"count": 8, "pct": 36.36363636363637, "v_mean": 58.605000000000004, "p_mean": 71.50875}, "知りたい": {"count": 10, "pct": 45.45454545454545, "v_mean": 58.277, "p_mean": 73.254}, "めっちゃ知りたい": {"count": 4, "pct": 18.181818181818183, "v_mean": 61.135, "p_mean": 76.3725}, "知りたい以上": {"count": 14, "pct": 63.63636363636364}}}, {"name": "CKCネットワーク株式会社（ナビ個別指導学院）", "is_paid": 0, "count": 25, "match_count": 12, "match_rate": 48.0, "v_mean": 63.791599999999995, "v_std": 8.847437802362144, "p_mean": 78.03, "p_std": 6.3029516894864415, "p_n": 25, "v_diff_high_minus_none": 7.032857142857139, "company_actions": {"なし": {"count": 8, "pct": 32.0, "v_mean": 57.540000000000006, "p_mean": 76.04249999999999}, "知りたい": {"count": 10, "pct": 40.0, "v_mean": 68.24600000000001, "p_mean": 78.783}, "めっちゃ知りたい": {"count": 7, "pct": 28.000000000000004, "v_mean": 64.57285714285715, "p_mean": 79.22571428571429}, "知りたい以上": {"count": 17, "pct": 68.0}}, "student_actions": {"なし": {"count": 12, "pct": 48.0, "v_mean": 62.46333333333333, "p_mean": 74.63916666666667}, "知りたい": {"count": 11, "pct": 44.0, "v_mean": 64.34363636363638, "p_mean": 80.66545454545454}, "めっちゃ知りたい": {"count": 2, "pct": 8.0, "v_mean": 68.725, "p_mean": 83.88}, "知りたい以上": {"count": 13, "pct": 52.0}}}, {"name": "株式会社EGIJ", "is_paid": 0, "count": 21, "match_count": 9, "match_rate": 42.857142857142854, "v_mean": 63.140952380952385, "v_std": 8.870068717186976, "p_mean": 83.76571428571427, "p_std": 7.51426747689259, "p_n": 21, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい": {"count": 14, "pct": 66.66666666666666, "v_mean": 61.27999999999999, "p_mean": 84.40142857142857}, "めっちゃ知りたい": {"count": 7, "pct": 33.33333333333333, "v_mean": 66.86285714285715, "p_mean": 82.49428571428572}, "知りたい以上": {"count": 21, "pct": 99.99999999999999}}, "student_actions": {"なし": {"count": 12, "pct": 57.14285714285714, "v_mean": 59.587499999999984, "p_mean": 85.16416666666667}, "知りたい": {"count": 7, "pct": 33.33333333333333, "v_mean": 68.18999999999998, "p_mean": 82.1942857142857}, "めっちゃ知りたい": {"count": 2, "pct": 9.523809523809524, "v_mean": 66.78999999999999, "p_mean": 80.875}, "知りたい以上": {"count": 9, "pct": 42.857142857142854}}}, {"name": "株式会社ユーズテック", "is_paid": 0, "count": 24, "match_count": 7, "match_rate": 29.166666666666668, "v_mean": 57.79458333333332, "v_std": 6.426622602869267, "p_mean": 78.485, "p_std": 7.466864192521866, "p_n": 24, "v_diff_high_minus_none": 6.371714285714276, "company_actions": {"なし": {"count": 5, "pct": 20.833333333333336, "v_mean": 55.84400000000001, "p_mean": 73.864}, "知りたい": {"count": 12, "pct": 50.0, "v_mean": 56.02833333333333, "p_mean": 80.88333333333334}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 62.215714285714284, "p_mean": 77.67428571428572}, "知りたい以上": {"count": 19, "pct": 79.16666666666667}}, "student_actions": {"なし": {"count": 16, "pct": 66.66666666666666, "v_mean": 59.21124999999999, "p_mean": 78.42999999999999}, "知りたい": {"count": 6, "pct": 25.0, "v_mean": 55.78666666666667, "p_mean": 77.54}, "めっちゃ知りたい": {"count": 2, "pct": 8.333333333333332, "v_mean": 52.485, "p_mean": 81.75999999999999}, "知りたい以上": {"count": 8, "pct": 33.33333333333333}}}, {"name": "パナソニック オペレーショナルエクセレンス株式会社", "is_paid": 0, "count": 27, "match_count": 7, "match_rate": 25.925925925925924, "v_mean": 54.977407407407405, "v_std": 7.864499393620085, "p_mean": null, "p_std": 0.0, "p_n": 0, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 20, "pct": 74.07407407407408, "v_mean": 53.543000000000006, "p_mean": null}, "知りたい": {"count": 7, "pct": 25.925925925925924, "v_mean": 59.07571428571428, "p_mean": null}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 7, "pct": 25.925925925925924}}, "student_actions": {"なし": {"count": 6, "pct": 22.22222222222222, "v_mean": 53.300000000000004, "p_mean": null}, "知りたい": {"count": 14, "pct": 51.85185185185185, "v_mean": 55.135, "p_mean": null}, "めっちゃ知りたい": {"count": 7, "pct": 25.925925925925924, "v_mean": 56.1, "p_mean": null}, "知りたい以上": {"count": 21, "pct": 77.77777777777777}}}, {"name": "株式会社ミツカル", "is_paid": 0, "count": 25, "match_count": 0, "match_rate": 0.0, "v_mean": 58.025600000000004, "v_std": 7.233929936993677, "p_mean": 79.51480000000001, "p_std": 8.993854438819135, "p_n": 25, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 20, "pct": 80.0, "v_mean": 57.671499999999995, "p_mean": 79.72500000000002}, "知りたい": {"count": 5, "pct": 20.0, "v_mean": 59.44199999999999, "p_mean": 78.67399999999999}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 5, "pct": 20.0}}, "student_actions": {"なし": {"count": 17, "pct": 68.0, "v_mean": 58.35117647058824, "p_mean": 79.15529411764707}, "知りたい": {"count": 8, "pct": 32.0, "v_mean": 57.333749999999995, "p_mean": 80.27875}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 8, "pct": 32.0}}}];
     let compChartInst = null;
     let studChartInst = null;

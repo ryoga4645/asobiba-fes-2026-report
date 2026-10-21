@@ -1208,6 +1208,7 @@ def build_html():
     <!-- TAB 2: 有料出展 vs 無料出展 区分別分析 -->
     <!-- ============================================================= -->
     <div id="tab-stratified" class="tab-pane">
+        <!-- Section 1: 区分別実態（有料 vs 無料） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
@@ -1217,25 +1218,46 @@ def build_html():
                 <span class="pill pill-slate">区分別記述統計</span>
             </div>
 
-            <div class="grid-2">
-                <!-- 企業アクション (有料 vs 無料) -->
+            <!-- 上段: 比較グラフ2列 -->
+            <div class="grid-2" style="margin-bottom: 24px;">
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料</h3>
-                    <div class="table-container">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料のフィット度推移</h3>
+                    <div class="chart-box" style="height: 220px;">
+                        <canvas id="chart-strat-comp"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※無料企業では「めっちゃ知りたい」選択時のバリュー平均が <strong>64.24</strong> と急上昇（なし: 56.73から+7.5pt）。有料企業は全体ベースが高い（60.09〜63.13）。
+                    </div>
+                </div>
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料企業宛 vs 無料企業宛の推移</h3>
+                    <div class="chart-box" style="height: 220px;">
+                        <canvas id="chart-strat-stud"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※学生から有料企業宛の「めっちゃ知りたい」では、パーソナリティ平均が <strong>82.44</strong>（なし: 78.82から+3.6pt）と最も高くなっています。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下段: 有料出展企業 vs 無料出展企業のすっきり分割テーブル -->
+            <div class="grid-2">
+                <!-- 有料企業カード -->
+                <div class="sub-card" style="border-top: 3px solid #6366F1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin: 0;">💎 有料出展企業の実態（4社・122件）</h3>
+                        <span class="pill pill-indigo" style="font-size: 11px;">事前マッチング配席</span>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🏢 企業側アクションの推移</div>
+                    <div class="table-container" style="margin-bottom: 16px;">
                         <table>
                             <thead>
                                 <tr>
-                                    <th rowspan="2">区分 / アクション</th>
-                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
-                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
-                                </tr>
-                                <tr>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1244,60 +1266,38 @@ def build_html():
                                     <td>{paid_act['company']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][0]['pct'])})</td>
                                     <td>{fmt_num(paid_act['company']['three_cats'][0]['v_mean'])}</td>
                                     <td>{fmt_num(paid_act['company']['three_cats'][0]['p_mean'])}</td>
-                                    <td>{free_act['company']['three_cats'][0]['count']}件 ({fmt_pct(free_act['company']['three_cats'][0]['pct'])})</td>
-                                    <td>{fmt_num(free_act['company']['three_cats'][0]['v_mean'])}</td>
-                                    <td>{fmt_num(free_act['company']['three_cats'][0]['p_mean'])}</td>
                                 </tr>
                                 <tr>
                                     <td>知りたい</td>
                                     <td>{paid_act['company']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][1]['pct'])})</td>
                                     <td>{fmt_num(paid_act['company']['three_cats'][1]['v_mean'])}</td>
                                     <td>{fmt_num(paid_act['company']['three_cats'][1]['p_mean'])}</td>
-                                    <td>{free_act['company']['three_cats'][1]['count']}件 ({fmt_pct(free_act['company']['three_cats'][1]['pct'])})</td>
-                                    <td>{fmt_num(free_act['company']['three_cats'][1]['v_mean'])}</td>
-                                    <td>{fmt_num(free_act['company']['three_cats'][1]['p_mean'])}</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>めっちゃ知りたい</td>
                                     <td>{paid_act['company']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][2]['pct'])})</td>
-                                    <td>{fmt_num(paid_act['company']['three_cats'][2]['v_mean'])}</td>
+                                    <td><strong>{fmt_num(paid_act['company']['three_cats'][2]['v_mean'])}</strong></td>
                                     <td>{fmt_num(paid_act['company']['three_cats'][2]['p_mean'])}</td>
-                                    <td>{free_act['company']['three_cats'][2]['count']}件 ({fmt_pct(free_act['company']['three_cats'][2]['pct'])})</td>
-                                    <td><strong>{fmt_num(free_act['company']['three_cats'][2]['v_mean'])}</strong></td>
-                                    <td>{fmt_num(free_act['company']['three_cats'][2]['p_mean'])}</td>
                                 </tr>
                                 <tr style="background: #F1F5F9; font-weight: 700;">
-                                    <td>知りたい以上 (2値)</td>
+                                    <td>知りたい以上</td>
                                     <td>{paid_act['company']['binary'][1]['count']}件 ({fmt_pct(paid_act['company']['binary'][1]['pct'])})</td>
                                     <td>{fmt_num(paid_act['company']['binary'][1]['v_mean'])}</td>
                                     <td>{fmt_num(paid_act['company']['binary'][1]['p_mean'])}</td>
-                                    <td>{free_act['company']['binary'][1]['count']}件 ({fmt_pct(free_act['company']['binary'][1]['pct'])})</td>
-                                    <td>{fmt_num(free_act['company']['binary'][1]['v_mean'])}</td>
-                                    <td>{fmt_num(free_act['company']['binary'][1]['p_mean'])}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
 
-                <!-- 学生アクション (有料 vs 無料) -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料 vs 無料</h3>
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🎓 学生側アクションの推移</div>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th rowspan="2">区分 / アクション</th>
-                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
-                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
-                                </tr>
-                                <tr>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
-                                    <th style="font-size: 10px;">件数</th>
-                                    <th style="font-size: 10px;">バリュー平均</th>
-                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1306,33 +1306,109 @@ def build_html():
                                     <td>{paid_act['student']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][0]['pct'])})</td>
                                     <td>{fmt_num(paid_act['student']['three_cats'][0]['v_mean'])}</td>
                                     <td>{fmt_num(paid_act['student']['three_cats'][0]['p_mean'])}</td>
-                                    <td>{free_act['student']['three_cats'][0]['count']}件 ({fmt_pct(free_act['student']['three_cats'][0]['pct'])})</td>
-                                    <td>{fmt_num(free_act['student']['three_cats'][0]['v_mean'])}</td>
-                                    <td>{fmt_num(free_act['student']['three_cats'][0]['p_mean'])}</td>
                                 </tr>
                                 <tr>
                                     <td>知りたい</td>
                                     <td>{paid_act['student']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][1]['pct'])})</td>
                                     <td>{fmt_num(paid_act['student']['three_cats'][1]['v_mean'])}</td>
                                     <td>{fmt_num(paid_act['student']['three_cats'][1]['p_mean'])}</td>
-                                    <td>{free_act['student']['three_cats'][1]['count']}件 ({fmt_pct(free_act['student']['three_cats'][1]['pct'])})</td>
-                                    <td>{fmt_num(free_act['student']['three_cats'][1]['v_mean'])}</td>
-                                    <td>{fmt_num(free_act['student']['three_cats'][1]['p_mean'])}</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td>めっちゃ知りたい</td>
                                     <td>{paid_act['student']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][2]['pct'])})</td>
                                     <td>{fmt_num(paid_act['student']['three_cats'][2]['v_mean'])}</td>
                                     <td><strong>{fmt_num(paid_act['student']['three_cats'][2]['p_mean'])}</strong></td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上</td>
+                                    <td>{paid_act['student']['binary'][1]['count']}件 ({fmt_pct(paid_act['student']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['student']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['student']['binary'][1]['p_mean'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 無料企業カード -->
+                <div class="sub-card" style="border-top: 3px solid #06B6D4;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin: 0;">🌱 無料出展企業の実態（8社・191件 / P有効164件）</h3>
+                        <span class="pill pill-cyan" style="font-size: 11px;">完全自由配席</span>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🏢 企業側アクションの推移</div>
+                    <div class="table-container" style="margin-bottom: 16px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{free_act['company']['three_cats'][0]['count']}件 ({fmt_pct(free_act['company']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][0]['p_mean'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{free_act['company']['three_cats'][1]['count']}件 ({fmt_pct(free_act['company']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][1]['p_mean'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>{free_act['company']['three_cats'][2]['count']}件 ({fmt_pct(free_act['company']['three_cats'][2]['pct'])})</td>
+                                    <td><strong>{fmt_num(free_act['company']['three_cats'][2]['v_mean'])}</strong></td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][2]['p_mean'])}</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上</td>
+                                    <td>{free_act['company']['binary'][1]['count']}件 ({fmt_pct(free_act['company']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['binary'][1]['p_mean'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="font-size: 12.5px; font-weight: 700; color: #334155; margin-bottom: 6px;">🎓 学生側アクションの推移</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 28%;">アクション</th>
+                                    <th style="width: 24%;">件数 (比率)</th>
+                                    <th style="width: 24%;">バリュー平均</th>
+                                    <th style="width: 24%;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{free_act['student']['three_cats'][0]['count']}件 ({fmt_pct(free_act['student']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][0]['p_mean'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{free_act['student']['three_cats'][1]['count']}件 ({fmt_pct(free_act['student']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][1]['p_mean'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
                                     <td>{free_act['student']['three_cats'][2]['count']}件 ({fmt_pct(free_act['student']['three_cats'][2]['pct'])})</td>
                                     <td>{fmt_num(free_act['student']['three_cats'][2]['v_mean'])}</td>
                                     <td>{fmt_num(free_act['student']['three_cats'][2]['p_mean'])}</td>
                                 </tr>
                                 <tr style="background: #F1F5F9; font-weight: 700;">
-                                    <td>知りたい以上 (2値)</td>
-                                    <td>{paid_act['student']['binary'][1]['count']}件 ({fmt_pct(paid_act['student']['binary'][1]['pct'])})</td>
-                                    <td>{fmt_num(paid_act['student']['binary'][1]['v_mean'])}</td>
-                                    <td>{fmt_num(paid_act['student']['binary'][1]['p_mean'])}</td>
+                                    <td>知りたい以上</td>
                                     <td>{free_act['student']['binary'][1]['count']}件 ({fmt_pct(free_act['student']['binary'][1]['pct'])})</td>
                                     <td>{fmt_num(free_act['student']['binary'][1]['v_mean'])}</td>
                                     <td>{fmt_num(free_act['student']['binary'][1]['p_mean'])}</td>
@@ -1344,7 +1420,7 @@ def build_html():
             </div>
         </div>
 
-        <!-- Section: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
+        <!-- Section 2: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
@@ -1354,46 +1430,76 @@ def build_html():
                 <span class="pill pill-indigo">区分別要因分析</span>
             </div>
 
-            <!-- 前面：区分別の要点まとめ比較テーブル -->
-            <div class="sub-card" style="margin-bottom: 20px;">
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 18%;">出展区分</th>
-                                <th style="width: 25%;">バリューの影響（10pt上昇）</th>
-                                <th style="width: 25%;">パーソナリティの影響</th>
-                                <th style="width: 32%;">実態のポイント</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #F8FAFC;">
-                                <td><strong>無料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=191 / 164)</span></td>
-                                <td>
-                                    <strong style="color: var(--primary); font-size: 13.5px;">知りたい以上：約 2.87 倍 (***)</strong><br>
-                                    <strong style="color: var(--primary); font-size: 13.5px;">めっちゃ知りたい：約 3.98 倍 (***)</strong>
-                                </td>
-                                <td>
-                                    <span style="color: var(--gray-500); font-size: 12px;">約 0.9 〜 1.1 倍</span><br>
-                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
-                                </td>
-                                <td style="font-size: 11.5px; line-height: 1.4;">企業の完全な自由選択が行われたため、バリューフィット度の高さがアクション選択の極めて強力な決定打となっている。</td>
-                            </tr>
-                            <tr>
-                                <td><strong>有料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=122)</span></td>
-                                <td>
-                                    <span style="color: var(--gray-700); font-size: 12.5px;">知りたい以上：約 1.34 倍</span><br>
-                                    <span style="color: var(--gray-700); font-size: 12.5px;">めっちゃ知りたい：約 1.94 倍 (†)</span>
-                                </td>
-                                <td>
-                                    <span style="color: var(--gray-500); font-size: 12px;">約 1.1 〜 1.2 倍</span><br>
-                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
-                                </td>
-                                <td style="font-size: 11.5px; line-height: 1.4;">事前マッチングにより元々高バリュー層が集中的に配席されていたため、スコア上昇による選択確率の跳ね上がり倍率がマイルドに表れている。</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- 前面：要点まとめ比較テーブル ＆ インパクトグラフ -->
+            <div class="grid-2" style="margin-bottom: 20px;">
+                <!-- 左：要点まとめ比較テーブル -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%;">出展区分</th>
+                                    <th style="width: 38%;">バリューの影響（10pt上昇）</th>
+                                    <th style="width: 40%;">パーソナリティの影響 ＆ 特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #F0FDFA;">
+                                    <td>
+                                        <strong style="color: #0F766E;">🌱 無料企業群</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500);">(8社・191件 / P有効164件)</span>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #0F766E; font-size: 13.5px;">知りたい以上：約 2.06 倍 (***)</strong><br>
+                                        <strong style="color: #0F766E; font-size: 13.5px;">めっちゃ知りたい：約 3.22 倍 (***)</strong>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            企業の完全な自由選択が行われたため、バリューフィット度が最高のアクション選択を強力に牽引。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--gray-500); font-size: 12px;">約 1.16 倍（有意差なし）</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            パーソナリティは選択確率を左右しておらず、バリュー主導の選定傾向が鮮明。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong style="color: var(--primary);">💎 有料企業群</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500);">(4社・122件)</span>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">知りたい以上：約 1.78 倍 (†)</span><br>
+                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">めっちゃ知りたい：約 2.17 倍 (†)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            事前マッチングにより元々高バリュー層が集中的に配席されていたため、倍率効果はマイルドに表れる。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--gray-500); font-size: 12px;">約 0.98 倍（有意差なし）</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            企業アクションには有意差なし。一方、学生からのアクションではP平均が大きく押し上がる傾向。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※「影響度（倍率）」はロジスティック回帰のオッズ比（OR）に基づき、スコアが10pt上昇した際のアクション選択確率の上昇度合いを示しています。
+                    </div>
+                </div>
+
+                <!-- 右：視覚的インパクト比較グラフ -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 区分別 選択倍率インパクト比較（有料 vs 無料 / 基準=1.0倍）</h3>
+                    <div class="chart-box" style="height: 230px;">
+                        <canvas id="chart-strat-impact"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※赤線（1.0倍）より右に大きく伸びるほど強いプラス影響。無料企業の「めっちゃ知りたい」バリューOR（3.22倍***）が最も顕著。
+                    </div>
                 </div>
             </div>
 
@@ -1766,32 +1872,111 @@ def build_html():
         }}
     }});
 
-    // Logit Impact Chart
-    new Chart(document.getElementById('chart-logit-impact'), {{
+    // Stratified Comparison Charts (Tab 2)
+    new Chart(document.getElementById('chart-strat-comp'), {{
+        type: 'bar',
+        data: {{
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {{
+                    label: '有料企業：バリュー平均',
+                    data: [{paid_act['company']['three_cats'][0]['v_mean']}, {paid_act['company']['three_cats'][1]['v_mean']}, {paid_act['company']['three_cats'][2]['v_mean']}],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '無料企業：バリュー平均',
+                    data: [{free_act['company']['three_cats'][0]['v_mean']}, {free_act['company']['three_cats'][1]['v_mean']}, {free_act['company']['three_cats'][2]['v_mean']}],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '有料企業：P平均',
+                    data: [{paid_act['company']['three_cats'][0]['p_mean']}, {paid_act['company']['three_cats'][1]['p_mean']}, {paid_act['company']['three_cats'][2]['p_mean']}],
+                    backgroundColor: '#94A3B8',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '無料企業：P平均',
+                    data: [{free_act['company']['three_cats'][0]['p_mean']}, {free_act['company']['three_cats'][1]['p_mean']}, {free_act['company']['three_cats'][2]['p_mean']}],
+                    backgroundColor: '#CBD5E1',
+                    borderRadius: 4
+                }}
+            ]
+        }},
+        options: {{
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {{ y: {{ min: 50, max: 85 }} }}
+        }}
+    }});
+
+    new Chart(document.getElementById('chart-strat-stud'), {{
+        type: 'bar',
+        data: {{
+            labels: ['なし', '知りたい', 'めっちゃ知りたい'],
+            datasets: [
+                {{
+                    label: '有料企業宛：バリュー平均',
+                    data: [{paid_act['student']['three_cats'][0]['v_mean']}, {paid_act['student']['three_cats'][1]['v_mean']}, {paid_act['student']['three_cats'][2]['v_mean']}],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '無料企業宛：バリュー平均',
+                    data: [{free_act['student']['three_cats'][0]['v_mean']}, {free_act['student']['three_cats'][1]['v_mean']}, {free_act['student']['three_cats'][2]['v_mean']}],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '有料企業宛：P平均',
+                    data: [{paid_act['student']['three_cats'][0]['p_mean']}, {paid_act['student']['three_cats'][1]['p_mean']}, {paid_act['student']['three_cats'][2]['p_mean']}],
+                    backgroundColor: '#F59E0B',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '無料企業宛：P平均',
+                    data: [{free_act['student']['three_cats'][0]['p_mean']}, {free_act['student']['three_cats'][1]['p_mean']}, {free_act['student']['three_cats'][2]['p_mean']}],
+                    backgroundColor: '#FCD34D',
+                    borderRadius: 4
+                }}
+            ]
+        }},
+        options: {{
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {{ y: {{ min: 50, max: 85 }} }}
+        }}
+    }});
+
+    new Chart(document.getElementById('chart-strat-impact'), {{
         type: 'bar',
         data: {{
             labels: [
-                '企業：バリュー (めっちゃ知りたい)',
-                '企業：バリュー (知りたい以上)',
-                '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：バリュー (知りたい以上)',
-                '企業：パーソナリティ (知りたい以上)'
+                '無料企業：バリュー (めっちゃ知りたい)',
+                '有料企業：バリュー (めっちゃ知りたい)',
+                '無料企業：バリュー (知りたい以上)',
+                '有料企業：バリュー (知りたい以上)',
+                '無料企業：パーソナリティ (知りたい以上)',
+                '有料企業：パーソナリティ (知りたい以上)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    2.908,
-                    2.027,
-                    1.490,
-                    1.248,
-                    1.096
+                    {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
+                    '#0D9488',
                     '#4F46E5',
+                    '#14B8A6',
                     '#6366F1',
-                    '#F59E0B',
-                    '#06B6D4',
-                    '#94A3B8'
+                    '#94A3B8',
+                    '#CBD5E1'
                 ],
                 borderRadius: 4
             }}]
@@ -1813,7 +1998,7 @@ def build_html():
             scales: {{
                 x: {{
                     min: 0,
-                    max: 3.5,
+                    max: 3.8,
                     grid: {{
                         color: function(context) {{
                             return context.tick.value === 1.0 ? '#EF4444' : '#E2E8F0';
@@ -1832,8 +2017,7 @@ def build_html():
         }}
     }});
 
-
-    // Company Detail Data
+        // Company Detail Data
     const companiesData = {json.dumps(comps, ensure_ascii=False)};
     let compChartInst = null;
     let studChartInst = null;
