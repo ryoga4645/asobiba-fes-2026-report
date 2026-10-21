@@ -664,11 +664,13 @@ def build_html():
         <button class="tab-btn active" onclick="switchTab('tab-overall')">
             <span>📊</span> Tab 1: 全体実態分析
         </button>
+        <!-- Tab 2: 有料出展 vs 無料出展 区分別分析（非表示化）
         <button class="tab-btn" onclick="switchTab('tab-stratified')">
-            <span>⚖️</span> Tab 2: 有料出展 vs 無料出展 区分別分析
+            <span>⚖️</span> 有料出展 vs 無料出展 区分別分析
         </button>
+        -->
         <button class="tab-btn" onclick="switchTab('tab-companies')">
-            <span>🏢</span> Tab 3: 全12社 比較一覧・個別カルテ
+            <span>🏢</span> Tab 2: 全12社 比較一覧・個別カルテ
         </button>
     </div>
 
@@ -1638,7 +1640,7 @@ def build_html():
     <!-- ============================================================= -->
     <!-- TAB 2: 有料出展 vs 無料出展 区分別分析 -->
     <!-- ============================================================= -->
-    <div id="tab-stratified" class="tab-pane">
+    <div id="tab-stratified" class="tab-pane" style="display: none !important;">
         <!-- Section 1: 有料出展企業（4社・122件）のアクション別実態 -->
         <div class="section-card">
             <div class="section-header">
@@ -2300,7 +2302,7 @@ def build_html():
     </div>
 
     <!-- ============================================================= -->
-    <!-- TAB 3: 全12社 比較一覧・個別カルテ -->
+    <!-- TAB 2: 全12社 比較一覧・個別カルテ -->
     <!-- ============================================================= -->
     <div id="tab-companies" class="tab-pane">
         <!-- 12社一覧比較テーブル -->
