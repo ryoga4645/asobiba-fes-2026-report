@@ -1018,60 +1018,88 @@ def build_html():
             </div>
         </div>
 
-        <!-- Section 4: 3x3 マトリクス -->
+        <!-- Section 4: 3x3 マトリクス ＆ 水準別アクション比較 -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🧱 【複合実態】バリュー × パーソナリティ 3×3 分割表（実態集計）</div>
+                    <div class="section-title">🧱 【複合実態】バリュー × パーソナリティ 3×3 分割表 ＆ 水準別アクション比較</div>
                     <div class="section-desc">バリュー3分位水準（低: &lt;58.0, 中: 58.0〜63.9, 高: ≥64.0）× パーソナリティ3分位水準（低: &lt;76.0, 中: 76.0〜81.9, 高: ≥82.0）における実績（N=286）</div>
                 </div>
-                <span class="pill pill-slate">クロス集計</span>
+                <span class="pill pill-slate">クロス集計 ＆ 行動比較</span>
             </div>
 
-            <div class="table-container">
-                <table class="matrix-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 25%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
-                            <th style="width: 25%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                            <th style="width: 25%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                            <th style="width: 25%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
-                        </tr>
-                    </thead>
-                    <tbody>'''
+            <!-- 上段：スッキリ整理された3×3マッチング成立率マトリクス -->
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 バリュー × パーソナリティ マッチング成立率マトリクス (N=286)</h3>
+                <div class="table-container">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 28%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 24%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                                <th style="width: 24%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                                <th style="width: 24%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                            </tr>
+                        </thead>
+                        <tbody>'''
 
     for r_idx, row in enumerate(m3x3):
-        p_lbl = row[0]['p_label']
+        raw_p_lbl = row[0]['p_label']
+        # 正式名称「パーソナリティ高 / 中 / 低」に統一
+        p_lbl = raw_p_lbl if raw_p_lbl.startswith('パーソナリティ') else f'パーソナリティ{raw_p_lbl}'
         bg_col = '#D1FAE5' if r_idx == 0 else ('#FEF3C7' if r_idx == 1 else '#FEE2E2')
         html += f'''
-                        <tr>
-                            <th style="background: {bg_col};">{p_lbl}</th>'''
+                            <tr>
+                                <th style="background: {bg_col};">{p_lbl}</th>'''
         for c in row:
             mr = c['match_rate']
             heat_cls = 'heat-high' if mr >= 50.0 else ('heat-mid-high' if mr >= 40.0 else ('heat-mid' if mr >= 30.0 else 'heat-low'))
+            # 内訳テキストを撤廃し、成立率と件数のみをすっきり表示
             html += f'''
-                            <td class="matrix-cell {heat_cls}">
-                                <div class="cell-rate">{fmt_pct(mr)}</div>
-                                <div class="cell-sub">
-                                    成立 {c['match_count']}/{c['count']}件<br>
-                                    企業 めっちゃ知りたい:{fmt_pct(c['company_high_pct'])} / 知りたい以上:{fmt_pct(c['company_any_pct'])}<br>
-                                    学生 めっちゃ知りたい:{fmt_pct(c['student_high_pct'])} / 知りたい以上:{fmt_pct(c['student_any_pct'])}
-                                </div>
-                            </td>'''
+                                <td class="matrix-cell {heat_cls}">
+                                    <div class="cell-rate">{fmt_pct(mr)}</div>
+                                    <div class="cell-sub">成立 {c['match_count']}/{c['count']}件</div>
+                                </td>'''
         html += '''
-                        </tr>'''
+                            </tr>'''
 
     html += f'''
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="summary-box">
-                <strong class="title">📝 データまとめ（3×3 実態集計）:</strong>
+            <!-- 下段：スコア水準別の企業・学生アクション比較グラフ（2カラム） -->
+            <div class="grid-2">
+                <!-- 左下：バリュー水準別アクション比較 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">📊 バリュー水準別のアクション選択率（企業 vs 学生）</h3>
+                    <div class="chart-box" style="height: 250px;">
+                        <canvas id="chart-matrix-value"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 11px; color: var(--gray-500); line-height: 1.4;">
+                        ※バリューが「低➔中➔高」と上がるにつれ、企業の「知りたい以上（62.8%➔84.5%）」および「めっちゃ知りたい（14.9%➔36.4%）」が急上昇しています。
+                    </div>
+                </div>
+
+                <!-- 右下：パーソナリティ水準別アクション比較 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">📊 パーソナリティ水準別のアクション選択率（企業 vs 学生）</h3>
+                    <div class="chart-box" style="height: 250px;">
+                        <canvas id="chart-matrix-pers"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 11px; color: var(--gray-500); line-height: 1.4;">
+                        ※企業の選択率はほぼ横ばい（約70〜75%）ですが、学生側の選択率は中〜高水準で安定（約56〜58%）して推移しています。
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-box" style="margin-top: 20px;">
+                <strong class="title">📝 データまとめ（3×3 実態集計 ＆ 行動傾向）:</strong>
                 <ul>
-                    <li>バリュー高（≥64.0）の水準では、パーソナリティ水準に関わらずマッチング成立率が <strong>54.1% 〜 61.2%</strong> と高くなっています。</li>
-                    <li>バリュー低かつパーソナリティ低のセルでは、成立件数は 7/37件、マッチング成立率は <strong>18.9%</strong> と最も低い値となっています。</li>
-                    <li>企業の「めっちゃ知りたい」選択率は、バリュー高の列において 26.5% 〜 45.9% と高水準に分布しています。</li>
+                    <li><strong>成立率の分布</strong>：バリュー高（≥64.0）の水準では、パーソナリティ水準に関わらずマッチング成立率が <strong>54.1% 〜 61.2%</strong> と高水準を維持しています。一方、バリュー低かつパーソナリティ低のセルでは、成立件数は 7/37件、成立率は <strong>18.9%</strong> と最も低い値となっています。</li>
+                    <li><strong>バリュー水準と行動</strong>：バリュー水準が上昇するに伴い、企業のアクション率（知りたい以上 62.8% ➔ 84.5%、めっちゃ知りたい 14.9% ➔ 36.4%）が極めて力強く上昇し、マッチング成立を牽引しています。</li>
+                    <li><strong>パーソナリティ水準と行動</strong>：パーソナリティ水準に対して企業のアクション率は大きな変動を示さない一方、学生側は中〜高水準において「めっちゃ知りたい」の選択率（約13%）や「知りたい以上」（約56〜59%）が底上げされています。</li>
                 </ul>
             </div>
         </div>
@@ -1560,6 +1588,121 @@ def build_html():
             scales: {{ y: {{ min: 50, max: 85 }} }}
         }}
     }});
+
+    // Matrix Value Tier Chart
+    new Chart(document.getElementById('chart-matrix-value'), {{
+        type: 'bar',
+        data: {{
+            labels: ['低 (<58.0)', '中 (58.0〜63.9)', '高 (≥64.0)'],
+            datasets: [
+                {{
+                    label: '企業：知りたい以上',
+                    data: [62.8, 69.5, 84.5],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '企業：めっちゃ知りたい',
+                    data: [14.9, 20.7, 36.4],
+                    backgroundColor: '#818CF8',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '学生：知りたい以上',
+                    data: [46.8, 46.3, 64.5],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '学生：めっちゃ知りたい',
+                    data: [9.6, 11.0, 13.6],
+                    backgroundColor: '#F59E0B',
+                    borderRadius: 4
+                }}
+            ]
+        }},
+        options: {{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {{
+                legend: {{ position: 'top', labels: {{ boxWidth: 12, font: {{ size: 10.5 }} }} }},
+                tooltip: {{
+                    callbacks: {{
+                        label: function(context) {{
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                        }}
+                    }}
+                }}
+            }},
+            scales: {{
+                y: {{
+                    min: 0,
+                    max: 100,
+                    ticks: {{
+                        callback: function(value) {{ return value + '%'; }}
+                    }}
+                }}
+            }}
+        }}
+    }});
+
+    // Matrix Personality Tier Chart
+    new Chart(document.getElementById('chart-matrix-pers'), {{
+        type: 'bar',
+        data: {{
+            labels: ['低 (<76.0)', '中 (76.0〜81.9)', '高 (≥82.0)'],
+            datasets: [
+                {{
+                    label: '企業：知りたい以上',
+                    data: [70.2, 75.7, 74.1],
+                    backgroundColor: '#4F46E5',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '企業：めっちゃ知りたい',
+                    data: [27.9, 30.0, 18.8],
+                    backgroundColor: '#818CF8',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '学生：知りたい以上',
+                    data: [47.1, 58.6, 56.2],
+                    backgroundColor: '#06B6D4',
+                    borderRadius: 4
+                }},
+                {{
+                    label: '学生：めっちゃ知りたい',
+                    data: [8.7, 12.9, 13.4],
+                    backgroundColor: '#F59E0B',
+                    borderRadius: 4
+                }}
+            ]
+        }},
+        options: {{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {{
+                legend: {{ position: 'top', labels: {{ boxWidth: 12, font: {{ size: 10.5 }} }} }},
+                tooltip: {{
+                    callbacks: {{
+                        label: function(context) {{
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                        }}
+                    }}
+                }}
+            }},
+            scales: {{
+                y: {{
+                    min: 0,
+                    max: 100,
+                    ticks: {{
+                        callback: function(value) {{ return value + '%'; }}
+                    }}
+                }}
+            }}
+        }}
+    }});
+
 
     // Logit Impact Chart
     new Chart(document.getElementById('chart-logit-impact'), {{
