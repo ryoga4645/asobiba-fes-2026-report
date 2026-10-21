@@ -10,6 +10,7 @@ client_secret*.json
 
 # Personal Data / Internal raw logs (Strictly Forbidden to commit)
 *.csv
+!asobiba_fes_raw_data_313.csv
 *.xlsx
 *.txt
 LINE_*.jpg

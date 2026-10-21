@@ -46,6 +46,10 @@ def p_pill(p):
         return '<span class="pill pill-slate">有意差なし</span>'
 
 def build_html():
+    # Load raw CSV for download
+    with open('asobiba_fes_raw_data_313.csv', 'r', encoding='utf-8-sig') as f:
+        raw_csv_text = f.read().strip()
+
     with open('scripts/report_stats.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
         
@@ -503,6 +507,40 @@ def build_html():
             .grid-4 {{ grid-template-columns: 1fr 1fr; }}
             .tab-bar {{ flex-direction: column; }}
         }}
+    
+        /* Raw CSV Download Button */
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #10B981;
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 13.5px;
+            padding: 10px 18px;
+            border-radius: 9999px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.55);
+            transform: translateY(-1px);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
@@ -512,6 +550,12 @@ def build_html():
         <div class="header-title">
             <h1>ASOBIBA FES 2026 フィット度・アクション・マッチング実態分析ダッシュボード</h1>
             <p>バリューフィット度・パーソナリティフィット度と、企業・学生のアクション選択およびマッチング成立の実態記述・推論統計</p>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="btn-download" onclick="downloadRawCSV()" title="分析の基礎となった全313行の元データ一覧をダウンロード">
+                <span style="font-size: 16px;">📥</span>
+                <span>参照生データをダウンロード (CSV: 313件)</span>
+            </button>
         </div>
     </div>
 </header>
@@ -2566,6 +2610,37 @@ def build_html():
     renderCompanyDetail(0);
 </script>
 
+
+<!-- Raw CSV Data & Download Script -->
+<script id="raw-csv-data" type="text/plain">
+""" + raw_csv_text + """
+</script>
+
+<script>
+function downloadRawCSV() {{
+    try {{
+        const csvEl = document.getElementById('raw-csv-data');
+        const csvContent = csvEl ? csvEl.textContent.trim() : '';
+        if (!csvContent) {{
+            window.location.href = 'asobiba_fes_raw_data_313.csv';
+            return;
+        }}
+        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        const blob = new Blob([bom, csvContent], {{ type: 'text/csv;charset=utf-8;' }});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ASOBIBA_FES_2026_全データ一覧_313件.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }} catch (err) {{
+        console.error('Download error:', err);
+        window.location.href = 'asobiba_fes_raw_data_313.csv';
+    }}
+}}
+</script>
 </body>
 </html>'''
 
