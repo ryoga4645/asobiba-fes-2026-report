@@ -891,6 +891,38 @@
                             </table>
                         </div>
                     </div>
+
+                    <!-- 統計的背景・バイアスの噛み砕き解説カード -->
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
+                        <h4 style="font-size: 13.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                            <span>💡</span> 統計モデル解釈の留意点（現場の運用・データ構造による背景解説）
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <!-- ③ パナソニックOE除外要因 -->
+                            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #166534; line-height: 1.6;">
+                                <strong style="color: #15803D; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                    🔍 【サンプル変化】学生バリュー効果が多変量で有意化するタネ明かし
+                                </strong>
+                                学生アクションのバリューオッズ比が、単変量（1.29倍・有意差なし）から多変量（1.41倍・有意*）へ高まる真因は、パーソナリティ未算出である<strong>パナソニックOE（27件：バリュー全社最低54.98・学生人気2位77.8%）が多変量モデルから除外されたため</strong>です。知名度による低バリュー・高人気サンプルが除外されたことで、本来のバリュー連動性がクリアに現れたと解釈するのが最も正確です（同社除外後は単変量でも OR 1.415* で同等）。
+                            </div>
+
+                            <!-- ② 視覚的アンカリング -->
+                            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #1E40AF; line-height: 1.6;">
+                                <strong style="color: #1D4ED8; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                    🎯 【視覚的アンカリング】事前に数字を見ていたことによる「先入観」の影響
+                                </strong>
+                                企業側のバリューフィット度に対するオッズ比の高さ（めっちゃ知りたいで約2.5〜2.9倍）には、純粋な対話相性だけでなく、<strong>もし当日企業側が事前に算出された高スコアを確認していた場合、「最初から好意的に評価した（確証バイアス・先入観）」という効果が混ざっている可能性</strong>があります。企業側がパーソナリティに反応しなかったのも、画面上でバリューほど意識されていなかった運用背景が考えられます。
+                            </div>
+                        </div>
+
+                        <!-- ④ ターン進行バイアス -->
+                        <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #92400E; line-height: 1.6; margin-top: 10px;">
+                            <strong style="color: #B45309; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                ⏱️ 【時間経過バイアス】時間帯（第1〜第6ターン）による「学生の疲れ」と「企業の焦り」のすれ違い
+                            </strong>
+                            面談が進むにつれて統計的に有意な時間経過バイアスが発生しています。<strong>学生側は疲労により「知りたい」が第1〜2ターンの60%台から第6ターンには43.9%へ下落（未回答も倍増）</strong>する一方、<strong>企業側は後半ほど「もっとマッチさせたい」と基準を広げ、選択率が58.8%から77.2%へ上昇</strong>しています。後半ターンほどスコアとは関係なく「学生は選ばず、企業は選ぶ」すれ違いが生じており、時間帯要因が一定のノイズとなっています。
+                        </div>
+                    </div>
                 </div>
             </details>
 
@@ -901,14 +933,7 @@
                     <li><strong>学生側</strong>：パーソナリティフィット度の上昇に伴い、多項モデルの「めっちゃ知りたい」選択オッズ比が約1.48〜1.49倍となり、有意傾向を示します（p = 0.1010†、多変量でも p = 0.1057）。バリューフィット度は多項多変量モデルにおいて「知りたい」選択オッズ比が約1.41倍となり、統計的有意差が認められます（p = 0.0438*）。</li>
                 </ul>
             </div>
-            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 14px 18px; margin-top: 14px; font-size: 12px; color: #166534; line-height: 1.6;">
-                <div style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: #15803D;">
-                    <span>💡</span> 【重要：統計的メカニズムの補足注記】単変量から多変量へのオッズ比変化の主因
-                </div>
-                <p>学生アクションにおけるバリューフィット度「知りたい」のオッズ比は、単変量（N=313）の <strong>OR 1.288</strong>（p = 0.1074：有意差なし）から多変量（N=286）の <strong>OR 1.410</strong>（p = 0.0438*：有意）へと変化しています。また企業側でも「めっちゃ知りたい」のオッズ比が単変量 2.908 から多変量 2.463 へ変化しています。</p>
-                <p style="margin-top: 4px;">バリューフィットとパーソナリティフィットはほぼ無相関（r = 0.034）であるため、この変化はパーソナリティの統制効果によるものではなく、<strong>パーソナリティ未算出であるパナソニック オペレーショナルエクセレンス（27件）が多変量モデルから除外されたことによるサンプル構造変化が主因</strong>です。</p>
-                <p style="margin-top: 4px;">同社は全12社中バリュー平均が最も低い（54.98）にもかかわらず、学生人気は2位（知りたい以上 77.8%：21/27件）と極めて特異な分布を示しています。実際に同社を除いた N=286 で単変量回帰を行うと、パーソナリティを投入しなくても <strong>学生「知りたい」OR 1.415*（p = 0.0410*）、企業「めっちゃ知りたい」OR 2.446***（p = 0.0002***）</strong> となり、多変量モデルとほぼ同一の数値になります。すなわち「知名度による低バリュー・高人気サンプルが除外されたことで、本来のバリュー連動性がクリアに現れた」と解釈するのが最も正確です。</p>
-            </div>
+
         </div>
 
         <!-- Section 3: マッチング成立の要因分析（要点まとめ ＆ 詳細モデル） -->
@@ -1040,6 +1065,18 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- ① シンプソンのパラドックス・企業固定効果解説カード -->
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
+                        <div style="background: #FAF5FF; border: 1px solid #E9D5FF; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #6B21A8; line-height: 1.6;">
+                            <h4 style="font-size: 13.5px; font-weight: 800; color: #7E22CE; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <span>🏆</span> 【重要：同一企業内比較】「同じ企業の中で誰が選ばれたか」で見ると、相性（パーソナリティ）が劇的に効いている！
+                            </h4>
+                            <p>全体一括集計（上記の多変量モデル）では、パーソナリティフィット度のマッチングオッズ比は <strong>1.34倍</strong>（p = 0.0518†：有意傾向）にとどまっています。しかしこれは、「性格スコア低めの企業（とものや・Linoa・アイプラス等）が学生に大人気だった」という<strong>企業ごとの人気の差（企業間交絡）によって、相性の効果が薄まって見えていたため</strong>です（シンプソンのパラドックス）。</p>
+                            <p style="margin-top: 6px;">企業ごとのベース差を補正し、<strong>「同じ企業の中で、どの学生がマッチしたか（企業固定効果モデル）」を検証すると、パーソナリティフィット度のオッズ比は 1.71倍（p = 0.0031**：1%水準で超強力に有意）へと跳ね上がります！</strong></p>
+                            <p style="margin-top: 6px;">これはバリューフィット度（1.66倍, p = 0.0064**）と同等以上の決定力であり、<strong>「同じ企業ブースを訪れた学生同士を比較した場合、性格の相性が高い学生ほど圧倒的にマッチング成立している」</strong> ことが統計学的に実証されています（例：とものやではマッチ群PF 81.37 vs 未マッチ群 71.72 で +9.65pt差、リード・イノベーションでは +7.62pt差）。</p>
+                        </div>
                     </div>
                 </div>
             </details>
@@ -1828,6 +1865,17 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- ⑥ 有料企業の範囲制限解説カード -->
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
+                        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #166534; line-height: 1.6;">
+                            <h4 style="font-size: 13.5px; font-weight: 800; color: #15803D; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <span>📏</span> 【統計的背景】有料企業でスコアの差がマイルドに見える理由（最初から全員高得点だったため）
+                            </h4>
+                            <p>有料企業群（122件）において、企業側のバリューフィット度オッズ比（1.78倍, p = 0.0845†）が無料企業群（2.06倍, p = 0.0002***）よりも控えめで有意性が弱まっているように見えます。これは有料企業がバリューを軽視したのではなく、<strong>「事前の優先配席によって最初から高バリューの学生ばかりが集められたため、学生間のスコアのばらつき（標準偏差）が小さくなった（有料SD 6.38 vs 無料SD 8.53）」</strong> ことによる統計学上の必然的な現象（範囲制限・天井効果）です。</p>
+                            <p style="margin-top: 6px;">有料企業では「なし」の時点ですでにバリュー平均が 60.09（無料企業の「知りたい」平均 60.46 と同等）に達しており、低バリュー層との比較が存在しない高水準帯での選考だったことが、オッズ比がマイルドに表れる理由です。</p>
                         </div>
                     </div>
                 </div>
