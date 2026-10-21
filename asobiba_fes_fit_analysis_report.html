@@ -618,7 +618,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10名限定)</span>
                                     </td>
                                     <td>71件 (22.7%)</td>
                                     <td><strong>63.79</strong> ±7.10</td>
@@ -667,7 +667,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(上限なし)</span>
                                     </td>
                                     <td>40件 (12.8%)</td>
                                     <td>60.67 ±8.25</td>
@@ -692,6 +692,9 @@
                     <li><strong>学生側</strong>：パーソナリティフィット度平均は「なし（78.08）」から「知りたい（79.23）」、「めっちゃ知りたい（80.78）」へと数値が高くなっています（差 +2.70pt）。バリューフィット度平均は 59.96 〜 61.48 の範囲で推移しています。</li>
                     <li><strong>2値（なし vs 知りたい以上）</strong>：企業は全体の 69.0%（216件）、学生は 55.6%（174件）が「知りたい以上」のアクションを選択しています。</li>
                 </ul>
+            </div>
+                    <div style="font-size: 11.5px; color: var(--gray-500); margin-top: 10px; line-height: 1.5; background: #F8FAFC; border: 1px solid var(--gray-200); border-radius: 6px; padding: 8px 12px;">
+                ※ <strong>アクション区分「なし」の集計定義</strong>：CSV上の「知りたいを選択せず」および「未回答」を合算しています。企業側の未回答（45件）の84%はパナソニックOE（20件）およびUnith Link（18件）の未入力運用によるもの、学生側の未回答（43件）も全6ターン未提出者等を含む実態ベースの「アクションなし」として一貫して処理しています。
             </div>
         </div>
 
@@ -897,6 +900,14 @@
                     <li><strong>企業側</strong>：バリューフィット度の上昇に伴い、2値モデル（OR 2.03, p &lt; 0.0001***）、多項モデルの知りたい（OR 1.75, p = 0.0015**）、めっちゃ知りたい（OR 2.91, p &lt; 0.0001***）のすべてのオッズ比が統計的に有意に高くなっています。多変量モデルでパーソナリティを統制しても同様の有意性が維持されます（めっちゃ知りたい OR 2.46, p = 0.0001***）。一方、パーソナリティフィット度はいずれのモデルでもオッズ比が約0.93〜1.18倍にとどまり、統計的有意差は認められません（p &gt; 0.34）。</li>
                     <li><strong>学生側</strong>：パーソナリティフィット度の上昇に伴い、多項モデルの「めっちゃ知りたい」選択オッズ比が約1.48〜1.49倍となり、有意傾向を示します（p = 0.1010†、多変量でも p = 0.1057）。バリューフィット度は多項多変量モデルにおいて「知りたい」選択オッズ比が約1.41倍となり、統計的有意差が認められます（p = 0.0438*）。</li>
                 </ul>
+            </div>
+            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 14px 18px; margin-top: 14px; font-size: 12px; color: #166534; line-height: 1.6;">
+                <div style="font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: #15803D;">
+                    <span>💡</span> 【重要：統計的メカニズムの補足注記】単変量から多変量へのオッズ比変化の主因
+                </div>
+                <p>学生アクションにおけるバリューフィット度「知りたい」のオッズ比は、単変量（N=313）の <strong>OR 1.288</strong>（p = 0.1074：有意差なし）から多変量（N=286）の <strong>OR 1.410</strong>（p = 0.0438*：有意）へと変化しています。また企業側でも「めっちゃ知りたい」のオッズ比が単変量 2.908 から多変量 2.463 へ変化しています。</p>
+                <p style="margin-top: 4px;">バリューフィットとパーソナリティフィットはほぼ無相関（r = 0.034）であるため、この変化はパーソナリティの統制効果によるものではなく、<strong>パーソナリティ未算出であるパナソニック オペレーショナルエクセレンス（27件）が多変量モデルから除外されたことによるサンプル構造変化が主因</strong>です。</p>
+                <p style="margin-top: 4px;">同社は全12社中バリュー平均が最も低い（54.98）にもかかわらず、学生人気は2位（知りたい以上 77.8%：21/27件）と極めて特異な分布を示しています。実際に同社を除いた N=286 で単変量回帰を行うと、パーソナリティを投入しなくても <strong>学生「知りたい」OR 1.415*（p = 0.0410*）、企業「めっちゃ知りたい」OR 2.446***（p = 0.0002***）</strong> となり、多変量モデルとほぼ同一の数値になります。すなわち「知名度による低バリュー・高人気サンプルが除外されたことで、本来のバリュー連動性がクリアに現れた」と解釈するのが最も正確です。</p>
             </div>
         </div>
 
@@ -1373,10 +1384,11 @@
             <h3>💡 【全体解釈・示唆】客観的データ分析から読み取れる総合的考察</h3>
             <p><strong>1. 企業と学生におけるアクション選択傾向の相違（解釈）:</strong><br>
             企業の回帰分析結果より、企業はバリューフィット度スコアに強く連動してアクションを選択しており、スコア10pt上昇に伴い「知りたい以上」の選択オッズが約2.0倍、「めっちゃ知りたい」の選択オッズが約2.9倍（多変量で約2.5倍）に増大します。一方でパーソナリティフィット度には有意な連動は見られません。<br>
-            対して学生側は、パーソナリティフィット度スコアの上昇に伴って「めっちゃ知りたい」を選択するオッズが約1.5倍に高まる傾向が確認され、バリューフィット度については一次関心である「知りたい」の選択オッズ（約1.4倍）に寄与しています。</p>
+            対して学生側は、パーソナリティフィット度スコアの上昇に伴って「めっちゃ知りたい」を選択するオッズが約1.5倍に高まる傾向が確認され、バリューフィット度については一次関心である「知りたい」の選択オッズ（約1.4倍*）に寄与しています。なお、学生のバリュー連動性が多変量で有意化する背景には、低バリューながら学生人気が集中したパナソニックOE（27件・PF未算出）が除外されたサンプル構造の影響が大きく、大手知名度の影響を受けない環境下では学生もバリューに有意に連動してアクションを選択している実態が裏付けられます。</p>
             
-            <p><strong>2. 配席の違い（出展区分）がもたらした影響（解釈）:</strong><br>
-            有料企業群は事前に高バリュー層が優先配席された背景があり、全体のベーススコアが高水準に位置しています。多変量ロジスティック回帰においてスコア要因を統計的に統制した結果、有料出展区分そのもののマッチング成立に対するオッズ比は 1.026倍（p = 0.9188）となり、独立した影響はほぼゼロであることが実証されます。有料企業のマッチ率の高さは、高バリュー層配席という前提条件が主因であったと解釈されます。</p>
+            <p><strong>2. 配席の違い（出展区分）がもたらした影響と企業間二極化（解釈）:</strong><br>
+            有料出展企業群は高バリュー層が優先配席された背景を持ちますが、スコア統制前の生データ時点でも有料4社（マッチ率 44.3%：54/122件）と無料8社（全体 38.7%：74/191件、P有効群では 40.9%：67/164件）のマッチ率差は統計的に有意ではありません（N=286 単変量 OR 1.150, p = 0.564）。多変量ロジスティック回帰においても有料出展区分の独立したオッズ比は 1.026倍（p = 0.9188）で有意差は認められません。<br>
+            この背景には企業ごとの顕著な二極化があります。有料4社内でもベル（65.5%）やカペラ京都（59.4%）が極めて高いマッチ率を記録した一方、Unith Link（16.7%：企業側のアクション率40.0%と厳選傾向）やリード・イノベーション（35.5%）が平均を引き下げています。また無料出展でもLinoa Group（バリュー平均 63.22、マッチ率 65.2%）やCKCネットワーク（バリュー平均 63.79、マッチ率 48.0%）のように有料企業以上に高バリュー層と接触・マッチした企業が存在し、「出展区分（有料・無料）」よりも「各社の選考姿勢（積極型 vs 厳選型）および個別配席の相性」が成否を大きく決定づけた実態が明らかです。</p>
 
             <p><strong>3. 次回イベント運営および配席設計へのデータ的示唆:</strong><br>
             3×3マトリクスの実態が示す通り、バリュー高の層では54%〜61%の安定したマッチング成立率が記録されている一方、両スコアがともに低い層では成立率が18.9%に沈んでいます。マッチング全体の効率を最大化する観点からは、バリューフィット度の高い組み合わせを優先的に配置し、低スコア同士の接触を抑制するアルゴリズム設計が有効であることが示唆されます。</p>
@@ -1430,7 +1442,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10名限定)</span>
                                     </td>
                                     <td>29件 (23.8%)</td>
                                     <td><strong>63.13</strong> ±7.34</td>
@@ -1479,7 +1491,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(上限なし)</span>
                                     </td>
                                     <td>16件 (13.1%)</td>
                                     <td>62.02 ±5.29</td>
@@ -1549,7 +1561,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10名限定)</span>
                                     </td>
                                     <td>42件 (22.0%)</td>
                                     <td><strong>64.24</strong> ±6.97</td>
@@ -1598,7 +1610,7 @@
                                 <tr class="highlight-row">
                                     <td>
                                         <strong>めっちゃ知りたい</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(上限なし)</span>
                                     </td>
                                     <td>24件 (12.6%)</td>
                                     <td><strong>59.77</strong> ±9.75</td>
@@ -2755,7 +2767,7 @@
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {
             const item = c.company_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
-            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10名限定)</span>' : '';
             compRows += `<tr class="${isHigh ? 'highlight-row' : ''}">
                 <td><strong>${act}</strong>${labelSub}</td>
                 <td>${item.count}件 (${item.pct.toFixed(1)}%)</td>
@@ -2776,7 +2788,7 @@
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {
             const item = c.student_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
-            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(上限なし)</span>' : '';
             studRows += `<tr class="${isHigh ? 'highlight-row' : ''}">
                 <td><strong>${act}</strong>${labelSub}</td>
                 <td>${item.count}件 (${item.pct.toFixed(1)}%)</td>
@@ -2795,11 +2807,16 @@
         // Summary Text
         const vDiff = c.v_diff_high_minus_none;
         const diffText = vDiff !== null ? `「めっちゃ知りたい」群と「なし」群のバリューフィット度平均の差は <strong>${vDiff >= 0 ? '+' : ''}${vDiff.toFixed(2)} pt</strong> です。` : '比較対象データなし。';
+        const ustechNote = c.name === '株式会社ユーズテック' 
+            ? '<li style="color:#0369A1; background:#F0F9FF; padding:4px 8px; border-radius:4px; margin-top:4px;">※ 学生の当日回答が「未回答」かつ企業の当日回答が「知りたい」でマッチ成立となった例外1件（第6ターン：菊 泰聖さん）が含まれるため、学生「知りたい以上（8件）」に対してマッチ成立数が7件となっています。</li>' 
+            : '';
+
         document.getElementById('cd-summary-text').innerHTML = `
             <ul>
                 <li>総接触学生数 ${c.count}名中、マッチング成立は <strong>${c.match_count}件 (${c.match_rate.toFixed(1)}%)</strong> でした。</li>
                 <li>企業アクションにおいて「知りたい以上」を選択した比率は <strong>${c.company_actions['知りたい以上'].pct.toFixed(1)}%</strong>、学生側から「知りたい以上」を受けた比率は <strong>${c.student_actions['知りたい以上'].pct.toFixed(1)}%</strong> です。</li>
                 <li>${diffText}</li>
+                ${ustechNote}
             </ul>
         `;
 
