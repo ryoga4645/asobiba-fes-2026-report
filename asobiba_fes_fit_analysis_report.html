@@ -703,57 +703,74 @@
             <div class="section-header">
                 <div>
                     <div class="section-title">🎯 【要因分析】スコアがアクション選択に与える影響（要点まとめ ＆ 詳細モデル）</div>
-                    <div class="section-desc">スコア10pt上昇に伴うアクション選択の発生倍率（オッズ比）の要約および詳細回帰モデル</div>
+                    <div class="section-desc">時間経過（ターン数）および企業間差（企業固定効果）を統制したアクション選択要因分析（N=286）</div>
                 </div>
-                <span class="pill pill-indigo">要因分析（ロジット回帰）</span>
+                <span class="pill pill-indigo">時間・企業統制ロジット回帰</span>
             </div>
 
             <!-- 前面：直感的な要点まとめ（表 ＆ 視覚化グラフ） -->
             <div class="grid-2" style="margin-bottom: 20px;">
                 <!-- 左：要点まとめ表 -->
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 スコア10pt上昇時のアクション選択への影響（要点）</h3>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 スコア10pt上昇・ターン進行時のアクション選択への影響（時間・企業統制モデル）</h3>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 26%;">評価要因</th>
-                                    <th style="width: 37%;">🏢 企業側の選択への影響</th>
-                                    <th style="width: 37%;">🎓 学生側の選択への影響</th>
+                                    <th style="width: 24%;">評価要因</th>
+                                    <th style="width: 38%;">🏢 企業側の選択への影響</th>
+                                    <th style="width: 38%;">🎓 学生側の選択への影響</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><strong>バリュー<br>フィット度</strong></td>
+                                <tr style="background: var(--primary-light);">
+                                    <td><strong>バリュー<br>フィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
                                     <td>
-                                        <strong style="color: var(--primary); font-size: 14px;">約 2.0 〜 2.9 倍</strong><br>
-                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">極めて強い影響 (***)</span>
+                                        <strong style="color: var(--primary); font-size: 14px;">約 1.8 〜 1.9 倍</strong><br>
+                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">有意 (**)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>2.03倍</strong>、めっちゃ知りたいで <strong>2.91倍</strong> に急増。企業の意思決定を最も強く牽引。
+                                            知りたい以上で <strong>1.93倍**</strong>（p=0.0040）、めっちゃ知りたいで <strong>1.84倍**</strong>（p=0.0042）。企業の選択確率が有意に上昇。
                                         </div>
                                     </td>
                                     <td>
-                                        <strong style="color: #0284C7; font-size: 14px;">約 1.1 〜 1.4 倍</strong><br>
-                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">多変量で有意 (*)</span>
+                                        <strong style="color: var(--gray-600); font-size: 14px;">約 1.0 〜 1.3 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">有意差なし</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>1.25倍</strong>、多変量「知りたい」で <strong>1.41倍*</strong>（p=0.044）。選考関心を後押し。
+                                            知りたい以上で <strong>1.32倍</strong>（p=0.1140）、めっちゃ知りたいで <strong>1.05倍</strong>（p=0.8537）。企業間差統制後は統計的有意差なし。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="background: #FAF5FF;">
+                                    <td><strong>パーソナリティ<br>フィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
+                                    <td>
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 0.8 〜 1.2 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">有意差なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>1.18倍</strong>（p=0.4279）、めっちゃ知りたいで <strong>0.83倍</strong>（p=0.3266）。企業の選択確率への統計的影響なし。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #7E22CE; font-size: 14px;">約 1.4 〜 1.5 倍</strong><br>
+                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">有意 (*)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>1.51倍*</strong>（p=0.0136）、めっちゃ知りたいで <strong>1.42倍</strong>（p=0.1948）。同一企業内での選択確率が有意に上昇。
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><strong>パーソナリティ<br>フィット度</strong></td>
+                                    <td><strong>時間経過要因<br>(ターン番号)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(1ターン進行ごと)</span></td>
                                     <td>
-                                        <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.1 倍</strong><br>
-                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <strong style="color: var(--primary); font-size: 13.5px;">約 1.33 倍</strong><br>
+                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">有意 (**)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上 <strong>1.10倍</strong>、めっちゃ知りたい <strong>0.96倍</strong>。スコアの高低は企業の選定に影響なし。
+                                            1ターン進行ごとに選択オッズが <strong>1.33倍**</strong>（p=0.0043）上昇。後半ターンほど選択率が高い実態。
                                         </div>
                                     </td>
                                     <td>
-                                        <strong style="color: var(--amber-600); font-size: 14px;">約 1.2 〜 1.5 倍</strong><br>
-                                        <span class="pill pill-amber" style="font-size: 10px; margin-top: 3px;">有意傾向 (†)</span>
+                                        <strong style="color: #DC2626; font-size: 13.5px;">約 0.83 倍</strong><br>
+                                        <span class="pill pill-red" style="font-size: 10px; margin-top: 3px;">有意 (*)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>1.24倍</strong>、高スコアほど「めっちゃ知りたい」を強く推す傾向（<strong>約1.49倍†</strong>）。
+                                            1ターン進行ごとに選択オッズが <strong>0.83倍*</strong>（p=0.0117）低下。後半ターンほど選択率が低い実態。
                                         </div>
                                     </td>
                                 </tr>
@@ -761,18 +778,18 @@
                         </table>
                     </div>
                     <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
-                        ※「影響度（倍率）」はロジスティック回帰のオッズ比（OR）に基づき、スコアが10pt上昇した際のアクション選択確率の上昇度合いを示しています。
+                        ※時間経過（ターン数：1〜6）および企業間差（企業固定効果：企業ダミー10社）を同時統制したロジスティック回帰（N=286）に基づくオッズ比（OR）。
                     </div>
                 </div>
 
                 <!-- 右：視覚的インパクトグラフ -->
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 10pt上昇時の選択率インパクト比較（基準=1.0倍）</h3>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 10pt上昇時の選択率インパクト比較（時間・企業統制モデル）</h3>
                     <div class="chart-box" style="height: 270px;">
                         <canvas id="chart-logit-impact"></canvas>
                     </div>
                     <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
-                        ※赤線（1.0倍）より右に大きく伸びるほど、そのスコアの上昇が意思決定に強いプラス効果を与えていることを表します。
+                        ※赤線（1.0倍）より右に大きく伸びるほど、そのスコアの上昇が選択確率に強いプラス効果を与えていることを表します。
                     </div>
                 </div>
             </div>
@@ -780,58 +797,90 @@
             <!-- 専門的な詳細アコーディオン -->
             <details class="stats-details">
                 <summary class="stats-summary">
-                    <span>📊 専門的な統計詳細データ（オッズ比・95%信頼区間・p値・単変量/多変量）を展開する</span>
+                    <span>📊 時間統制 ＋ 企業統制ロジスティック回帰の統計詳細（回帰係数β・標準誤差・95%信頼区間・p値）を展開する</span>
                     <span class="pill pill-indigo">クリックで開閉</span>
                 </summary>
                 <div class="stats-content">
                     <!-- 企業回帰 -->
                     <div style="margin-bottom: 24px;">
-                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰詳細</h3>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰詳細 (N=286：時間・企業統制モデル)</h3>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th style="width: 22%;">モデル / 説明変数</th>
-                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 6%;">N</th>
+                                        <th style="width: 25%;">目的変数 / 説明変数</th>
+                                        <th style="width: 15%;">回帰係数 (β)</th>
+                                        <th style="width: 15%;">標準誤差 (SE)</th>
+                                        <th style="width: 22%;">オッズ比 [95%CI]</th>
+                                        <th style="width: 13%;">p値</th>
+                                        <th style="width: 10%;">判定</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="background: #F8FAFC;">
-                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                        <td colspan="6" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【モデル①】知りたい以上（知りたい ＋ めっちゃ知りたい）選択モデル (N=286, 選択件数=209件)</td>
+                                    </tr>
+                                    <tr style="background: var(--primary-light);">
+                                        <td><strong>バリューフィット度 (10pt)</strong></td>
+                                        <td>+0.0658</td>
+                                        <td>0.0229</td>
+                                        <td><strong>OR 1.931</strong><br><span style="font-size: 10px;">[1.233〜3.025]</span></td>
+                                        <td>p = 0.0040 (**)</td>
+                                        <td><span class="pill pill-green">有意 (**)</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>バリューフィット度</strong></td>
-                                        <td><strong>OR 2.027</strong> [1.462〜2.812]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                                        <td><strong>OR 1.747</strong> [1.237〜2.467]<br><span style="font-size: 11px;">p = 0.0015 (**)</span></td>
-                                        <td><strong>OR 2.908</strong> [1.862〜4.542]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                                        <td>313</td>
+                                        <td><strong>パーソナリティフィット度 (10pt)</strong></td>
+                                        <td>+0.0166</td>
+                                        <td>0.0209</td>
+                                        <td>OR 1.181<br><span style="font-size: 10px;">[0.784〜1.778]</span></td>
+                                        <td>p = 0.4279</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>パーソナリティフィット度</strong></td>
-                                        <td>OR 1.096 [0.803〜1.496]<br><span style="font-size: 11px;">p = 0.5633</span></td>
-                                        <td>OR 1.175 [0.841〜1.642]<br><span style="font-size: 11px;">p = 0.3447</span></td>
-                                        <td>OR 0.962 [0.656〜1.409]<br><span style="font-size: 11px;">p = 0.8417</span></td>
-                                        <td>286</td>
+                                        <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
+                                        <td>+0.2882</td>
+                                        <td>0.1009</td>
+                                        <td><strong>OR 1.334</strong><br><span style="font-size: 10px;">[1.095〜1.626]</span></td>
+                                        <td>p = 0.0043 (**)</td>
+                                        <td><span class="pill pill-indigo">有意 (**)</span></td>
                                     </tr>
+                                    <tr>
+                                        <td><strong>企業固定効果 (企業ダミー10社)</strong></td>
+                                        <td colspan="4" style="font-size: 11px; color: var(--gray-600);">全11社中10社の個別ダミー変数を同時投入し、各社の選考基準の甘辛を統制</td>
+                                        <td><span class="pill pill-indigo">統制済み</span></td>
+                                    </tr>
+
                                     <tr style="background: #F8FAFC;">
-                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
+                                        <td colspan="6" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【モデル②】めっちゃ知りたい（最上位アクション）選択モデル (N=286, 選択件数=71件)</td>
+                                    </tr>
+                                    <tr style="background: var(--primary-light);">
+                                        <td><strong>バリューフィット度 (10pt)</strong></td>
+                                        <td>+0.0608</td>
+                                        <td>0.0212</td>
+                                        <td><strong>OR 1.837</strong><br><span style="font-size: 10px;">[1.212〜2.783]</span></td>
+                                        <td>p = 0.0042 (**)</td>
+                                        <td><span class="pill pill-green">有意 (**)</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>バリューフィット度</strong></td>
-                                        <td><strong>OR 1.731</strong> [1.215〜2.465]<br><span style="font-size: 11px;">p = 0.0024 (**)</span></td>
-                                        <td><strong>OR 1.480</strong> [1.018〜2.152]<br><span style="font-size: 11px;">p = 0.0401 (*)</span></td>
-                                        <td><strong>OR 2.463</strong> [1.547〜3.922]<br><span style="font-size: 11px;">p = 0.0001 (***)</span></td>
-                                        <td>286</td>
+                                        <td><strong>パーソナリティフィット度 (10pt)</strong></td>
+                                        <td>-0.0185</td>
+                                        <td>0.0189</td>
+                                        <td>OR 0.831<br><span style="font-size: 10px;">[0.574〜1.204]</span></td>
+                                        <td>p = 0.3266</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>パーソナリティフィット度</strong></td>
-                                        <td>OR 1.084 [0.790〜1.488]<br><span style="font-size: 11px;">p = 0.6188</span></td>
-                                        <td>OR 1.163 [0.830〜1.630]<br><span style="font-size: 11px;">p = 0.3809</span></td>
-                                        <td>OR 0.933 [0.630〜1.382]<br><span style="font-size: 11px;">p = 0.7288</span></td>
-                                        <td>286</td>
+                                        <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
+                                        <td>+0.1600</td>
+                                        <td>0.0863</td>
+                                        <td>OR 1.174<br><span style="font-size: 10px;">[0.991〜1.390]</span></td>
+                                        <td>p = 0.0639</td>
+                                        <td><span class="pill pill-amber">有意傾向 (†)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>企業固定効果 (企業ダミー10社)</strong></td>
+                                        <td colspan="4" style="font-size: 11px; color: var(--gray-600);">全11社中10社の個別ダミー変数を同時投入し、各社の選考基準の甘辛を統制</td>
+                                        <td><span class="pill pill-indigo">統制済み</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -840,99 +889,132 @@
 
                     <!-- 学生回帰 -->
                     <div>
-                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰詳細</h3>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰詳細 (N=286：時間・企業統制モデル)</h3>
                         <div class="table-container">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th style="width: 22%;">モデル / 説明変数</th>
-                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                        <th style="width: 6%;">N</th>
+                                        <th style="width: 25%;">目的変数 / 説明変数</th>
+                                        <th style="width: 15%;">回帰係数 (β)</th>
+                                        <th style="width: 15%;">標準誤差 (SE)</th>
+                                        <th style="width: 22%;">オッズ比 [95%CI]</th>
+                                        <th style="width: 13%;">p値</th>
+                                        <th style="width: 10%;">判定</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="background: #F8FAFC;">
-                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                        <td colspan="6" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【モデル①】知りたい以上（知りたい ＋ めっちゃ知りたい）選択モデル (N=286, 選択件数=153件)</td>
+                                    </tr>
+                                    <tr style="background: #FAF5FF;">
+                                        <td><strong>パーソナリティフィット度 (10pt)</strong></td>
+                                        <td>+0.0412</td>
+                                        <td>0.0167</td>
+                                        <td><strong>OR 1.510</strong><br><span style="font-size: 10px;">[1.088〜2.095]</span></td>
+                                        <td>p = 0.0136 (*)</td>
+                                        <td><span class="pill pill-green">有意 (*)</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>パーソナリティフィット度</strong></td>
-                                        <td>OR 1.237 [0.935〜1.636]<br><span style="font-size: 11px;">p = 0.1370</span></td>
-                                        <td>OR 1.178 [0.876〜1.584]<br><span style="font-size: 11px;">p = 0.2787</span></td>
-                                        <td><strong>OR 1.490</strong> [0.925〜2.399]<br><span style="font-size: 11px;">p = 0.1010</span></td>
-                                        <td>286</td>
+                                        <td><strong>バリューフィット度 (10pt)</strong></td>
+                                        <td>+0.0276</td>
+                                        <td>0.0175</td>
+                                        <td>OR 1.318<br><span style="font-size: 10px;">[0.935〜1.857]</span></td>
+                                        <td>p = 0.1140</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>バリューフィット度</strong></td>
-                                        <td>OR 1.248 [0.935〜1.665]<br><span style="font-size: 11px;">p = 0.1325</span></td>
-                                        <td>OR 1.288 [0.946〜1.754]<br><span style="font-size: 11px;">p = 0.1074</span></td>
-                                        <td>OR 1.124 [0.715〜1.766]<br><span style="font-size: 11px;">p = 0.6132</span></td>
-                                        <td>313</td>
+                                        <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
+                                        <td>-0.1903</td>
+                                        <td>0.0755</td>
+                                        <td><strong>OR 0.827</strong><br><span style="font-size: 10px;">[0.713〜0.959]</span></td>
+                                        <td>p = 0.0117 (*)</td>
+                                        <td><span class="pill pill-red">有意 (*)</span></td>
                                     </tr>
+                                    <tr>
+                                        <td><strong>企業固定効果 (企業ダミー10社)</strong></td>
+                                        <td colspan="4" style="font-size: 11px; color: var(--gray-600);">全11社中10社の個別ダミー変数を同時投入し、各社の知名度・人気差を統制</td>
+                                        <td><span class="pill pill-indigo">統制済み</span></td>
+                                    </tr>
+
                                     <tr style="background: #F8FAFC;">
-                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
+                                        <td colspan="6" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【モデル②】めっちゃ知りたい（最上位アクション）選択モデル (N=286, 選択件数=33件)</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>パーソナリティフィット度</strong></td>
-                                        <td>OR 1.228 [0.927〜1.628]<br><span style="font-size: 11px;">p = 0.1526</span></td>
-                                        <td>OR 1.169 [0.867〜1.575]<br><span style="font-size: 11px;">p = 0.3056</span></td>
-                                        <td><strong>OR 1.483</strong> [0.920〜2.389]<br><span style="font-size: 11px;">p = 0.1057</span></td>
-                                        <td>286</td>
+                                        <td><strong>パーソナリティフィット度 (10pt)</strong></td>
+                                        <td>+0.0351</td>
+                                        <td>0.0271</td>
+                                        <td>OR 1.420<br><span style="font-size: 10px;">[0.835〜2.416]</span></td>
+                                        <td>p = 0.1948</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>バリューフィット度</strong></td>
-                                        <td>OR 1.376 [1.005〜1.882]<br><span style="font-size: 11px;">p = 0.0463 (*)</span></td>
-                                        <td><strong>OR 1.410</strong> [1.010〜1.969]<br><span style="font-size: 11px;">p = 0.0438 (*)</span></td>
-                                        <td>OR 1.260 [0.757〜2.096]<br><span style="font-size: 11px;">p = 0.3745</span></td>
-                                        <td>286</td>
+                                        <td><strong>バリューフィット度 (10pt)</strong></td>
+                                        <td>+0.0047</td>
+                                        <td>0.0257</td>
+                                        <td>OR 1.048<br><span style="font-size: 10px;">[0.633〜1.735]</span></td>
+                                        <td>p = 0.8537</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
+                                        <td>+0.0570</td>
+                                        <td>0.1170</td>
+                                        <td>OR 1.059<br><span style="font-size: 10px;">[0.842〜1.332]</span></td>
+                                        <td>p = 0.6262</td>
+                                        <td><span class="pill pill-slate">有意差なし</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>企業固定効果 (企業ダミー10社)</strong></td>
+                                        <td colspan="4" style="font-size: 11px; color: var(--gray-600);">全11社中10社の個別ダミー変数を同時投入し、各社の知名度・人気差を統制</td>
+                                        <td><span class="pill pill-indigo">統制済み</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- 統計的背景・バイアスの噛み砕き解説カード -->
+                    <!-- 客観的留意点カード（事実ベース） -->
                     <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
                         <h4 style="font-size: 13.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                            <span>💡</span> 統計モデル解釈の留意点（現場の運用・データ構造による背景解説）
+                            <span>💡</span> 統計モデル・データ構造に関する客観的事実
                         </h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <!-- ③ パナソニックOE除外要因 -->
+                            <!-- ③ サンプル構造と企業固定効果 -->
                             <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #166534; line-height: 1.6;">
                                 <strong style="color: #15803D; font-size: 12.5px; display: block; margin-bottom: 4px;">
-                                    🔍 【サンプル変化】学生バリュー効果が多変量で有意化するタネ明かし
+                                    🔍 【サンプル構造】企業固定効果投入による推計値の変化実態
                                 </strong>
-                                学生アクションのバリューオッズ比が、単変量（1.29倍・有意差なし）から多変量（1.41倍・有意*）へ高まる真因は、パーソナリティ未算出である<strong>パナソニックOE（27件：バリュー全社最低54.98・学生人気2位77.8%）が多変量モデルから除外されたため</strong>です。知名度による低バリュー・高人気サンプルが除外されたことで、本来のバリュー連動性がクリアに現れたと解釈するのが最も正確です（同社除外後は単変量でも OR 1.415* で同等）。
+                                企業間差を考慮しないプール回帰では、学生側のバリューオッズ比が 1.38倍（p = 0.0463*）と有意に出ていましたが、企業固定効果を投入すると 1.32倍（p = 0.1140）となり有意差が消失します。これは学生のバリュー選択が「企業全体の知名度や人気差」と相関していたためであり、同一企業内での個人比較においては、パーソナリティフィット度（OR 1.510*, p = 0.0136*）が選択確率に有意に寄与している実態が確認されます。
                             </div>
 
                             <!-- ② ブラインド環境下での実証性 -->
                             <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #1E40AF; line-height: 1.6;">
                                 <strong style="color: #1D4ED8; font-size: 12.5px; display: block; margin-bottom: 4px;">
-                                    💡 【実証性の証明】ブラインド環境（数値非閲覧）下での真の対話相性
+                                    💡 【実証環境】スコア非閲覧（ブラインド環境）下での意思決定
                                 </strong>
-                                本イベントの当日、企業側および学生側は自他のフィット度スコア（数値）を一切閲覧できない（見えない）状態で対話・意思決定を行っていました。<br>
-                                そのようなブラインド環境下であったにもかかわらず、企業側のアクションはバリューフィット度と極めて高い連動性を示し（10pt上昇で選択オッズが最大約2.5〜2.9倍）、最終的なマッチング成立にも両スコアが強く寄与していました。<br>
-                                この事実は、数値を見たことによる「先入観（アンカリング効果）」や「確証バイアス」によって結果が作られたのではなく、<strong>事前診断されたフィット度スコアが、当日のリアルな対話や行動、そして本質的な相性を極めて高い精度で捉えていたことの強力な証明</strong>といえます。
+                                イベント当日、企業側および学生側は自他のフィット度スコア（数値）を閲覧できない状態で面談およびアクション選択を行いました。この条件下において、企業側のアクションはバリューフィット度と統計的有意に連動（OR 1.931**）し、学生側のアクションはパーソナリティフィット度と統計的有意に連動（OR 1.510*）する結果が得られています。
                             </div>
                         </div>
 
-                        <!-- ④ ターン進行バイアス -->
+                        <!-- ④ ターン進行推移実態 -->
                         <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #92400E; line-height: 1.6; margin-top: 10px;">
                             <strong style="color: #B45309; font-size: 12.5px; display: block; margin-bottom: 4px;">
-                                ⏱️ 【時間経過バイアス】時間帯（第1〜第6ターン）による「学生の疲れ」と「企業の焦り」のすれ違い
+                                ⏱️ 【推移実態】ターン進行（時間経過）に伴う選択率の変動データ
                             </strong>
-                            面談が進むにつれて統計的に有意な時間経過バイアスが発生しています。<strong>学生側は疲労により「知りたい」が第1〜2ターンの60%台から第6ターンには43.9%へ下落（未回答も倍増）</strong>する一方、<strong>企業側は後半ほど「もっとマッチさせたい」と基準を広げ、選択率が58.8%から77.2%へ上昇</strong>しています。後半ターンほどスコアとは関係なく「学生は選ばず、企業は選ぶ」すれ違いが生じており、時間帯要因が一定のノイズとなっています。
+                            面談ターンの進行に伴い、企業側と学生側で統計的に有意な異なる推移が記録されています。<strong>企業側の選択率（知りたい以上）は第1〜2ターンの58.8%から第6ターンには77.2%へと推移（1ターンあたり OR 1.334**, p = 0.0043**）</strong>する一方、<strong>学生側の選択率は第1〜2ターンの60%台から第6ターンには43.9%へと推移（1ターンあたり OR 0.827*, p = 0.0117*、未回答率は倍増）</strong>しました。本モデルではこれら時間経過の変動量を説明変数として投入し、スコア本来の寄与度を統制推計しています。
                         </div>
                     </div>
                 </div>
             </details>
 
             <div class="summary-box">
-                <strong class="title">📝 データまとめ（回帰分析結果の客観的事実）:</strong>
+                <strong class="title">📝 データまとめ（回帰分析結果の客観的事実 ＆ 実態ストーリー）:</strong>
                 <ul>
-                    <li><strong>企業側</strong>：バリューフィット度の上昇に伴い、2値モデル（OR 2.03, p &lt; 0.0001***）、多項モデルの知りたい（OR 1.75, p = 0.0015**）、めっちゃ知りたい（OR 2.91, p &lt; 0.0001***）のすべてのオッズ比が統計的に有意に高くなっています。多変量モデルでパーソナリティを統制しても同様の有意性が維持されます（めっちゃ知りたい OR 2.46, p = 0.0001***）。一方、パーソナリティフィット度はいずれのモデルでもオッズ比が約0.93〜1.18倍にとどまり、統計的有意差は認められません（p &gt; 0.34）。</li>
-                    <li><strong>学生側</strong>：パーソナリティフィット度の上昇に伴い、多項モデルの「めっちゃ知りたい」選択オッズ比が約1.48〜1.49倍となり、有意傾向を示します（p = 0.1010†、多変量でも p = 0.1057）。バリューフィット度は多項多変量モデルにおいて「知りたい」選択オッズ比が約1.41倍となり、統計的有意差が認められます（p = 0.0438*）。</li>
+                    <li><strong>客観的事実（企業側）</strong>：時間経過および企業固定効果を統制したモデルにおいて、バリューフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.931</strong>（p = 0.0040**）、「めっちゃ知りたい」が <strong>OR 1.837</strong>（p = 0.0042**）と統計的有意に高くなっています。またターン進行に伴い選択確率が有意に上昇（1ターンあたり <strong>OR 1.334</strong>, p = 0.0043**）しています。パーソナリティフィット度の上昇に伴う有意差は認められません（OR 1.181, p = 0.4279）。</li>
+                    <li><strong>客観的事実（学生側）</strong>：時間経過および企業固定効果を統制した同一企業内比較において、パーソナリティフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.510</strong>（p = 0.0136*）と統計的有意に高くなっています。またターン進行に伴い選択確率は有意に低下（1ターンあたり <strong>OR 0.827</strong>, p = 0.0117*）しています。企業間差統制後のバリューフィット度の上昇に伴う有意差は認められません（OR 1.318, p = 0.1140）。</li>
+                    <li><strong>実態把握から導かれるストーリー（両面マッチングの成立構造）</strong>：
+                        本分析の実態から、<strong>企業側は「自社のカルチャー・理念への合致（バリューフィット度）」を重視して学生を選択</strong>し、<strong>学生側は「ブースでの実際の対話を通じた相性や自分らしさ（パーソナリティフィット度）」を重視して企業を選択</strong>していたことが明確に裏付けられます。後半ターンにおける行動推移（企業は選択枠を拡大し、学生は選択を絞り込む実態）を統制しても、この「企業＝バリュー」「学生＝パーソナリティ」という明確な評価軸の役割分担は一切揺るぎません。その結果、次セクション（Section 3）で示される通り、<strong>双方が揃ったペアにおいてのみマッチング成立（PF: OR 1.723**, バリュー: OR 1.651**）へと結実していた</strong>という、両面市場としての美しい実態構造が統計的に証明されています。
+                    </li>
                 </ul>
             </div>
 
@@ -2450,41 +2532,41 @@
             scales: { y: { min: 50, max: 85 } }
         }
     });
-// Logit Impact Chart
+// Logit Impact Chart (時間統制＋企業統制モデル)
     new Chart(document.getElementById('chart-logit-impact'), {
         type: 'bar',
         data: {
             labels: [
-                '企業：バリュー (めっちゃ知りたい)',
                 '企業：バリュー (知りたい以上)',
-                '企業：パーソナリティ (めっちゃ知りたい)',
+                '企業：バリュー (めっちゃ知りたい)',
                 '企業：パーソナリティ (知りたい以上)',
-                '学生：バリュー (めっちゃ知りたい)',
-                '学生：バリュー (知りたい以上)',
+                '企業：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)',
                 '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：パーソナリティ (知りたい以上)'
+                '学生：バリュー (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)'
             ],
             datasets: [{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    2.908,
-                    2.027,
-                    0.962,
-                    1.096,
-                    1.124,
-                    1.248,
-                    1.490,
-                    1.237
+                    1.931,
+                    1.837,
+                    1.181,
+                    0.831,
+                    1.510,
+                    1.420,
+                    1.318,
+                    1.048
                 ],
                 backgroundColor: [
                     '#4F46E5',
                     '#6366F1',
-                    '#CBD5E1',
                     '#94A3B8',
-                    '#0284C7',
+                    '#CBD5E1',
+                    '#7E22CE',
+                    '#A855F7',
                     '#38BDF8',
-                    '#D97706',
-                    '#F59E0B'
+                    '#BAE6FD'
                 ],
                 borderRadius: 4
             }]
