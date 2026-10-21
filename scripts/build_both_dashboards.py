@@ -847,6 +847,254 @@ def build_html():
             <!-- 専門的な詳細アコーディオン -->
             <details class="stats-details">
                 <summary class="stats-summary">
+                    <span>📊 専門的な統計詳細データ（オッズ比・95%信頼区間・p値・単変量/多変量）を展開する</span>
+                    <span class="pill pill-indigo">クリックで開閉</span>
+                </summary>
+                <div class="stats-content">
+                    <!-- 企業回帰 -->
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 22%;">モデル / 説明変数</th>
+                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 6%;">N</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                        <td>313</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 学生回帰 -->
+                    <div>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 22%;">モデル / 説明変数</th>
+                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 6%;">N</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                        <td>313</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
+                                        <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
+                                        <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 統計的背景・バイアスの噛み砕き解説カード -->
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
+                        <h4 style="font-size: 13.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                            <span>💡</span> 統計モデル解釈の留意点（現場の運用・データ構造による背景解説）
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <!-- ③ パナソニックOE除外要因 -->
+                            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #166534; line-height: 1.6;">
+                                <strong style="color: #15803D; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                    🔍 【サンプル変化】学生バリュー効果が多変量で有意化するタネ明かし
+                                </strong>
+                                学生アクションのバリューオッズ比が、単変量（1.29倍・有意差なし）から多変量（1.41倍・有意*）へ高まる真因は、パーソナリティ未算出である<strong>パナソニックOE（27件：バリュー全社最低54.98・学生人気2位77.8%）が多変量モデルから除外されたため</strong>です。知名度による低バリュー・高人気サンプルが除外されたことで、本来のバリュー連動性がクリアに現れたと解釈するのが最も正確です（同社除外後は単変量でも OR 1.415* で同等）。
+                            </div>
+
+                            <!-- ② ブラインド環境下での実証性 -->
+                            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #1E40AF; line-height: 1.6;">
+                                <strong style="color: #1D4ED8; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                    💡 【実証性の証明】ブラインド環境（数値非閲覧）下での真の対話相性
+                                </strong>
+                                本イベントの当日、企業側および学生側は自他のフィット度スコア（数値）を一切閲覧できない（見えない）状態で対話・意思決定を行っていました。<br>
+                                そのようなブラインド環境下であったにもかかわらず、企業側のアクションはバリューフィット度と極めて高い連動性を示し（10pt上昇で選択オッズが最大約2.5〜2.9倍）、最終的なマッチング成立にも両スコアが強く寄与していました。<br>
+                                この事実は、数値を見たことによる「先入観（アンカリング効果）」や「確証バイアス」によって結果が作られたのではなく、<strong>事前診断されたフィット度スコアが、当日のリアルな対話や行動、そして本質的な相性を極めて高い精度で捉えていたことの強力な証明</strong>といえます。
+                            </div>
+                        </div>
+
+                        <!-- ④ ターン進行バイアス -->
+                        <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #92400E; line-height: 1.6; margin-top: 10px;">
+                            <strong style="color: #B45309; font-size: 12.5px; display: block; margin-bottom: 4px;">
+                                ⏱️ 【時間経過バイアス】時間帯（第1〜第6ターン）による「学生の疲れ」と「企業の焦り」のすれ違い
+                            </strong>
+                            面談が進むにつれて統計的に有意な時間経過バイアスが発生しています。<strong>学生側は疲労により「知りたい」が第1〜2ターンの60%台から第6ターンには43.9%へ下落（未回答も倍増）</strong>する一方、<strong>企業側は後半ほど「もっとマッチさせたい」と基準を広げ、選択率が58.8%から77.2%へ上昇</strong>しています。後半ターンほどスコアとは関係なく「学生は選ばず、企業は選ぶ」すれ違いが生じており、時間帯要因が一定のノイズとなっています。
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="summary-box">
+                <strong class="title">📝 データまとめ（回帰分析結果の客観的事実）:</strong>
+                <ul>
+                    <li><strong>企業側</strong>：バリューフィット度の上昇に伴い、2値モデル（OR 2.03, p &lt; 0.0001***）、多項モデルの知りたい（OR 1.75, p = 0.0015**）、めっちゃ知りたい（OR 2.91, p &lt; 0.0001***）のすべてのオッズ比が統計的に有意に高くなっています。多変量モデルでパーソナリティを統制しても同様の有意性が維持されます（めっちゃ知りたい OR 2.46, p = 0.0001***）。一方、パーソナリティフィット度はいずれのモデルでもオッズ比が約0.93〜1.18倍にとどまり、統計的有意差は認められません（p &gt; 0.34）。</li>
+                    <li><strong>学生側</strong>：パーソナリティフィット度の上昇に伴い、多項モデルの「めっちゃ知りたい」選択オッズ比が約1.48〜1.49倍となり、有意傾向を示します（p = 0.1010†、多変量でも p = 0.1057）。バリューフィット度は多項多変量モデルにおいて「知りたい」選択オッズ比が約1.41倍となり、統計的有意差が認められます（p = 0.0438*）。</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Section 3: マッチング成立の要因分析（要点まとめ ＆ 詳細モデル） -->
+        <div class="section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">⚖️ 【成果分析】マッチング成立の要因分析（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、出展区分（有料企業）がマッチング成否に与える影響</div>
+                </div>
+                <span class="pill pill-green">マッチング成否要因</span>
+            </div>
+
+            <div class="grid-2">
+                <!-- 左：平均値比較 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">成立群 vs 未成立群の平均値比較 (N=286)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>指標</th>
+                                    <th>成立群 (N={match_comp['matched_count']})</th>
+                                    <th>未成立群 (N={match_comp['unmatched_count']})</th>
+                                    <th>差</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バリューフィット度 平均</td>
+                                    <td><strong>{fmt_num(match_comp['matched_v_mean'])}</strong></td>
+                                    <td>{fmt_num(match_comp['unmatched_v_mean'])}</td>
+                                    <td><strong style="color: var(--primary);">+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>パーソナリティフィット度 平均</td>
+                                    <td><strong>{fmt_num(match_comp['matched_p_mean'])}</strong></td>
+                                    <td>{fmt_num(match_comp['unmatched_p_mean'])}</td>
+                                    <td><strong style="color: var(--success);">+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>出展区分（有料企業比率）</td>
+                                    <td>{fmt_pct(match_comp['matched_paid_pct'])}</td>
+                                    <td>{fmt_pct(match_comp['unmatched_paid_pct'])}</td>
+                                    <td>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 右：要点まとめ表 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">📋 マッチング成立への各要因の要約（時間・企業統制モデル）</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">要因</th>
+                                    <th style="width: 30%;">成立確率への影響</th>
+                                    <th style="width: 38%;">要約ポイント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #FAF5FF;">
+                                    <td><strong>パーソナリティ</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
+                                    <td><strong style="color: #7E22CE; font-size: 13.5px;">約 1.72 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
+                                    <td style="font-size: 11px;">時間・企業差を統制した同一企業内比較で<strong>成立を決定づける最強因子</strong>（p=0.0028**）。</td>
+                                </tr>
+                                <tr style="background: var(--primary-light);">
+                                    <td><strong>バリューフィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
+                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.65 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
+                                    <td style="font-size: 11px;">パーソナリティと並ぶ重要因子（p=0.0073**）。自社の価値観に合う学生ほど確実にマッチ。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>時間経過要因 (ターン)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(第1〜第6ターン)</span></td>
+                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">約 0.96 倍</span><br><span class="pill pill-slate" style="font-size: 10px;">中立 (影響なし)</span></td>
+                                    <td style="font-size: 11px;">時間帯（疲労や焦り）を統制しても、マッチング成否には中立（p=0.5683）でスコア効果は不変。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>企業間ベース差</strong><br><span style="font-size: 10px; color: var(--gray-500);">(出展区分・知名度)</span></td>
+                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">全社統制</span><br><span class="pill pill-green" style="font-size: 10px;">固定効果</span></td>
+                                    <td style="font-size: 11px;">各社の人気や選考基準の甘辛を完全補正し、<strong>同一企業内での純粋な相性</strong>を抽出。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 専門的な詳細アコーディオン -->
+            <details class="stats-details">
+                <summary class="stats-summary">
                     <span>📊 時間統制 ＋ 企業統制ロジスティック回帰の統計詳細（回帰係数β・標準誤差・95%信頼区間・p値）を展開する</span>
                     <span class="pill pill-green">クリックで開閉</span>
                 </summary>
@@ -912,171 +1160,10 @@ def build_html():
             </details>
 
             <div class="summary-box">
-                <strong class="title">📝 データまとめ（回帰分析結果の客観的事実）:</strong>
-                <ul>
-                    <li><strong>企業側</strong>：バリューフィット度の上昇に伴い、2値モデル（OR 2.03, p &lt; 0.0001***）、多項モデルの知りたい（OR 1.75, p = 0.0015**）、めっちゃ知りたい（OR 2.91, p &lt; 0.0001***）のすべてのオッズ比が統計的に有意に高くなっています。多変量モデルでパーソナリティを統制しても同様の有意性が維持されます（めっちゃ知りたい OR 2.46, p = 0.0001***）。一方、パーソナリティフィット度はいずれのモデルでもオッズ比が約0.93〜1.18倍にとどまり、統計的有意差は認められません（p &gt; 0.34）。</li>
-                    <li><strong>学生側</strong>：パーソナリティフィット度の上昇に伴い、多項モデルの「めっちゃ知りたい」選択オッズ比が約1.48〜1.49倍となり、有意傾向を示します（p = 0.1010†、多変量でも p = 0.1057）。バリューフィット度は多項多変量モデルにおいて「知りたい」選択オッズ比が約1.41倍となり、統計的有意差が認められます（p = 0.0438*）。</li>
-                </ul>
-            </div>
-
-        </div>
-
-        <!-- Section 3: マッチング成立の要因分析（要点まとめ ＆ 詳細モデル） -->
-        <div class="section-card">
-            <div class="section-header">
-                <div>
-                    <div class="section-title">⚖️ 【成果分析】マッチング成立の要因分析（要点まとめ ＆ 詳細モデル）</div>
-                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、出展区分（有料企業）がマッチング成否に与える影響</div>
-                </div>
-                <span class="pill pill-green">マッチング成否要因</span>
-            </div>
-
-            <div class="grid-2">
-                <!-- 左：平均値比較 -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">成立群 vs 未成立群の平均値比較 (N=286)</h3>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>指標</th>
-                                    <th>成立群 (N={match_comp['matched_count']})</th>
-                                    <th>未成立群 (N={match_comp['unmatched_count']})</th>
-                                    <th>差</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>バリューフィット度 平均</td>
-                                    <td><strong>{fmt_num(match_comp['matched_v_mean'])}</strong></td>
-                                    <td>{fmt_num(match_comp['unmatched_v_mean'])}</td>
-                                    <td><strong style="color: var(--primary);">+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>パーソナリティフィット度 平均</td>
-                                    <td><strong>{fmt_num(match_comp['matched_p_mean'])}</strong></td>
-                                    <td>{fmt_num(match_comp['unmatched_p_mean'])}</td>
-                                    <td><strong style="color: var(--success);">+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>出展区分（有料企業比率）</td>
-                                    <td>{fmt_pct(match_comp['matched_paid_pct'])}</td>
-                                    <td>{fmt_pct(match_comp['unmatched_paid_pct'])}</td>
-                                    <td>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 右：要点まとめ表 -->
-                                <!-- 右：要点まとめ表 -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">📋 マッチング成立への各要因の要約（時間・企業統制モデル）</h3>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 32%;">要因</th>
-                                    <th style="width: 30%;">成立確率への影響</th>
-                                    <th style="width: 38%;">要約ポイント</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="background: #FAF5FF;">
-                                    <td><strong>パーソナリティ</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
-                                    <td><strong style="color: #7E22CE; font-size: 13.5px;">約 1.72 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
-                                    <td style="font-size: 11px;">時間・企業差を統制した同一企業内比較で<strong>成立を決定づける最強因子</strong>（p=0.0028**）。</td>
-                                </tr>
-                                <tr style="background: var(--primary-light);">
-                                    <td><strong>バリューフィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
-                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.65 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
-                                    <td style="font-size: 11px;">パーソナリティと並ぶ重要因子（p=0.0073**）。自社の価値観に合う学生ほど確実にマッチ。</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>時間経過要因 (ターン)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(第1〜第6ターン)</span></td>
-                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">約 0.96 倍</span><br><span class="pill pill-slate" style="font-size: 10px;">中立 (影響なし)</span></td>
-                                    <td style="font-size: 11px;">時間帯（疲労や焦り）を統制しても、マッチング成否には中立（p=0.5683）でスコア効果は不変。</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>企業間ベース差</strong><br><span style="font-size: 10px; color: var(--gray-500);">(出展区分・知名度)</span></td>
-                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">全社統制</span><br><span class="pill pill-green" style="font-size: 10px;">固定効果</span></td>
-                                    <td style="font-size: 11px;">各社の人気や選考基準の甘辛を完全補正し、<strong>同一企業内での純粋な相性</strong>を抽出。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 専門的な詳細アコーディオン -->
-            <details class="stats-details">
-                <summary class="stats-summary">
-                    <span>📊 多変量ロジスティック回帰の統計詳細（回帰係数β・標準誤差・95%信頼区間・p値）を展開する</span>
-                    <span class="pill pill-green">クリックで開閉</span>
-                </summary>
-                <div class="stats-content">
-                    <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">多変量ロジスティック回帰分析結果 (N=286)</h3>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>説明変数</th>
-                                    <th>回帰係数 (β)</th>
-                                    <th>標準誤差</th>
-                                    <th>オッズ比 [95%CI]</th>
-                                    <th>p値</th>
-                                    <th>判定</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="background: var(--primary-light);">
-                                    <td><strong>バリューフィット度</strong></td>
-                                    <td>+{fmt_num(match_comp['regression']['params']['value_fit']['beta'], 4)}</td>
-                                    <td>{fmt_num(match_comp['regression']['params']['value_fit']['se'], 4)}</td>
-                                    <td><strong>OR {fmt_num(match_comp['regression']['params']['value_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['value_fit']['ci_upper'], 3)}]</span></td>
-                                    <td>{fmt_p(match_comp['regression']['params']['value_fit']['p'])}</td>
-                                    <td>{p_pill(match_comp['regression']['params']['value_fit']['p'])}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>パーソナリティフィット度</strong></td>
-                                    <td>+{fmt_num(match_comp['regression']['params']['personality_fit']['beta'], 4)}</td>
-                                    <td>{fmt_num(match_comp['regression']['params']['personality_fit']['se'], 4)}</td>
-                                    <td><strong>OR {fmt_num(match_comp['regression']['params']['personality_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['personality_fit']['ci_upper'], 3)}]</span></td>
-                                    <td>{fmt_p(match_comp['regression']['params']['personality_fit']['p'])}</td>
-                                    <td>{p_pill(match_comp['regression']['params']['personality_fit']['p'])}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>出展区分 (有料企業=1)</strong></td>
-                                    <td>+{fmt_num(match_comp['regression']['params']['is_paid']['beta'], 4)}</td>
-                                    <td>{fmt_num(match_comp['regression']['params']['is_paid']['se'], 4)}</td>
-                                    <td>OR {fmt_num(match_comp['regression']['params']['is_paid']['or_10'], 3)}<br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['is_paid']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['is_paid']['ci_upper'], 3)}]</span></td>
-                                    <td>{fmt_p(match_comp['regression']['params']['is_paid']['p'])}</td>
-                                    <td>{p_pill(match_comp['regression']['params']['is_paid']['p'])}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- ① シンプソンのパラドックス・企業固定効果解説カード -->
-                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--gray-300);">
-                        <div style="background: #FAF5FF; border: 1px solid #E9D5FF; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #6B21A8; line-height: 1.6;">
-                            <h4 style="font-size: 13.5px; font-weight: 800; color: #7E22CE; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                                <span>🏆</span> 【重要：同一企業内比較】「同じ企業の中で誰が選ばれたか」で見ると、相性（パーソナリティ）が劇的に効いている！
-                            </h4>
-                            <p>全体一括集計（上記の多変量モデル）では、パーソナリティフィット度のマッチングオッズ比は <strong>1.34倍</strong>（p = 0.0518†：有意傾向）にとどまっています。しかしこれは、「性格スコア低めの企業（とものや・Linoa・アイプラス等）が学生に大人気だった」という<strong>企業ごとの人気の差（企業間交絡）によって、相性の効果が薄まって見えていたため</strong>です（シンプソンのパラドックス）。</p>
-                            <p style="margin-top: 6px;">企業ごとのベース差を補正し、<strong>「同じ企業の中で、どの学生がマッチしたか（企業固定効果モデル）」を検証すると、パーソナリティフィット度のオッズ比は 1.71倍（p = 0.0031**：1%水準で超強力に有意）へと跳ね上がります！</strong></p>
-                            <p style="margin-top: 6px;">これはバリューフィット度（1.66倍, p = 0.0064**）と同等以上の決定力であり、<strong>「同じ企業ブースを訪れた学生同士を比較した場合、性格の相性が高い学生ほど圧倒的にマッチング成立している」</strong> ことが統計学的に実証されています（例：とものやではマッチ群PF 81.37 vs 未マッチ群 71.72 で +9.65pt差、リード・イノベーションでは +7.62pt差）。</p>
-                        </div>
-                    </div>
-                </div>
-            </details>
-
-            <div class="summary-box">
                 <strong class="title">📝 データまとめ（マッチング成立要因の客観的事実）:</strong>
                 <ul>
-                    <li>マッチング成立群（N=121）は未成立群（N=165）に比べ、バリューフィット度平均が <strong>+3.08 pt</strong>（成立 63.02 vs 未成立 59.94）、パーソナリティフィット度平均が <strong>+2.08 pt</strong>（成立 80.08 vs 未成立 78.00）高くなっています。また有料企業比率も成立群で <strong>+3.4 pt</strong> 高い（44.6% vs 41.2%）実態です。</li>
-                    <li>時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制した最高精度のロジスティック回帰（N=286）において、パーソナリティフィット度（10ptあたり <strong>OR 1.72</strong>, p = 0.0028**）およびバリューフィット度（10ptあたり <strong>OR 1.65</strong>, p = 0.0073**）の<strong>双方が1%有意水準（p &lt; 0.01**）でマッチング成立に極めて強く寄与</strong>しています。時間経過（ターン番号 OR 0.96, p = 0.5683）は成立成否には中立であり、時間を統制しても両スコアの決定力は一切揺るがないことが実証されました。</li>
+                    <li>マッチング成立群（N={match_comp['matched_count']}）は未成立群（N={match_comp['unmatched_count']}）に比べ、バリューフィット度平均が <strong>+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_v_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_v_mean'])}）、パーソナリティフィット度平均が <strong>+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_p_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_p_mean'])}）高くなっています。また有料企業比率も成立群で <strong>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</strong> 高い（{fmt_pct(match_comp['matched_paid_pct'])} vs {fmt_pct(match_comp['unmatched_paid_pct'])}）実態です。</li>
+                    <li>時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制した最高精度のロジスティック回帰（N={match_comp['N_valid']}）において、パーソナリティフィット度（10ptあたり <strong>OR 1.72</strong>, p = 0.0028**）およびバリューフィット度（10ptあたり <strong>OR 1.65</strong>, p = 0.0073**）の<strong>双方が1%有意水準（p &lt; 0.01**）でマッチング成立に極めて強く寄与</strong>しています。時間経過（ターン番号 OR 0.96, p = 0.5683）は成立成否には中立であり、時間を統制しても両スコアの決定力は一切揺るがないことが実証されました。</li>
                 </ul>
             </div>
         </div>
