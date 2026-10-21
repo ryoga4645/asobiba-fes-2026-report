@@ -2057,10 +2057,10 @@ def build_html():
                 '企業：バリュー (知りたい以上)',
                 '企業：パーソナリティ (めっちゃ知りたい)',
                 '企業：パーソナリティ (知りたい以上)',
-                '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：パーソナリティ (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)',
                 '学生：バリュー (知りたい以上)',
-                '学生：バリュー (めっちゃ知りたい)'
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
@@ -2069,20 +2069,20 @@ def build_html():
                     {fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
                     {fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
-                    {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
+                    {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
                     '#4F46E5',
                     '#6366F1',
                     '#CBD5E1',
                     '#94A3B8',
-                    '#D97706',
-                    '#F59E0B',
                     '#0284C7',
-                    '#38BDF8'
+                    '#38BDF8',
+                    '#D97706',
+                    '#F59E0B'
                 ],
                 borderRadius: 4
             }}]
@@ -2268,10 +2268,10 @@ def build_html():
                 '企業：バリュー (知りたい以上)',
                 '企業：パーソナリティ (めっちゃ知りたい)',
                 '企業：パーソナリティ (知りたい以上)',
-                '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：パーソナリティ (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)',
                 '学生：バリュー (知りたい以上)',
-                '学生：バリュー (めっちゃ知りたい)'
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
@@ -2280,20 +2280,20 @@ def build_html():
                     {fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['paid']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
-                    {fmt_num(reg['paid']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
+                    {fmt_num(reg['paid']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['paid']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
                     '#4F46E5',
                     '#6366F1',
                     '#CBD5E1',
                     '#94A3B8',
-                    '#D97706',
-                    '#F59E0B',
                     '#0284C7',
-                    '#38BDF8'
+                    '#38BDF8',
+                    '#D97706',
+                    '#F59E0B'
                 ],
                 borderRadius: 4
             }}]
@@ -2343,10 +2343,10 @@ def build_html():
                 '企業：バリュー (知りたい以上)',
                 '企業：パーソナリティ (めっちゃ知りたい)',
                 '企業：パーソナリティ (知りたい以上)',
-                '学生：パーソナリティ (めっちゃ知りたい)',
-                '学生：パーソナリティ (知りたい以上)',
+                '学生：バリュー (めっちゃ知りたい)',
                 '学生：バリュー (知りたい以上)',
-                '学生：バリュー (めっちゃ知りたい)'
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
@@ -2355,20 +2355,20 @@ def build_html():
                     {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
                     {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
                     {fmt_num(reg['free']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
-                    {fmt_num(reg['free']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
+                    {fmt_num(reg['free']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['free']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
                     '#0D9488',
                     '#14B8A6',
                     '#CBD5E1',
                     '#94A3B8',
-                    '#D97706',
-                    '#F59E0B',
                     '#0284C7',
-                    '#38BDF8'
+                    '#38BDF8',
+                    '#D97706',
+                    '#F59E0B'
                 ],
                 borderRadius: 4
             }}]
