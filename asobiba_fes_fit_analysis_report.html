@@ -175,7 +175,22 @@
         .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-            gap: 20px;
+            gap: 24px;
+        }
+
+        .grid-2 > div {
+            min-width: 0; /* Prevents flex/grid overflow */
+        }
+
+        .sub-card {
+            background: #FFFFFF;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .grid-4 {
@@ -215,25 +230,34 @@
             margin-top: 6px;
         }
 
+        /* Responsive Table Container */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 10px;
+        }
+
         /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12.5px;
-            margin-top: 8px;
+            font-size: 12px;
+            min-width: 440px;
         }
 
         th, td {
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid var(--gray-200);
             text-align: left;
+            line-height: 1.4;
+            vertical-align: middle;
         }
 
         th {
             background: var(--gray-100);
             color: var(--gray-700);
             font-weight: 700;
-            white-space: nowrap;
         }
 
         tr:nth-child(even) {
@@ -318,6 +342,7 @@
             height: 220px;
             position: relative;
             margin-bottom: 14px;
+            width: 100%;
         }
 
         /* 3x3 Matrix */
@@ -348,8 +373,11 @@
             line-height: 1.35;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
             .grid-4 { grid-template-columns: 1fr 1fr; }
             .tab-bar { flex-direction: column; }
         }
@@ -419,92 +447,102 @@
             </div>
 
             <div class="grid-2">
-                <!-- 企業アクション -->
-                <div>
+                <!-- 企業アクション sub-card -->
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🏢 企業アクション別スコア実態</h3>
                     <div class="chart-box">
                         <canvas id="chart-comp-overall"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリューフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=313)</span></th>
-                                <th>パーソナリティフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=286)</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>97件 (31.0%)</td>
-                                <td>57.84 ±7.28</td>
-                                <td>78.41 ±8.26</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>145件 (46.3%)</td>
-                                <td>61.11 ±7.85</td>
-                                <td>79.53 ±8.79</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td><strong>めっちゃ知りたい（10社限定）</strong></td>
-                                <td>71件 (22.7%)</td>
-                                <td><strong>63.79</strong> ±7.10</td>
-                                <td>78.13 ±7.68</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
-                                <td>知りたい以上（2値集計）</td>
-                                <td>216件 (69.0%)</td>
-                                <td>61.99 ±7.70</td>
-                                <td>79.05 ±8.44</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">アクション区分</th>
+                                    <th style="width: 23%;">件数<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(構成比)</span></th>
+                                    <th style="width: 26%;">バリューフィット度<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=313)</span></th>
+                                    <th style="width: 26%;">パーソナリティ<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=286)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>97件 (31.0%)</td>
+                                    <td>57.84 ±7.28</td>
+                                    <td>78.41 ±8.26</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>145件 (46.3%)</td>
+                                    <td>61.11 ±7.85</td>
+                                    <td>79.53 ±8.79</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>
+                                        <strong>めっちゃ知りたい</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                    </td>
+                                    <td>71件 (22.7%)</td>
+                                    <td><strong>63.79</strong> ±7.10</td>
+                                    <td>78.13 ±7.68</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
+                                    <td>知りたい以上<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(2値集計)</span></td>
+                                    <td>216件 (69.0%)</td>
+                                    <td>61.99 ±7.70</td>
+                                    <td>79.05 ±8.44</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- 学生アクション -->
-                <div>
+                <!-- 学生アクション sub-card -->
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🎓 学生アクション別スコア実態</h3>
                     <div class="chart-box">
                         <canvas id="chart-stud-overall"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリューフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=313)</span></th>
-                                <th>パーソナリティフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=286)</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>139件 (44.4%)</td>
-                                <td>59.96 ±7.73</td>
-                                <td>78.08 ±8.44</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>134件 (42.8%)</td>
-                                <td>61.48 ±7.72</td>
-                                <td>79.23 ±8.41</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td><strong>めっちゃ知りたい（10社限定）</strong></td>
-                                <td>40件 (12.8%)</td>
-                                <td>60.67 ±8.25</td>
-                                <td><strong>80.78</strong> ±7.90</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
-                                <td>知りたい以上（2値集計）</td>
-                                <td>174件 (55.6%)</td>
-                                <td>61.30 ±7.82</td>
-                                <td>79.57 ±8.30</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">アクション区分</th>
+                                    <th style="width: 23%;">件数<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(構成比)</span></th>
+                                    <th style="width: 26%;">バリューフィット度<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=313)</span></th>
+                                    <th style="width: 26%;">パーソナリティ<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=286)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>139件 (44.4%)</td>
+                                    <td>59.96 ±7.73</td>
+                                    <td>78.08 ±8.44</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>134件 (42.8%)</td>
+                                    <td>61.48 ±7.72</td>
+                                    <td>79.23 ±8.41</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>
+                                        <strong>めっちゃ知りたい</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                    </td>
+                                    <td>40件 (12.8%)</td>
+                                    <td>60.67 ±8.25</td>
+                                    <td><strong>80.78</strong> ±7.90</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
+                                    <td>知りたい以上<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(2値集計)</span></td>
+                                    <td>174件 (55.6%)</td>
+                                    <td>61.30 ±7.82</td>
+                                    <td>79.57 ±8.30</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -531,105 +569,109 @@
             <!-- 企業回帰 -->
             <div style="margin-bottom: 24px;">
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">モデル / 説明変数</th>
-                            <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 6%;">N</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td><strong>OR 2.027</strong> [1.462〜2.812]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                            <td><strong>OR 1.747</strong> [1.237〜2.467]<br><span style="font-size: 11px;">p = 0.0015 (**)</span></td>
-                            <td><strong>OR 2.908</strong> [1.862〜4.542]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                            <td>313</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR 1.096 [0.803〜1.496]<br><span style="font-size: 11px;">p = 0.5633</span></td>
-                            <td>OR 1.175 [0.841〜1.642]<br><span style="font-size: 11px;">p = 0.3447</span></td>
-                            <td>OR 0.962 [0.656〜1.409]<br><span style="font-size: 11px;">p = 0.8417</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td><strong>OR 1.731</strong> [1.215〜2.465]<br><span style="font-size: 11px;">p = 0.0024 (**)</span></td>
-                            <td><strong>OR 1.480</strong> [1.018〜2.152]<br><span style="font-size: 11px;">p = 0.0401 (*)</span></td>
-                            <td><strong>OR 2.463</strong> [1.547〜3.922]<br><span style="font-size: 11px;">p = 0.0001 (***)</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR 1.084 [0.790〜1.488]<br><span style="font-size: 11px;">p = 0.6188</span></td>
-                            <td>OR 1.163 [0.830〜1.630]<br><span style="font-size: 11px;">p = 0.3809</span></td>
-                            <td>OR 0.933 [0.630〜1.382]<br><span style="font-size: 11px;">p = 0.7288</span></td>
-                            <td>286</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">モデル / 説明変数</th>
+                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 6%;">N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td><strong>OR 2.027</strong> [1.462〜2.812]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                                <td><strong>OR 1.747</strong> [1.237〜2.467]<br><span style="font-size: 11px;">p = 0.0015 (**)</span></td>
+                                <td><strong>OR 2.908</strong> [1.862〜4.542]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                                <td>313</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR 1.096 [0.803〜1.496]<br><span style="font-size: 11px;">p = 0.5633</span></td>
+                                <td>OR 1.175 [0.841〜1.642]<br><span style="font-size: 11px;">p = 0.3447</span></td>
+                                <td>OR 0.962 [0.656〜1.409]<br><span style="font-size: 11px;">p = 0.8417</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td><strong>OR 1.731</strong> [1.215〜2.465]<br><span style="font-size: 11px;">p = 0.0024 (**)</span></td>
+                                <td><strong>OR 1.480</strong> [1.018〜2.152]<br><span style="font-size: 11px;">p = 0.0401 (*)</span></td>
+                                <td><strong>OR 2.463</strong> [1.547〜3.922]<br><span style="font-size: 11px;">p = 0.0001 (***)</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR 1.084 [0.790〜1.488]<br><span style="font-size: 11px;">p = 0.6188</span></td>
+                                <td>OR 1.163 [0.830〜1.630]<br><span style="font-size: 11px;">p = 0.3809</span></td>
+                                <td>OR 0.933 [0.630〜1.382]<br><span style="font-size: 11px;">p = 0.7288</span></td>
+                                <td>286</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- 学生回帰 -->
             <div>
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">モデル / 説明変数</th>
-                            <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 6%;">N</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR 1.237 [0.935〜1.636]<br><span style="font-size: 11px;">p = 0.1370</span></td>
-                            <td>OR 1.178 [0.876〜1.584]<br><span style="font-size: 11px;">p = 0.2787</span></td>
-                            <td><strong>OR 1.490</strong> [0.925〜2.399]<br><span style="font-size: 11px;">p = 0.1010</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td>OR 1.248 [0.935〜1.665]<br><span style="font-size: 11px;">p = 0.1325</span></td>
-                            <td>OR 1.288 [0.946〜1.754]<br><span style="font-size: 11px;">p = 0.1074</span></td>
-                            <td>OR 1.124 [0.715〜1.766]<br><span style="font-size: 11px;">p = 0.6132</span></td>
-                            <td>313</td>
-                        </tr>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR 1.228 [0.927〜1.628]<br><span style="font-size: 11px;">p = 0.1526</span></td>
-                            <td>OR 1.169 [0.867〜1.575]<br><span style="font-size: 11px;">p = 0.3056</span></td>
-                            <td><strong>OR 1.483</strong> [0.920〜2.389]<br><span style="font-size: 11px;">p = 0.1057</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td>OR 1.376 [1.005〜1.882]<br><span style="font-size: 11px;">p = 0.0463 (*)</span></td>
-                            <td><strong>OR 1.410</strong> [1.010〜1.969]<br><span style="font-size: 11px;">p = 0.0438 (*)</span></td>
-                            <td>OR 1.260 [0.757〜2.096]<br><span style="font-size: 11px;">p = 0.3745</span></td>
-                            <td>286</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">モデル / 説明変数</th>
+                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 6%;">N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR 1.237 [0.935〜1.636]<br><span style="font-size: 11px;">p = 0.1370</span></td>
+                                <td>OR 1.178 [0.876〜1.584]<br><span style="font-size: 11px;">p = 0.2787</span></td>
+                                <td><strong>OR 1.490</strong> [0.925〜2.399]<br><span style="font-size: 11px;">p = 0.1010</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td>OR 1.248 [0.935〜1.665]<br><span style="font-size: 11px;">p = 0.1325</span></td>
+                                <td>OR 1.288 [0.946〜1.754]<br><span style="font-size: 11px;">p = 0.1074</span></td>
+                                <td>OR 1.124 [0.715〜1.766]<br><span style="font-size: 11px;">p = 0.6132</span></td>
+                                <td>313</td>
+                            </tr>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR 1.228 [0.927〜1.628]<br><span style="font-size: 11px;">p = 0.1526</span></td>
+                                <td>OR 1.169 [0.867〜1.575]<br><span style="font-size: 11px;">p = 0.3056</span></td>
+                                <td><strong>OR 1.483</strong> [0.920〜2.389]<br><span style="font-size: 11px;">p = 0.1057</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td>OR 1.376 [1.005〜1.882]<br><span style="font-size: 11px;">p = 0.0463 (*)</span></td>
+                                <td><strong>OR 1.410</strong> [1.010〜1.969]<br><span style="font-size: 11px;">p = 0.0438 (*)</span></td>
+                                <td>OR 1.260 [0.757〜2.096]<br><span style="font-size: 11px;">p = 0.3745</span></td>
+                                <td>286</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="summary-box">
@@ -652,80 +694,84 @@
             </div>
 
             <div class="grid-2">
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">成立群 vs 未成立群の平均値比較 (N=286)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>指標</th>
-                                <th>成立群 (N=121)</th>
-                                <th>未成立群 (N=165)</th>
-                                <th>差</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>バリューフィット度 平均</td>
-                                <td><strong>63.02</strong></td>
-                                <td>59.94</td>
-                                <td><strong style="color: var(--primary);">+3.08 pt</strong></td>
-                            </tr>
-                            <tr>
-                                <td>パーソナリティフィット度 平均</td>
-                                <td><strong>80.08</strong></td>
-                                <td>78.00</td>
-                                <td><strong style="color: var(--success);">+2.08 pt</strong></td>
-                            </tr>
-                            <tr>
-                                <td>出展区分（有料企業比率）</td>
-                                <td>44.6%</td>
-                                <td>41.2%</td>
-                                <td>+3.4 pt</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>指標</th>
+                                    <th>成立群 (N=121)</th>
+                                    <th>未成立群 (N=165)</th>
+                                    <th>差</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バリューフィット度 平均</td>
+                                    <td><strong>63.02</strong></td>
+                                    <td>59.94</td>
+                                    <td><strong style="color: var(--primary);">+3.08 pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>パーソナリティフィット度 平均</td>
+                                    <td><strong>80.08</strong></td>
+                                    <td>78.00</td>
+                                    <td><strong style="color: var(--success);">+2.08 pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>出展区分（有料企業比率）</td>
+                                    <td>44.6%</td>
+                                    <td>41.2%</td>
+                                    <td>+3.4 pt</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">多変量ロジスティック回帰分析結果 (N=286)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>説明変数</th>
-                                <th>回帰係数 (β)</th>
-                                <th>標準誤差</th>
-                                <th>オッズ比 [95%CI]</th>
-                                <th>p値</th>
-                                <th>判定</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: var(--primary-light);">
-                                <td><strong>バリューフィット度</strong></td>
-                                <td>+0.0558</td>
-                                <td>0.0170</td>
-                                <td><strong>OR 1.747</strong><br><span style="font-size: 10px;">[1.253〜2.438]</span></td>
-                                <td>p = 0.0010 (**)</td>
-                                <td><span class="pill pill-green">有意 (**)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>+0.0294</td>
-                                <td>0.0151</td>
-                                <td><strong>OR 1.342</strong><br><span style="font-size: 10px;">[0.998〜1.806]</span></td>
-                                <td>p = 0.0518 (†)</td>
-                                <td><span class="pill pill-amber">有意傾向 (†)</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>出展区分 (有料企業=1)</strong></td>
-                                <td>+0.0256</td>
-                                <td>0.2513</td>
-                                <td>OR 1.026<br><span style="font-size: 10px;">[0.627〜1.679]</span></td>
-                                <td>p = 0.9188</td>
-                                <td><span class="pill pill-slate">有意差なし</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>説明変数</th>
+                                    <th>回帰係数 (β)</th>
+                                    <th>標準誤差</th>
+                                    <th>オッズ比 [95%CI]</th>
+                                    <th>p値</th>
+                                    <th>判定</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: var(--primary-light);">
+                                    <td><strong>バリューフィット度</strong></td>
+                                    <td>+0.0558</td>
+                                    <td>0.0170</td>
+                                    <td><strong>OR 1.747</strong><br><span style="font-size: 10px;">[1.253〜2.438]</span></td>
+                                    <td>p = 0.0010 (**)</td>
+                                    <td><span class="pill pill-green">有意 (**)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>パーソナリティフィット度</strong></td>
+                                    <td>+0.0294</td>
+                                    <td>0.0151</td>
+                                    <td><strong>OR 1.342</strong><br><span style="font-size: 10px;">[0.998〜1.806]</span></td>
+                                    <td>p = 0.0518 (†)</td>
+                                    <td><span class="pill pill-amber">有意傾向 (†)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>出展区分 (有料企業=1)</strong></td>
+                                    <td>+0.0256</td>
+                                    <td>0.2513</td>
+                                    <td>OR 1.026<br><span style="font-size: 10px;">[0.627〜1.679]</span></td>
+                                    <td>p = 0.9188</td>
+                                    <td><span class="pill pill-slate">有意差なし</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -749,99 +795,101 @@
                 <span class="pill pill-slate">クロス集計</span>
             </div>
 
-            <table class="matrix-table">
-                <thead>
-                    <tr>
-                        <th style="width: 25%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
-                        <th style="width: 25%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                        <th style="width: 25%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                        <th style="width: 25%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th style="background: #D1FAE5;">高 (≥82.0)</th>
-                        <td class="matrix-cell heat-mid">
-                            <div class="cell-rate">37.8%</div>
-                            <div class="cell-sub">
-                                成立 14/37件<br>
-                                企業 めっちゃ知りたい:10.8% / 知りたい以上:70.3%<br>
-                                学生 めっちゃ知りたい:10.8% / 知りたい以上:48.6%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-mid">
-                            <div class="cell-rate">38.5%</div>
-                            <div class="cell-sub">
-                                成立 10/26件<br>
-                                企業 めっちゃ知りたい:15.4% / 知りたい以上:65.4%<br>
-                                学生 めっちゃ知りたい:7.7% / 知りたい以上:46.2%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-high">
-                            <div class="cell-rate">61.2%</div>
-                            <div class="cell-sub">
-                                成立 30/49件<br>
-                                企業 めっちゃ知りたい:26.5% / 知りたい以上:81.6%<br>
-                                学生 めっちゃ知りたい:18.4% / 知りたい以上:67.3%
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="background: #FEF3C7;">中 (76.0〜81.9)</th>
-                        <td class="matrix-cell heat-mid">
-                            <div class="cell-rate">30.0%</div>
-                            <div class="cell-sub">
-                                成立 6/20件<br>
-                                企業 めっちゃ知りたい:20.0% / 知りたい以上:65.0%<br>
-                                学生 めっちゃ知りたい:10.0% / 知りたい以上:50.0%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-mid-high">
-                            <div class="cell-rate">42.3%</div>
-                            <div class="cell-sub">
-                                成立 11/26件<br>
-                                企業 めっちゃ知りたい:26.9% / 知りたい以上:69.2%<br>
-                                学生 めっちゃ知りたい:19.2% / 知りたい以上:57.7%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-high">
-                            <div class="cell-rate">58.3%</div>
-                            <div class="cell-sub">
-                                成立 14/24件<br>
-                                企業 めっちゃ知りたい:41.7% / 知りたい以上:91.7%<br>
-                                学生 めっちゃ知りたい:8.3% / 知りたい以上:66.7%
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="background: #FEE2E2;">低 (<76.0)</th>
-                        <td class="matrix-cell heat-low">
-                            <div class="cell-rate">18.9%</div>
-                            <div class="cell-sub">
-                                成立 7/37件<br>
-                                企業 めっちゃ知りたい:16.2% / 知りたい以上:54.1%<br>
-                                学生 めっちゃ知りたい:8.1% / 知りたい以上:43.2%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-mid">
-                            <div class="cell-rate">30.0%</div>
-                            <div class="cell-sub">
-                                成立 9/30件<br>
-                                企業 めっちゃ知りたい:20.0% / 知りたい以上:73.3%<br>
-                                学生 めっちゃ知りたい:6.7% / 知りたい以上:36.7%
-                            </div>
-                        </td>
-                        <td class="matrix-cell heat-high">
-                            <div class="cell-rate">54.1%</div>
-                            <div class="cell-sub">
-                                成立 20/37件<br>
-                                企業 めっちゃ知りたい:45.9% / 知りたい以上:83.8%<br>
-                                学生 めっちゃ知りたい:10.8% / 知りたい以上:59.5%
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                            <th style="width: 25%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                            <th style="width: 25%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                            <th style="width: 25%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style="background: #D1FAE5;">高 (≥82.0)</th>
+                            <td class="matrix-cell heat-mid">
+                                <div class="cell-rate">37.8%</div>
+                                <div class="cell-sub">
+                                    成立 14/37件<br>
+                                    企業 めっちゃ知りたい:10.8% / 知りたい以上:70.3%<br>
+                                    学生 めっちゃ知りたい:10.8% / 知りたい以上:48.6%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-mid">
+                                <div class="cell-rate">38.5%</div>
+                                <div class="cell-sub">
+                                    成立 10/26件<br>
+                                    企業 めっちゃ知りたい:15.4% / 知りたい以上:65.4%<br>
+                                    学生 めっちゃ知りたい:7.7% / 知りたい以上:46.2%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-high">
+                                <div class="cell-rate">61.2%</div>
+                                <div class="cell-sub">
+                                    成立 30/49件<br>
+                                    企業 めっちゃ知りたい:26.5% / 知りたい以上:81.6%<br>
+                                    学生 めっちゃ知りたい:18.4% / 知りたい以上:67.3%
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="background: #FEF3C7;">中 (76.0〜81.9)</th>
+                            <td class="matrix-cell heat-mid">
+                                <div class="cell-rate">30.0%</div>
+                                <div class="cell-sub">
+                                    成立 6/20件<br>
+                                    企業 めっちゃ知りたい:20.0% / 知りたい以上:65.0%<br>
+                                    学生 めっちゃ知りたい:10.0% / 知りたい以上:50.0%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-mid-high">
+                                <div class="cell-rate">42.3%</div>
+                                <div class="cell-sub">
+                                    成立 11/26件<br>
+                                    企業 めっちゃ知りたい:26.9% / 知りたい以上:69.2%<br>
+                                    学生 めっちゃ知りたい:19.2% / 知りたい以上:57.7%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-high">
+                                <div class="cell-rate">58.3%</div>
+                                <div class="cell-sub">
+                                    成立 14/24件<br>
+                                    企業 めっちゃ知りたい:41.7% / 知りたい以上:91.7%<br>
+                                    学生 めっちゃ知りたい:8.3% / 知りたい以上:66.7%
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="background: #FEE2E2;">低 (<76.0)</th>
+                            <td class="matrix-cell heat-low">
+                                <div class="cell-rate">18.9%</div>
+                                <div class="cell-sub">
+                                    成立 7/37件<br>
+                                    企業 めっちゃ知りたい:16.2% / 知りたい以上:54.1%<br>
+                                    学生 めっちゃ知りたい:8.1% / 知りたい以上:43.2%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-mid">
+                                <div class="cell-rate">30.0%</div>
+                                <div class="cell-sub">
+                                    成立 9/30件<br>
+                                    企業 めっちゃ知りたい:20.0% / 知りたい以上:73.3%<br>
+                                    学生 めっちゃ知りたい:6.7% / 知りたい以上:36.7%
+                                </div>
+                            </td>
+                            <td class="matrix-cell heat-high">
+                                <div class="cell-rate">54.1%</div>
+                                <div class="cell-sub">
+                                    成立 20/37件<br>
+                                    企業 めっちゃ知りたい:45.9% / 知りたい以上:83.8%<br>
+                                    学生 めっちゃ知りたい:10.8% / 知りたい以上:59.5%
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（3×3 実態集計）:</strong>
@@ -883,123 +931,127 @@
 
             <div class="grid-2">
                 <!-- 企業アクション (有料 vs 無料) -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th rowspan="2">区分 / アクション</th>
-                                <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
-                                <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
-                            </tr>
-                            <tr>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>32件 (26.2%)</td>
-                                <td>60.09</td>
-                                <td>80.48</td>
-                                <td>65件 (34.0%)</td>
-                                <td>56.73</td>
-                                <td>76.93</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>61件 (50.0%)</td>
-                                <td>62.01</td>
-                                <td>80.44</td>
-                                <td>84件 (44.0%)</td>
-                                <td>60.46</td>
-                                <td>78.80</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td>めっちゃ知りたい</td>
-                                <td>29件 (23.8%)</td>
-                                <td>63.13</td>
-                                <td>80.15</td>
-                                <td>42件 (22.0%)</td>
-                                <td><strong>64.24</strong></td>
-                                <td>76.73</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700;">
-                                <td>知りたい以上 (2値)</td>
-                                <td>90件 (73.8%)</td>
-                                <td>62.37</td>
-                                <td>80.34</td>
-                                <td>126件 (66.0%)</td>
-                                <td>61.72</td>
-                                <td>78.07</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">区分 / アクション</th>
+                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
+                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>32件 (26.2%)</td>
+                                    <td>60.09</td>
+                                    <td>80.48</td>
+                                    <td>65件 (34.0%)</td>
+                                    <td>56.73</td>
+                                    <td>76.93</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>61件 (50.0%)</td>
+                                    <td>62.01</td>
+                                    <td>80.44</td>
+                                    <td>84件 (44.0%)</td>
+                                    <td>60.46</td>
+                                    <td>78.80</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>29件 (23.8%)</td>
+                                    <td>63.13</td>
+                                    <td>80.15</td>
+                                    <td>42件 (22.0%)</td>
+                                    <td><strong>64.24</strong></td>
+                                    <td>76.73</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上 (2値)</td>
+                                    <td>90件 (73.8%)</td>
+                                    <td>62.37</td>
+                                    <td>80.34</td>
+                                    <td>126件 (66.0%)</td>
+                                    <td>61.72</td>
+                                    <td>78.07</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- 学生アクション (有料 vs 無料) -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料 vs 無料</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th rowspan="2">区分 / アクション</th>
-                                <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
-                                <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
-                            </tr>
-                            <tr>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>56件 (45.9%)</td>
-                                <td>60.28</td>
-                                <td>78.82</td>
-                                <td>83件 (43.5%)</td>
-                                <td>59.75</td>
-                                <td>77.55</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>50件 (41.0%)</td>
-                                <td>63.37</td>
-                                <td>81.47</td>
-                                <td>84件 (44.0%)</td>
-                                <td>60.36</td>
-                                <td>77.63</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td>めっちゃ知りたい</td>
-                                <td>16件 (13.1%)</td>
-                                <td>62.02</td>
-                                <td><strong>82.44</strong></td>
-                                <td>24件 (12.6%)</td>
-                                <td>59.77</td>
-                                <td>79.22</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700;">
-                                <td>知りたい以上 (2値)</td>
-                                <td>66件 (54.1%)</td>
-                                <td>63.05</td>
-                                <td>81.70</td>
-                                <td>108件 (56.5%)</td>
-                                <td>60.23</td>
-                                <td>77.94</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">区分 / アクション</th>
+                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
+                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>56件 (45.9%)</td>
+                                    <td>60.28</td>
+                                    <td>78.82</td>
+                                    <td>83件 (43.5%)</td>
+                                    <td>59.75</td>
+                                    <td>77.55</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>50件 (41.0%)</td>
+                                    <td>63.37</td>
+                                    <td>81.47</td>
+                                    <td>84件 (44.0%)</td>
+                                    <td>60.36</td>
+                                    <td>77.63</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>16件 (13.1%)</td>
+                                    <td>62.02</td>
+                                    <td><strong>82.44</strong></td>
+                                    <td>24件 (12.6%)</td>
+                                    <td>59.77</td>
+                                    <td>79.22</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上 (2値)</td>
+                                    <td>66件 (54.1%)</td>
+                                    <td>63.05</td>
+                                    <td>81.70</td>
+                                    <td>108件 (56.5%)</td>
+                                    <td>60.23</td>
+                                    <td>77.94</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1017,59 +1069,63 @@
             <!-- 有料企業回帰 -->
             <div style="margin-bottom: 24px;">
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 有料企業 (N=122) における企業アクション回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 24%;">モデル / 説明変数</th>
-                            <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>バリューフィット度 (単変量)</td>
-                            <td>OR 1.782 [0.924〜3.436]<br><span style="font-size: 11px;">p = 0.0845 (†)</span></td>
-                            <td>OR 1.629 [0.815〜3.256]<br><span style="font-size: 11px;">p = 0.1672</span></td>
-                            <td><strong>OR 2.170</strong> [0.953〜4.943]<br><span style="font-size: 11px;">p = 0.0651 (†)</span></td>
-                        </tr>
-                        <tr>
-                            <td>パーソナリティフィット度 (単変量)</td>
-                            <td>OR 0.977 [0.579〜1.650]<br><span style="font-size: 11px;">p = 0.9315</span></td>
-                            <td>OR 0.992 [0.569〜1.730]<br><span style="font-size: 11px;">p = 0.9785</span></td>
-                            <td>OR 0.947 [0.495〜1.811]<br><span style="font-size: 11px;">p = 0.8685</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 24%;">モデル / 説明変数</th>
+                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>バリューフィット度 (単変量)</td>
+                                <td>OR 1.782 [0.924〜3.436]<br><span style="font-size: 11px;">p = 0.0845 (†)</span></td>
+                                <td>OR 1.629 [0.815〜3.256]<br><span style="font-size: 11px;">p = 0.1672</span></td>
+                                <td><strong>OR 2.170</strong> [0.953〜4.943]<br><span style="font-size: 11px;">p = 0.0651 (†)</span></td>
+                            </tr>
+                            <tr>
+                                <td>パーソナリティフィット度 (単変量)</td>
+                                <td>OR 0.977 [0.579〜1.650]<br><span style="font-size: 11px;">p = 0.9315</span></td>
+                                <td>OR 0.992 [0.569〜1.730]<br><span style="font-size: 11px;">p = 0.9785</span></td>
+                                <td>OR 0.947 [0.495〜1.811]<br><span style="font-size: 11px;">p = 0.8685</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- 無料企業回帰 -->
             <div>
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 無料企業 (N=191 / 164) における企業アクション回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 24%;">モデル / 説明変数</th>
-                            <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>バリューフィット度 (単変量)</td>
-                            <td><strong>OR 2.059</strong> [1.406〜3.016]<br><span style="font-size: 11px;">p = 0.0002 (***)</span></td>
-                            <td><strong>OR 1.723</strong> [1.151〜2.581]<br><span style="font-size: 11px;">p = 0.0083 (**)</span></td>
-                            <td><strong>OR 3.224</strong> [1.873〜5.552]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                        </tr>
-                        <tr>
-                            <td>パーソナリティフィット度 (単変量)</td>
-                            <td>OR 1.165 [0.783〜1.733]<br><span style="font-size: 11px;">p = 0.4511</span></td>
-                            <td>OR 1.289 [0.838〜1.983]<br><span style="font-size: 11px;">p = 0.2478</span></td>
-                            <td>OR 0.974 [0.598〜1.584]<br><span style="font-size: 11px;">p = 0.9145</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 24%;">モデル / 説明変数</th>
+                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>バリューフィット度 (単変量)</td>
+                                <td><strong>OR 2.059</strong> [1.406〜3.016]<br><span style="font-size: 11px;">p = 0.0002 (***)</span></td>
+                                <td><strong>OR 1.723</strong> [1.151〜2.581]<br><span style="font-size: 11px;">p = 0.0083 (**)</span></td>
+                                <td><strong>OR 3.224</strong> [1.873〜5.552]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                            </tr>
+                            <tr>
+                                <td>パーソナリティフィット度 (単変量)</td>
+                                <td>OR 1.165 [0.783〜1.733]<br><span style="font-size: 11px;">p = 0.4511</span></td>
+                                <td>OR 1.289 [0.838〜1.983]<br><span style="font-size: 11px;">p = 0.2478</span></td>
+                                <td>OR 0.974 [0.598〜1.584]<br><span style="font-size: 11px;">p = 0.9145</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="summary-box">
@@ -1097,194 +1153,196 @@
                 <span class="pill pill-slate">12社全件一覧</span>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>企業名</th>
-                        <th>区分</th>
-                        <th>接触数</th>
-                        <th>マッチ成立</th>
-                        <th>成立率</th>
-                        <th>バリュー平均</th>
-                        <th>P平均</th>
-                        <th>企業 めっちゃ知りたい</th>
-                        <th>企業 知りたい以上</th>
-                        <th>学生 めっちゃ知りたい</th>
-                        <th>学生 知りたい以上</th>
-                        <th>めっちゃ知りたい群 − なし群 バリュー差</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>株式会社ベル</strong></td>
-                        <td><span class="pill pill-indigo">有料</span></td>
-                        <td>29名</td>
-                        <td>19件</td>
-                        <td><strong>65.5%</strong></td>
-                        <td>62.10</td>
-                        <td>80.44</td>
-                        <td>10件 (34.5%)</td>
-                        <td>28件 (96.6%)</td>
-                        <td>5件 (17.2%)</td>
-                        <td>19件 (65.5%)</td>
-                        <td><strong>+5.16 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>NTT 都市開発ホテルマネジメント株式会社　カペラ京都</strong></td>
-                        <td><span class="pill pill-indigo">有料</span></td>
-                        <td>32名</td>
-                        <td>19件</td>
-                        <td><strong>59.4%</strong></td>
-                        <td>62.09</td>
-                        <td>82.07</td>
-                        <td>10件 (31.2%)</td>
-                        <td>28件 (87.5%)</td>
-                        <td>9件 (28.1%)</td>
-                        <td>19件 (59.4%)</td>
-                        <td><strong>+4.32 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社リード・イノベーション</strong></td>
-                        <td><span class="pill pill-indigo">有料</span></td>
-                        <td>31名</td>
-                        <td>11件</td>
-                        <td><strong>35.5%</strong></td>
-                        <td>60.95</td>
-                        <td>78.01</td>
-                        <td>6件 (19.4%)</td>
-                        <td>22件 (71.0%)</td>
-                        <td>1件 (3.2%)</td>
-                        <td>14件 (45.2%)</td>
-                        <td><strong>+3.67 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社Unith Link</strong></td>
-                        <td><span class="pill pill-indigo">有料</span></td>
-                        <td>30名</td>
-                        <td>5件</td>
-                        <td><strong>16.7%</strong></td>
-                        <td>61.97</td>
-                        <td>80.98</td>
-                        <td>3件 (10.0%)</td>
-                        <td>12件 (40.0%)</td>
-                        <td>1件 (3.3%)</td>
-                        <td>14件 (46.7%)</td>
-                        <td><strong>+2.38 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社Linoa Group</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>23名</td>
-                        <td>15件</td>
-                        <td><strong>65.2%</strong></td>
-                        <td>63.22</td>
-                        <td>74.53</td>
-                        <td>10件 (43.5%)</td>
-                        <td>22件 (95.7%)</td>
-                        <td>0件 (0.0%)</td>
-                        <td>15件 (65.2%)</td>
-                        <td><strong>-8.91 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>とものや株式会社</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>24名</td>
-                        <td>13件</td>
-                        <td><strong>54.2%</strong></td>
-                        <td>61.28</td>
-                        <td>76.95</td>
-                        <td>7件 (29.2%)</td>
-                        <td>16件 (66.7%)</td>
-                        <td>7件 (29.2%)</td>
-                        <td>20件 (83.3%)</td>
-                        <td><strong>+4.45 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社アイプラス</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>22名</td>
-                        <td>11件</td>
-                        <td><strong>50.0%</strong></td>
-                        <td>58.92</td>
-                        <td>73.19</td>
-                        <td>4件 (18.2%)</td>
-                        <td>19件 (86.4%)</td>
-                        <td>4件 (18.2%)</td>
-                        <td>14件 (63.6%)</td>
-                        <td><strong>+9.50 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>CKCネットワーク株式会社（ナビ個別指導学院）</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>25名</td>
-                        <td>12件</td>
-                        <td><strong>48.0%</strong></td>
-                        <td>63.79</td>
-                        <td>78.03</td>
-                        <td>7件 (28.0%)</td>
-                        <td>17件 (68.0%)</td>
-                        <td>2件 (8.0%)</td>
-                        <td>13件 (52.0%)</td>
-                        <td><strong>+7.03 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社EGIJ</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>21名</td>
-                        <td>9件</td>
-                        <td><strong>42.9%</strong></td>
-                        <td>63.14</td>
-                        <td>83.77</td>
-                        <td>7件 (33.3%)</td>
-                        <td>21件 (100.0%)</td>
-                        <td>2件 (9.5%)</td>
-                        <td>9件 (42.9%)</td>
-                        <td><strong>-</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社ユーズテック</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>24名</td>
-                        <td>7件</td>
-                        <td><strong>29.2%</strong></td>
-                        <td>57.79</td>
-                        <td>78.48</td>
-                        <td>7件 (29.2%)</td>
-                        <td>19件 (79.2%)</td>
-                        <td>2件 (8.3%)</td>
-                        <td>8件 (33.3%)</td>
-                        <td><strong>+6.37 pt</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>パナソニック オペレーショナルエクセレンス株式会社</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>27名</td>
-                        <td>7件</td>
-                        <td><strong>25.9%</strong></td>
-                        <td>54.98</td>
-                        <td>-</td>
-                        <td>0件 (0.0%)</td>
-                        <td>7件 (25.9%)</td>
-                        <td>7件 (25.9%)</td>
-                        <td>21件 (77.8%)</td>
-                        <td><strong>-</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>株式会社ミツカル</strong></td>
-                        <td><span class="pill pill-slate">無料</span></td>
-                        <td>25名</td>
-                        <td>0件</td>
-                        <td><strong>0.0%</strong></td>
-                        <td>58.03</td>
-                        <td>79.51</td>
-                        <td>0件 (0.0%)</td>
-                        <td>5件 (20.0%)</td>
-                        <td>0件 (0.0%)</td>
-                        <td>8件 (32.0%)</td>
-                        <td><strong>-</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>企業名</th>
+                            <th>区分</th>
+                            <th>接触数</th>
+                            <th>マッチ成立</th>
+                            <th>成立率</th>
+                            <th>バリュー平均</th>
+                            <th>P平均</th>
+                            <th>企業 めっちゃ知りたい</th>
+                            <th>企業 知りたい以上</th>
+                            <th>学生 めっちゃ知りたい</th>
+                            <th>学生 知りたい以上</th>
+                            <th>めっちゃ知りたい群 − なし群 バリュー差</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>株式会社ベル</strong></td>
+                            <td><span class="pill pill-indigo">有料</span></td>
+                            <td>29名</td>
+                            <td>19件</td>
+                            <td><strong>65.5%</strong></td>
+                            <td>62.10</td>
+                            <td>80.44</td>
+                            <td>10件 (34.5%)</td>
+                            <td>28件 (96.6%)</td>
+                            <td>5件 (17.2%)</td>
+                            <td>19件 (65.5%)</td>
+                            <td><strong>+5.16 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>NTT 都市開発ホテルマネジメント株式会社　カペラ京都</strong></td>
+                            <td><span class="pill pill-indigo">有料</span></td>
+                            <td>32名</td>
+                            <td>19件</td>
+                            <td><strong>59.4%</strong></td>
+                            <td>62.09</td>
+                            <td>82.07</td>
+                            <td>10件 (31.2%)</td>
+                            <td>28件 (87.5%)</td>
+                            <td>9件 (28.1%)</td>
+                            <td>19件 (59.4%)</td>
+                            <td><strong>+4.32 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社リード・イノベーション</strong></td>
+                            <td><span class="pill pill-indigo">有料</span></td>
+                            <td>31名</td>
+                            <td>11件</td>
+                            <td><strong>35.5%</strong></td>
+                            <td>60.95</td>
+                            <td>78.01</td>
+                            <td>6件 (19.4%)</td>
+                            <td>22件 (71.0%)</td>
+                            <td>1件 (3.2%)</td>
+                            <td>14件 (45.2%)</td>
+                            <td><strong>+3.67 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社Unith Link</strong></td>
+                            <td><span class="pill pill-indigo">有料</span></td>
+                            <td>30名</td>
+                            <td>5件</td>
+                            <td><strong>16.7%</strong></td>
+                            <td>61.97</td>
+                            <td>80.98</td>
+                            <td>3件 (10.0%)</td>
+                            <td>12件 (40.0%)</td>
+                            <td>1件 (3.3%)</td>
+                            <td>14件 (46.7%)</td>
+                            <td><strong>+2.38 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社Linoa Group</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>23名</td>
+                            <td>15件</td>
+                            <td><strong>65.2%</strong></td>
+                            <td>63.22</td>
+                            <td>74.53</td>
+                            <td>10件 (43.5%)</td>
+                            <td>22件 (95.7%)</td>
+                            <td>0件 (0.0%)</td>
+                            <td>15件 (65.2%)</td>
+                            <td><strong>-8.91 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>とものや株式会社</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>24名</td>
+                            <td>13件</td>
+                            <td><strong>54.2%</strong></td>
+                            <td>61.28</td>
+                            <td>76.95</td>
+                            <td>7件 (29.2%)</td>
+                            <td>16件 (66.7%)</td>
+                            <td>7件 (29.2%)</td>
+                            <td>20件 (83.3%)</td>
+                            <td><strong>+4.45 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社アイプラス</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>22名</td>
+                            <td>11件</td>
+                            <td><strong>50.0%</strong></td>
+                            <td>58.92</td>
+                            <td>73.19</td>
+                            <td>4件 (18.2%)</td>
+                            <td>19件 (86.4%)</td>
+                            <td>4件 (18.2%)</td>
+                            <td>14件 (63.6%)</td>
+                            <td><strong>+9.50 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CKCネットワーク株式会社（ナビ個別指導学院）</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>25名</td>
+                            <td>12件</td>
+                            <td><strong>48.0%</strong></td>
+                            <td>63.79</td>
+                            <td>78.03</td>
+                            <td>7件 (28.0%)</td>
+                            <td>17件 (68.0%)</td>
+                            <td>2件 (8.0%)</td>
+                            <td>13件 (52.0%)</td>
+                            <td><strong>+7.03 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社EGIJ</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>21名</td>
+                            <td>9件</td>
+                            <td><strong>42.9%</strong></td>
+                            <td>63.14</td>
+                            <td>83.77</td>
+                            <td>7件 (33.3%)</td>
+                            <td>21件 (100.0%)</td>
+                            <td>2件 (9.5%)</td>
+                            <td>9件 (42.9%)</td>
+                            <td><strong>-</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社ユーズテック</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>24名</td>
+                            <td>7件</td>
+                            <td><strong>29.2%</strong></td>
+                            <td>57.79</td>
+                            <td>78.48</td>
+                            <td>7件 (29.2%)</td>
+                            <td>19件 (79.2%)</td>
+                            <td>2件 (8.3%)</td>
+                            <td>8件 (33.3%)</td>
+                            <td><strong>+6.37 pt</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>パナソニック オペレーショナルエクセレンス株式会社</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>27名</td>
+                            <td>7件</td>
+                            <td><strong>25.9%</strong></td>
+                            <td>54.98</td>
+                            <td>-</td>
+                            <td>0件 (0.0%)</td>
+                            <td>7件 (25.9%)</td>
+                            <td>7件 (25.9%)</td>
+                            <td>21件 (77.8%)</td>
+                            <td><strong>-</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>株式会社ミツカル</strong></td>
+                            <td><span class="pill pill-slate">無料</span></td>
+                            <td>25名</td>
+                            <td>0件</td>
+                            <td><strong>0.0%</strong></td>
+                            <td>58.03</td>
+                            <td>79.51</td>
+                            <td>0件 (0.0%)</td>
+                            <td>5件 (20.0%)</td>
+                            <td>0件 (0.0%)</td>
+                            <td>8件 (32.0%)</td>
+                            <td><strong>-</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- 🔍 個別企業カルテ -->
@@ -1336,41 +1394,45 @@
 
             <div class="grid-2">
                 <!-- 企業アクション -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別実態</h3>
                     <div class="chart-box" style="height: 180px;">
                         <canvas id="chart-cd-comp"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリュー平均</th>
-                                <th>P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cd-tbody-comp"></tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>アクション区分</th>
+                                    <th>件数 (構成比)</th>
+                                    <th>バリュー平均</th>
+                                    <th>P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- 学生アクション -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別実態</h3>
                     <div class="chart-box" style="height: 180px;">
                         <canvas id="chart-cd-stud"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリュー平均</th>
-                                <th>P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cd-tbody-stud"></tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>アクション区分</th>
+                                    <th>件数 (構成比)</th>
+                                    <th>バリュー平均</th>
+                                    <th>P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1475,8 +1537,9 @@
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {
             const item = c.company_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
             compRows += `<tr class="${isHigh ? 'highlight-row' : ''}">
-                <td>${act}</td>
+                <td><strong>${act}</strong>${labelSub}</td>
                 <td>${item.count}件 (${item.pct.toFixed(1)}%)</td>
                 <td>${item.v_mean !== null ? item.v_mean.toFixed(2) : '-'}</td>
                 <td>${item.p_mean !== null ? item.p_mean.toFixed(2) : '-'}</td>
@@ -1495,8 +1558,9 @@
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {
             const item = c.student_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
             studRows += `<tr class="${isHigh ? 'highlight-row' : ''}">
-                <td>${act}</td>
+                <td><strong>${act}</strong>${labelSub}</td>
                 <td>${item.count}件 (${item.pct.toFixed(1)}%)</td>
                 <td>${item.v_mean !== null ? item.v_mean.toFixed(2) : '-'}</td>
                 <td>${item.p_mean !== null ? item.p_mean.toFixed(2) : '-'}</td>

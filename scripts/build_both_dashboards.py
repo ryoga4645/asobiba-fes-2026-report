@@ -4,7 +4,7 @@
 scripts/build_both_dashboards.py
 scripts/report_stats.json の正確な計算値に基づき、
 asobiba_fes_fit_analysis_report.html を自動生成する。
-（独立版 company_fit_report.html は廃止）
+（レイアウト崩れ対策：min-width:0、sub-card化、table-container、ヘッダー改行最適化）
 """
 
 import sys, json
@@ -238,7 +238,22 @@ def build_html():
         .grid-2 {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-            gap: 20px;
+            gap: 24px;
+        }}
+
+        .grid-2 > div {{
+            min-width: 0; /* Prevents flex/grid overflow */
+        }}
+
+        .sub-card {{
+            background: #FFFFFF;
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
         }}
 
         .grid-4 {{
@@ -278,25 +293,34 @@ def build_html():
             margin-top: 6px;
         }}
 
+        /* Responsive Table Container */
+        .table-container {{
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 10px;
+        }}
+
         /* Tables */
         table {{
             width: 100%;
             border-collapse: collapse;
-            font-size: 12.5px;
-            margin-top: 8px;
+            font-size: 12px;
+            min-width: 440px;
         }}
 
         th, td {{
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid var(--gray-200);
             text-align: left;
+            line-height: 1.4;
+            vertical-align: middle;
         }}
 
         th {{
             background: var(--gray-100);
             color: var(--gray-700);
             font-weight: 700;
-            white-space: nowrap;
         }}
 
         tr:nth-child(even) {{
@@ -381,6 +405,7 @@ def build_html():
             height: 220px;
             position: relative;
             margin-bottom: 14px;
+            width: 100%;
         }}
 
         /* 3x3 Matrix */
@@ -411,8 +436,11 @@ def build_html():
             line-height: 1.35;
         }}
 
-        @media (max-width: 768px) {{
+        @media (max-width: 992px) {{
             .grid-2 {{ grid-template-columns: 1fr; }}
+        }}
+
+        @media (max-width: 768px) {{
             .grid-4 {{ grid-template-columns: 1fr 1fr; }}
             .tab-bar {{ flex-direction: column; }}
         }}
@@ -482,92 +510,102 @@ def build_html():
             </div>
 
             <div class="grid-2">
-                <!-- 企業アクション -->
-                <div>
+                <!-- 企業アクション sub-card -->
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🏢 企業アクション別スコア実態</h3>
                     <div class="chart-box">
                         <canvas id="chart-comp-overall"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリューフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=313)</span></th>
-                                <th>パーソナリティフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=286)</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>{ov_act['company']['three_cats'][0]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(ov_act['company']['three_cats'][0]['v_mean'])} ±{fmt_num(ov_act['company']['three_cats'][0]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['company']['three_cats'][0]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][0]['p_std'])}</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>{ov_act['company']['three_cats'][1]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(ov_act['company']['three_cats'][1]['v_mean'])} ±{fmt_num(ov_act['company']['three_cats'][1]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['company']['three_cats'][1]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][1]['p_std'])}</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td><strong>めっちゃ知りたい（10社限定）</strong></td>
-                                <td>{ov_act['company']['three_cats'][2]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][2]['pct'])})</td>
-                                <td><strong>{fmt_num(ov_act['company']['three_cats'][2]['v_mean'])}</strong> ±{fmt_num(ov_act['company']['three_cats'][2]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['company']['three_cats'][2]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][2]['p_std'])}</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
-                                <td>知りたい以上（2値集計）</td>
-                                <td>{ov_act['company']['binary'][1]['count']}件 ({fmt_pct(ov_act['company']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(ov_act['company']['binary'][1]['v_mean'])} ±{fmt_num(ov_act['company']['binary'][1]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['company']['binary'][1]['p_mean'])} ±{fmt_num(ov_act['company']['binary'][1]['p_std'])}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">アクション区分</th>
+                                    <th style="width: 23%;">件数<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(構成比)</span></th>
+                                    <th style="width: 26%;">バリューフィット度<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=313)</span></th>
+                                    <th style="width: 26%;">パーソナリティ<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=286)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{ov_act['company']['three_cats'][0]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['company']['three_cats'][0]['v_mean'])} ±{fmt_num(ov_act['company']['three_cats'][0]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['company']['three_cats'][0]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][0]['p_std'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{ov_act['company']['three_cats'][1]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['company']['three_cats'][1]['v_mean'])} ±{fmt_num(ov_act['company']['three_cats'][1]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['company']['three_cats'][1]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][1]['p_std'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>
+                                        <strong>めっちゃ知りたい</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                    </td>
+                                    <td>{ov_act['company']['three_cats'][2]['count']}件 ({fmt_pct(ov_act['company']['three_cats'][2]['pct'])})</td>
+                                    <td><strong>{fmt_num(ov_act['company']['three_cats'][2]['v_mean'])}</strong> ±{fmt_num(ov_act['company']['three_cats'][2]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['company']['three_cats'][2]['p_mean'])} ±{fmt_num(ov_act['company']['three_cats'][2]['p_std'])}</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
+                                    <td>知りたい以上<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(2値集計)</span></td>
+                                    <td>{ov_act['company']['binary'][1]['count']}件 ({fmt_pct(ov_act['company']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['company']['binary'][1]['v_mean'])} ±{fmt_num(ov_act['company']['binary'][1]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['company']['binary'][1]['p_mean'])} ±{fmt_num(ov_act['company']['binary'][1]['p_std'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- 学生アクション -->
-                <div>
+                <!-- 学生アクション sub-card -->
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🎓 学生アクション別スコア実態</h3>
                     <div class="chart-box">
                         <canvas id="chart-stud-overall"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリューフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=313)</span></th>
-                                <th>パーソナリティフィット度 平均±SD<br><span style="font-size: 10px; color: var(--gray-500);">(N=286)</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>{ov_act['student']['three_cats'][0]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(ov_act['student']['three_cats'][0]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][0]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['student']['three_cats'][0]['p_mean'])} ±{fmt_num(ov_act['student']['three_cats'][0]['p_std'])}</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>{ov_act['student']['three_cats'][1]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(ov_act['student']['three_cats'][1]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][1]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['student']['three_cats'][1]['p_mean'])} ±{fmt_num(ov_act['student']['three_cats'][1]['p_std'])}</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td><strong>めっちゃ知りたい（10社限定）</strong></td>
-                                <td>{ov_act['student']['three_cats'][2]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][2]['pct'])})</td>
-                                <td>{fmt_num(ov_act['student']['three_cats'][2]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][2]['v_std'])}</td>
-                                <td><strong>{fmt_num(ov_act['student']['three_cats'][2]['p_mean'])}</strong> ±{fmt_num(ov_act['student']['three_cats'][2]['p_std'])}</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
-                                <td>知りたい以上（2値集計）</td>
-                                <td>{ov_act['student']['binary'][1]['count']}件 ({fmt_pct(ov_act['student']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(ov_act['student']['binary'][1]['v_mean'])} ±{fmt_num(ov_act['student']['binary'][1]['v_std'])}</td>
-                                <td>{fmt_num(ov_act['student']['binary'][1]['p_mean'])} ±{fmt_num(ov_act['student']['binary'][1]['p_std'])}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">アクション区分</th>
+                                    <th style="width: 23%;">件数<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(構成比)</span></th>
+                                    <th style="width: 26%;">バリューフィット度<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=313)</span></th>
+                                    <th style="width: 26%;">パーソナリティ<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">平均±SD (N=286)</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{ov_act['student']['three_cats'][0]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['student']['three_cats'][0]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][0]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['student']['three_cats'][0]['p_mean'])} ±{fmt_num(ov_act['student']['three_cats'][0]['p_std'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{ov_act['student']['three_cats'][1]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['student']['three_cats'][1]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][1]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['student']['three_cats'][1]['p_mean'])} ±{fmt_num(ov_act['student']['three_cats'][1]['p_std'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>
+                                        <strong>めっちゃ知りたい</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(10社限定)</span>
+                                    </td>
+                                    <td>{ov_act['student']['three_cats'][2]['count']}件 ({fmt_pct(ov_act['student']['three_cats'][2]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['student']['three_cats'][2]['v_mean'])} ±{fmt_num(ov_act['student']['three_cats'][2]['v_std'])}</td>
+                                    <td><strong>{fmt_num(ov_act['student']['three_cats'][2]['p_mean'])}</strong> ±{fmt_num(ov_act['student']['three_cats'][2]['p_std'])}</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700; border-top: 2px solid var(--gray-300);">
+                                    <td>知りたい以上<br><span style="font-size: 10px; color: var(--gray-500); font-weight: normal;">(2値集計)</span></td>
+                                    <td>{ov_act['student']['binary'][1]['count']}件 ({fmt_pct(ov_act['student']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(ov_act['student']['binary'][1]['v_mean'])} ±{fmt_num(ov_act['student']['binary'][1]['v_std'])}</td>
+                                    <td>{fmt_num(ov_act['student']['binary'][1]['p_mean'])} ±{fmt_num(ov_act['student']['binary'][1]['p_std'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -594,105 +632,109 @@ def build_html():
             <!-- 企業回帰 -->
             <div style="margin-bottom: 24px;">
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">モデル / 説明変数</th>
-                            <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 6%;">N</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                            <td>313</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">モデル / 説明変数</th>
+                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 6%;">N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                <td>313</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['company']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- 学生回帰 -->
             <div>
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 22%;">モデル / 説明変数</th>
-                            <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 6%;">N</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                            <td>313</td>
-                        </tr>
-                        <tr style="background: #F8FAFC;">
-                            <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
-                        </tr>
-                        <tr>
-                            <td><strong>パーソナリティフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                        <tr>
-                            <td><strong>バリューフィット度</strong></td>
-                            <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                            <td>286</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">モデル / 説明変数</th>
+                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 6%;">N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                <td>313</td>
+                            </tr>
+                            <tr style="background: #F8FAFC;">
+                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
+                            </tr>
+                            <tr>
+                                <td><strong>パーソナリティフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                            <tr>
+                                <td><strong>バリューフィット度</strong></td>
+                                <td>OR {fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['binary']['multivariate']['params']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['知りたい']['value_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['overall']['student']['multinomial']['multivariate']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                                <td>286</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="summary-box">
@@ -715,80 +757,84 @@ def build_html():
             </div>
 
             <div class="grid-2">
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">成立群 vs 未成立群の平均値比較 (N=286)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>指標</th>
-                                <th>成立群 (N={match_comp['matched_count']})</th>
-                                <th>未成立群 (N={match_comp['unmatched_count']})</th>
-                                <th>差</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>バリューフィット度 平均</td>
-                                <td><strong>{fmt_num(match_comp['matched_v_mean'])}</strong></td>
-                                <td>{fmt_num(match_comp['unmatched_v_mean'])}</td>
-                                <td><strong style="color: var(--primary);">+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong></td>
-                            </tr>
-                            <tr>
-                                <td>パーソナリティフィット度 平均</td>
-                                <td><strong>{fmt_num(match_comp['matched_p_mean'])}</strong></td>
-                                <td>{fmt_num(match_comp['unmatched_p_mean'])}</td>
-                                <td><strong style="color: var(--success);">+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong></td>
-                            </tr>
-                            <tr>
-                                <td>出展区分（有料企業比率）</td>
-                                <td>{fmt_pct(match_comp['matched_paid_pct'])}</td>
-                                <td>{fmt_pct(match_comp['unmatched_paid_pct'])}</td>
-                                <td>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>指標</th>
+                                    <th>成立群 (N={match_comp['matched_count']})</th>
+                                    <th>未成立群 (N={match_comp['unmatched_count']})</th>
+                                    <th>差</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>バリューフィット度 平均</td>
+                                    <td><strong>{fmt_num(match_comp['matched_v_mean'])}</strong></td>
+                                    <td>{fmt_num(match_comp['unmatched_v_mean'])}</td>
+                                    <td><strong style="color: var(--primary);">+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>パーソナリティフィット度 平均</td>
+                                    <td><strong>{fmt_num(match_comp['matched_p_mean'])}</strong></td>
+                                    <td>{fmt_num(match_comp['unmatched_p_mean'])}</td>
+                                    <td><strong style="color: var(--success);">+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>出展区分（有料企業比率）</td>
+                                    <td>{fmt_pct(match_comp['matched_paid_pct'])}</td>
+                                    <td>{fmt_pct(match_comp['unmatched_paid_pct'])}</td>
+                                    <td>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">多変量ロジスティック回帰分析結果 (N=286)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>説明変数</th>
-                                <th>回帰係数 (β)</th>
-                                <th>標準誤差</th>
-                                <th>オッズ比 [95%CI]</th>
-                                <th>p値</th>
-                                <th>判定</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: var(--primary-light);">
-                                <td><strong>バリューフィット度</strong></td>
-                                <td>+{fmt_num(match_comp['regression']['params']['value_fit']['beta'], 4)}</td>
-                                <td>{fmt_num(match_comp['regression']['params']['value_fit']['se'], 4)}</td>
-                                <td><strong>OR {fmt_num(match_comp['regression']['params']['value_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['value_fit']['ci_upper'], 3)}]</span></td>
-                                <td>{fmt_p(match_comp['regression']['params']['value_fit']['p'])}</td>
-                                <td>{p_pill(match_comp['regression']['params']['value_fit']['p'])}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>+{fmt_num(match_comp['regression']['params']['personality_fit']['beta'], 4)}</td>
-                                <td>{fmt_num(match_comp['regression']['params']['personality_fit']['se'], 4)}</td>
-                                <td><strong>OR {fmt_num(match_comp['regression']['params']['personality_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['personality_fit']['ci_upper'], 3)}]</span></td>
-                                <td>{fmt_p(match_comp['regression']['params']['personality_fit']['p'])}</td>
-                                <td>{p_pill(match_comp['regression']['params']['personality_fit']['p'])}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>出展区分 (有料企業=1)</strong></td>
-                                <td>+{fmt_num(match_comp['regression']['params']['is_paid']['beta'], 4)}</td>
-                                <td>{fmt_num(match_comp['regression']['params']['is_paid']['se'], 4)}</td>
-                                <td>OR {fmt_num(match_comp['regression']['params']['is_paid']['or_10'], 3)}<br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['is_paid']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['is_paid']['ci_upper'], 3)}]</span></td>
-                                <td>{fmt_p(match_comp['regression']['params']['is_paid']['p'])}</td>
-                                <td>{p_pill(match_comp['regression']['params']['is_paid']['p'])}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>説明変数</th>
+                                    <th>回帰係数 (β)</th>
+                                    <th>標準誤差</th>
+                                    <th>オッズ比 [95%CI]</th>
+                                    <th>p値</th>
+                                    <th>判定</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: var(--primary-light);">
+                                    <td><strong>バリューフィット度</strong></td>
+                                    <td>+{fmt_num(match_comp['regression']['params']['value_fit']['beta'], 4)}</td>
+                                    <td>{fmt_num(match_comp['regression']['params']['value_fit']['se'], 4)}</td>
+                                    <td><strong>OR {fmt_num(match_comp['regression']['params']['value_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['value_fit']['ci_upper'], 3)}]</span></td>
+                                    <td>{fmt_p(match_comp['regression']['params']['value_fit']['p'])}</td>
+                                    <td>{p_pill(match_comp['regression']['params']['value_fit']['p'])}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>パーソナリティフィット度</strong></td>
+                                    <td>+{fmt_num(match_comp['regression']['params']['personality_fit']['beta'], 4)}</td>
+                                    <td>{fmt_num(match_comp['regression']['params']['personality_fit']['se'], 4)}</td>
+                                    <td><strong>OR {fmt_num(match_comp['regression']['params']['personality_fit']['or_10'], 3)}</strong><br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['personality_fit']['ci_upper'], 3)}]</span></td>
+                                    <td>{fmt_p(match_comp['regression']['params']['personality_fit']['p'])}</td>
+                                    <td>{p_pill(match_comp['regression']['params']['personality_fit']['p'])}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>出展区分 (有料企業=1)</strong></td>
+                                    <td>+{fmt_num(match_comp['regression']['params']['is_paid']['beta'], 4)}</td>
+                                    <td>{fmt_num(match_comp['regression']['params']['is_paid']['se'], 4)}</td>
+                                    <td>OR {fmt_num(match_comp['regression']['params']['is_paid']['or_10'], 3)}<br><span style="font-size: 10px;">[{fmt_num(match_comp['regression']['params']['is_paid']['ci_lower'], 3)}〜{fmt_num(match_comp['regression']['params']['is_paid']['ci_upper'], 3)}]</span></td>
+                                    <td>{fmt_p(match_comp['regression']['params']['is_paid']['p'])}</td>
+                                    <td>{p_pill(match_comp['regression']['params']['is_paid']['p'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -812,41 +858,43 @@ def build_html():
                 <span class="pill pill-slate">クロス集計</span>
             </div>
 
-            <table class="matrix-table">
-                <thead>
-                    <tr>
-                        <th style="width: 25%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
-                        <th style="width: 25%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                        <th style="width: 25%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                        <th style="width: 25%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
-                    </tr>
-                </thead>
-                <tbody>'''
+            <div class="table-container">
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                            <th style="width: 25%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                            <th style="width: 25%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                            <th style="width: 25%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                        </tr>
+                    </thead>
+                    <tbody>'''
 
     for r_idx, row in enumerate(m3x3):
         p_lbl = row[0]['p_label']
         bg_col = '#D1FAE5' if r_idx == 0 else ('#FEF3C7' if r_idx == 1 else '#FEE2E2')
         html += f'''
-                    <tr>
-                        <th style="background: {bg_col};">{p_lbl}</th>'''
+                        <tr>
+                            <th style="background: {bg_col};">{p_lbl}</th>'''
         for c in row:
             mr = c['match_rate']
             heat_cls = 'heat-high' if mr >= 50.0 else ('heat-mid-high' if mr >= 40.0 else ('heat-mid' if mr >= 30.0 else 'heat-low'))
             html += f'''
-                        <td class="matrix-cell {heat_cls}">
-                            <div class="cell-rate">{fmt_pct(mr)}</div>
-                            <div class="cell-sub">
-                                成立 {c['match_count']}/{c['count']}件<br>
-                                企業 めっちゃ知りたい:{fmt_pct(c['company_high_pct'])} / 知りたい以上:{fmt_pct(c['company_any_pct'])}<br>
-                                学生 めっちゃ知りたい:{fmt_pct(c['student_high_pct'])} / 知りたい以上:{fmt_pct(c['student_any_pct'])}
-                            </div>
-                        </td>'''
+                            <td class="matrix-cell {heat_cls}">
+                                <div class="cell-rate">{fmt_pct(mr)}</div>
+                                <div class="cell-sub">
+                                    成立 {c['match_count']}/{c['count']}件<br>
+                                    企業 めっちゃ知りたい:{fmt_pct(c['company_high_pct'])} / 知りたい以上:{fmt_pct(c['company_any_pct'])}<br>
+                                    学生 めっちゃ知りたい:{fmt_pct(c['student_high_pct'])} / 知りたい以上:{fmt_pct(c['student_any_pct'])}
+                                </div>
+                            </td>'''
         html += '''
-                    </tr>'''
+                        </tr>'''
 
     html += f'''
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（3×3 実態集計）:</strong>
@@ -888,123 +936,127 @@ def build_html():
 
             <div class="grid-2">
                 <!-- 企業アクション (有料 vs 無料) -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別：有料 vs 無料</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th rowspan="2">区分 / アクション</th>
-                                <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
-                                <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
-                            </tr>
-                            <tr>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>{paid_act['company']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][0]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][0]['p_mean'])}</td>
-                                <td>{free_act['company']['three_cats'][0]['count']}件 ({fmt_pct(free_act['company']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(free_act['company']['three_cats'][0]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['company']['three_cats'][0]['p_mean'])}</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>{paid_act['company']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][1]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][1]['p_mean'])}</td>
-                                <td>{free_act['company']['three_cats'][1]['count']}件 ({fmt_pct(free_act['company']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(free_act['company']['three_cats'][1]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['company']['three_cats'][1]['p_mean'])}</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td>めっちゃ知りたい</td>
-                                <td>{paid_act['company']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][2]['pct'])})</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][2]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['company']['three_cats'][2]['p_mean'])}</td>
-                                <td>{free_act['company']['three_cats'][2]['count']}件 ({fmt_pct(free_act['company']['three_cats'][2]['pct'])})</td>
-                                <td><strong>{fmt_num(free_act['company']['three_cats'][2]['v_mean'])}</strong></td>
-                                <td>{fmt_num(free_act['company']['three_cats'][2]['p_mean'])}</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700;">
-                                <td>知りたい以上 (2値)</td>
-                                <td>{paid_act['company']['binary'][1]['count']}件 ({fmt_pct(paid_act['company']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(paid_act['company']['binary'][1]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['company']['binary'][1]['p_mean'])}</td>
-                                <td>{free_act['company']['binary'][1]['count']}件 ({fmt_pct(free_act['company']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(free_act['company']['binary'][1]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['company']['binary'][1]['p_mean'])}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">区分 / アクション</th>
+                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業 (N=122)</th>
+                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業 (N=191)</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{paid_act['company']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][0]['p_mean'])}</td>
+                                    <td>{free_act['company']['three_cats'][0]['count']}件 ({fmt_pct(free_act['company']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][0]['p_mean'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{paid_act['company']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][1]['p_mean'])}</td>
+                                    <td>{free_act['company']['three_cats'][1]['count']}件 ({fmt_pct(free_act['company']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][1]['p_mean'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>{paid_act['company']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['company']['three_cats'][2]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][2]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['company']['three_cats'][2]['p_mean'])}</td>
+                                    <td>{free_act['company']['three_cats'][2]['count']}件 ({fmt_pct(free_act['company']['three_cats'][2]['pct'])})</td>
+                                    <td><strong>{fmt_num(free_act['company']['three_cats'][2]['v_mean'])}</strong></td>
+                                    <td>{fmt_num(free_act['company']['three_cats'][2]['p_mean'])}</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上 (2値)</td>
+                                    <td>{paid_act['company']['binary'][1]['count']}件 ({fmt_pct(paid_act['company']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['company']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['company']['binary'][1]['p_mean'])}</td>
+                                    <td>{free_act['company']['binary'][1]['count']}件 ({fmt_pct(free_act['company']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['company']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['company']['binary'][1]['p_mean'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- 学生アクション (有料 vs 無料) -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別：有料 vs 無料</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th rowspan="2">区分 / アクション</th>
-                                <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
-                                <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
-                            </tr>
-                            <tr>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                                <th style="font-size: 10px;">件数</th>
-                                <th style="font-size: 10px;">バリュー平均</th>
-                                <th style="font-size: 10px;">P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>なし</td>
-                                <td>{paid_act['student']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(paid_act['student']['three_cats'][0]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['student']['three_cats'][0]['p_mean'])}</td>
-                                <td>{free_act['student']['three_cats'][0]['count']}件 ({fmt_pct(free_act['student']['three_cats'][0]['pct'])})</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][0]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][0]['p_mean'])}</td>
-                            </tr>
-                            <tr>
-                                <td>知りたい</td>
-                                <td>{paid_act['student']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(paid_act['student']['three_cats'][1]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['student']['three_cats'][1]['p_mean'])}</td>
-                                <td>{free_act['student']['three_cats'][1]['count']}件 ({fmt_pct(free_act['student']['three_cats'][1]['pct'])})</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][1]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][1]['p_mean'])}</td>
-                            </tr>
-                            <tr class="highlight-row">
-                                <td>めっちゃ知りたい</td>
-                                <td>{paid_act['student']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][2]['pct'])})</td>
-                                <td>{fmt_num(paid_act['student']['three_cats'][2]['v_mean'])}</td>
-                                <td><strong>{fmt_num(paid_act['student']['three_cats'][2]['p_mean'])}</strong></td>
-                                <td>{free_act['student']['three_cats'][2]['count']}件 ({fmt_pct(free_act['student']['three_cats'][2]['pct'])})</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][2]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['student']['three_cats'][2]['p_mean'])}</td>
-                            </tr>
-                            <tr style="background: #F1F5F9; font-weight: 700;">
-                                <td>知りたい以上 (2値)</td>
-                                <td>{paid_act['student']['binary'][1]['count']}件 ({fmt_pct(paid_act['student']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(paid_act['student']['binary'][1]['v_mean'])}</td>
-                                <td>{fmt_num(paid_act['student']['binary'][1]['p_mean'])}</td>
-                                <td>{free_act['student']['binary'][1]['count']}件 ({fmt_pct(free_act['student']['binary'][1]['pct'])})</td>
-                                <td>{fmt_num(free_act['student']['binary'][1]['v_mean'])}</td>
-                                <td>{fmt_num(free_act['student']['binary'][1]['p_mean'])}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">区分 / アクション</th>
+                                    <th colspan="3" style="text-align: center; background: #EEF2FF;">有料企業宛 (N=122)</th>
+                                    <th colspan="3" style="text-align: center; background: #F0FDFA;">無料企業宛 (N=191)</th>
+                                </tr>
+                                <tr>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                    <th style="font-size: 10px;">件数</th>
+                                    <th style="font-size: 10px;">バリュー平均</th>
+                                    <th style="font-size: 10px;">P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>なし</td>
+                                    <td>{paid_act['student']['three_cats'][0]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['student']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['student']['three_cats'][0]['p_mean'])}</td>
+                                    <td>{free_act['student']['three_cats'][0]['count']}件 ({fmt_pct(free_act['student']['three_cats'][0]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][0]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][0]['p_mean'])}</td>
+                                </tr>
+                                <tr>
+                                    <td>知りたい</td>
+                                    <td>{paid_act['student']['three_cats'][1]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['student']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['student']['three_cats'][1]['p_mean'])}</td>
+                                    <td>{free_act['student']['three_cats'][1]['count']}件 ({fmt_pct(free_act['student']['three_cats'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][1]['p_mean'])}</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td>めっちゃ知りたい</td>
+                                    <td>{paid_act['student']['three_cats'][2]['count']}件 ({fmt_pct(paid_act['student']['three_cats'][2]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['student']['three_cats'][2]['v_mean'])}</td>
+                                    <td><strong>{fmt_num(paid_act['student']['three_cats'][2]['p_mean'])}</strong></td>
+                                    <td>{free_act['student']['three_cats'][2]['count']}件 ({fmt_pct(free_act['student']['three_cats'][2]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][2]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['three_cats'][2]['p_mean'])}</td>
+                                </tr>
+                                <tr style="background: #F1F5F9; font-weight: 700;">
+                                    <td>知りたい以上 (2値)</td>
+                                    <td>{paid_act['student']['binary'][1]['count']}件 ({fmt_pct(paid_act['student']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(paid_act['student']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(paid_act['student']['binary'][1]['p_mean'])}</td>
+                                    <td>{free_act['student']['binary'][1]['count']}件 ({fmt_pct(free_act['student']['binary'][1]['pct'])})</td>
+                                    <td>{fmt_num(free_act['student']['binary'][1]['v_mean'])}</td>
+                                    <td>{fmt_num(free_act['student']['binary'][1]['p_mean'])}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1022,59 +1074,63 @@ def build_html():
             <!-- 有料企業回帰 -->
             <div style="margin-bottom: 24px;">
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 有料企業 (N=122) における企業アクション回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 24%;">モデル / 説明変数</th>
-                            <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>バリューフィット度 (単変量)</td>
-                            <td>OR {fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                        </tr>
-                        <tr>
-                            <td>パーソナリティフィット度 (単変量)</td>
-                            <td>OR {fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 24%;">モデル / 説明変数</th>
+                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>バリューフィット度 (単変量)</td>
+                                <td>OR {fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                            </tr>
+                            <tr>
+                                <td>パーソナリティフィット度 (単変量)</td>
+                                <td>OR {fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['paid']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- 無料企業回帰 -->
             <div>
                 <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 無料企業 (N=191 / 164) における企業アクション回帰</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 24%;">モデル / 説明変数</th>
-                            <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>バリューフィット度 (単変量)</td>
-                            <td><strong>OR {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
-                            <td><strong>OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
-                        </tr>
-                        <tr>
-                            <td>パーソナリティフィット度 (単変量)</td>
-                            <td>OR {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
-                            <td>OR {fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 24%;">モデル / 説明変数</th>
+                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>バリューフィット度 (単変量)</td>
+                                <td><strong>OR {fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['binary']['value_univ']['params']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['binary']['value_univ']['params']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['value_univ']['知りたい']['value_fit']['p'])}</span></td>
+                                <td><strong>OR {fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}</strong> [{fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['p'])}</span></td>
+                            </tr>
+                            <tr>
+                                <td>パーソナリティフィット度 (単変量)</td>
+                                <td>OR {fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['binary']['personality_univ']['params']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['personality_univ']['知りたい']['personality_fit']['p'])}</span></td>
+                                <td>OR {fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)} [{fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_lower'], 3)}〜{fmt_num(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['ci_upper'], 3)}]<br><span style="font-size: 11px;">{fmt_p(reg['free']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['p'])}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="summary-box">
@@ -1102,47 +1158,49 @@ def build_html():
                 <span class="pill pill-slate">12社全件一覧</span>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>企業名</th>
-                        <th>区分</th>
-                        <th>接触数</th>
-                        <th>マッチ成立</th>
-                        <th>成立率</th>
-                        <th>バリュー平均</th>
-                        <th>P平均</th>
-                        <th>企業 めっちゃ知りたい</th>
-                        <th>企業 知りたい以上</th>
-                        <th>学生 めっちゃ知りたい</th>
-                        <th>学生 知りたい以上</th>
-                        <th>めっちゃ知りたい群 − なし群 バリュー差</th>
-                    </tr>
-                </thead>
-                <tbody>'''
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>企業名</th>
+                            <th>区分</th>
+                            <th>接触数</th>
+                            <th>マッチ成立</th>
+                            <th>成立率</th>
+                            <th>バリュー平均</th>
+                            <th>P平均</th>
+                            <th>企業 めっちゃ知りたい</th>
+                            <th>企業 知りたい以上</th>
+                            <th>学生 めっちゃ知りたい</th>
+                            <th>学生 知りたい以上</th>
+                            <th>めっちゃ知りたい群 − なし群 バリュー差</th>
+                        </tr>
+                    </thead>
+                    <tbody>'''
 
     for c in comps:
         plan_badge = '<span class="pill pill-indigo">有料</span>' if c['is_paid'] == 1 else '<span class="pill pill-slate">無料</span>'
         v_diff_str = f"+{fmt_num(c['v_diff_high_minus_none'])} pt" if (c['v_diff_high_minus_none'] is not None and c['v_diff_high_minus_none'] >= 0) else (f"{fmt_num(c['v_diff_high_minus_none'])} pt" if c['v_diff_high_minus_none'] is not None else '-')
         html += f'''
-                    <tr>
-                        <td><strong>{c['name']}</strong></td>
-                        <td>{plan_badge}</td>
-                        <td>{c['count']}名</td>
-                        <td>{c['match_count']}件</td>
-                        <td><strong>{fmt_pct(c['match_rate'])}</strong></td>
-                        <td>{fmt_num(c['v_mean'])}</td>
-                        <td>{fmt_num(c['p_mean'])}</td>
-                        <td>{c['company_actions']['めっちゃ知りたい']['count']}件 ({fmt_pct(c['company_actions']['めっちゃ知りたい']['pct'])})</td>
-                        <td>{c['company_actions']['知りたい以上']['count']}件 ({fmt_pct(c['company_actions']['知りたい以上']['pct'])})</td>
-                        <td>{c['student_actions']['めっちゃ知りたい']['count']}件 ({fmt_pct(c['student_actions']['めっちゃ知りたい']['pct'])})</td>
-                        <td>{c['student_actions']['知りたい以上']['count']}件 ({fmt_pct(c['student_actions']['知りたい以上']['pct'])})</td>
-                        <td><strong>{v_diff_str}</strong></td>
-                    </tr>'''
+                        <tr>
+                            <td><strong>{c['name']}</strong></td>
+                            <td>{plan_badge}</td>
+                            <td>{c['count']}名</td>
+                            <td>{c['match_count']}件</td>
+                            <td><strong>{fmt_pct(c['match_rate'])}</strong></td>
+                            <td>{fmt_num(c['v_mean'])}</td>
+                            <td>{fmt_num(c['p_mean'])}</td>
+                            <td>{c['company_actions']['めっちゃ知りたい']['count']}件 ({fmt_pct(c['company_actions']['めっちゃ知りたい']['pct'])})</td>
+                            <td>{c['company_actions']['知りたい以上']['count']}件 ({fmt_pct(c['company_actions']['知りたい以上']['pct'])})</td>
+                            <td>{c['student_actions']['めっちゃ知りたい']['count']}件 ({fmt_pct(c['student_actions']['めっちゃ知りたい']['pct'])})</td>
+                            <td>{c['student_actions']['知りたい以上']['count']}件 ({fmt_pct(c['student_actions']['知りたい以上']['pct'])})</td>
+                            <td><strong>{v_diff_str}</strong></td>
+                        </tr>'''
 
     html += f'''
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- 🔍 個別企業カルテ -->
@@ -1188,41 +1246,45 @@ def build_html():
 
             <div class="grid-2">
                 <!-- 企業アクション -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション別実態</h3>
                     <div class="chart-box" style="height: 180px;">
                         <canvas id="chart-cd-comp"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリュー平均</th>
-                                <th>P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cd-tbody-comp"></tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>アクション区分</th>
+                                    <th>件数 (構成比)</th>
+                                    <th>バリュー平均</th>
+                                    <th>P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-comp"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- 学生アクション -->
-                <div>
+                <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション別実態</h3>
                     <div class="chart-box" style="height: 180px;">
                         <canvas id="chart-cd-stud"></canvas>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>アクション区分</th>
-                                <th>件数 (構成比)</th>
-                                <th>バリュー平均</th>
-                                <th>P平均</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cd-tbody-stud"></tbody>
-                    </table>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>アクション区分</th>
+                                    <th>件数 (構成比)</th>
+                                    <th>バリュー平均</th>
+                                    <th>P平均</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cd-tbody-stud"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1327,8 +1389,9 @@ def build_html():
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {{
             const item = c.company_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
             compRows += `<tr class="${{isHigh ? 'highlight-row' : ''}}">
-                <td>${{act}}</td>
+                <td><strong>${{act}}</strong>${{labelSub}}</td>
                 <td>${{item.count}}件 (${{item.pct.toFixed(1)}}%)</td>
                 <td>${{item.v_mean !== null ? item.v_mean.toFixed(2) : '-'}}</td>
                 <td>${{item.p_mean !== null ? item.p_mean.toFixed(2) : '-'}}</td>
@@ -1347,8 +1410,9 @@ def build_html():
         ['なし', '知りたい', 'めっちゃ知りたい'].forEach(act => {{
             const item = c.student_actions[act];
             const isHigh = act === 'めっちゃ知りたい';
+            const labelSub = isHigh ? '<br><span style="font-size:10px;color:var(--gray-500);font-weight:normal;">(10社限定)</span>' : '';
             studRows += `<tr class="${{isHigh ? 'highlight-row' : ''}}">
-                <td>${{act}}</td>
+                <td><strong>${{act}}</strong>${{labelSub}}</td>
                 <td>${{item.count}}件 (${{item.pct.toFixed(1)}}%)</td>
                 <td>${{item.v_mean !== null ? item.v_mean.toFixed(2) : '-'}}</td>
                 <td>${{item.p_mean !== null ? item.p_mean.toFixed(2) : '-'}}</td>
@@ -1417,7 +1481,7 @@ def build_html():
     with open('asobiba_fes_fit_analysis_report.html', 'w', encoding='utf-8') as f:
         f.write(html)
         
-    print("Successfully built asobiba_fes_fit_analysis_report.html!")
+    print("Successfully built asobiba_fes_fit_analysis_report.html with fixed layout!")
 
 if __name__ == '__main__':
     build_html()
