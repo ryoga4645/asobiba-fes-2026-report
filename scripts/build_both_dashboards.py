@@ -706,10 +706,10 @@ def build_html():
                                         </div>
                                     </td>
                                     <td>
-                                        <strong style="color: #0284C7; font-size: 14px;">約 1.2 〜 1.3 倍</strong><br>
+                                        <strong style="color: #0284C7; font-size: 14px;">約 1.1 〜 1.3 倍</strong><br>
                                         <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">穏やかな影響 (*)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            「知りたい」選択を統計的に有意に後押し（多変量で <strong>1.41倍*</strong>）。
+                                            知りたい以上で <strong>1.25倍*</strong>、めっちゃ知りたいで <strong>1.12倍</strong> と一定の選好を後押し。
                                         </div>
                                     </td>
                                 </tr>
@@ -719,14 +719,14 @@ def build_html():
                                         <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.1 倍</strong><br>
                                         <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            スコアの高低は企業の面談希望率・優先度にほとんど影響を与えていない。
+                                            知りたい以上 <strong>1.10倍</strong>、めっちゃ知りたい <strong>0.96倍</strong>。スコアの高低は企業の選定に影響なし。
                                         </div>
                                     </td>
                                     <td>
                                         <strong style="color: var(--amber-600); font-size: 14px;">約 1.2 〜 1.5 倍</strong><br>
                                         <span class="pill pill-amber" style="font-size: 10px; margin-top: 3px;">有意傾向 (†)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            高スコアほど「めっちゃ知りたい」を推す傾向（<strong>約1.49倍†</strong>）。
+                                            知りたい以上で <strong>1.24倍</strong>、高スコアほど「めっちゃ知りたい」を強く推す傾向（<strong>約1.49倍†</strong>）。
                                         </div>
                                     </td>
                                 </tr>
@@ -741,7 +741,7 @@ def build_html():
                 <!-- 右：視覚的インパクトグラフ -->
                 <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 10pt上昇時の選択率インパクト比較（基準=1.0倍）</h3>
-                    <div class="chart-box" style="height: 230px;">
+                    <div class="chart-box" style="height: 270px;">
                         <canvas id="chart-logit-impact"></canvas>
                     </div>
                     <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
@@ -1811,25 +1811,34 @@ def build_html():
             labels: [
                 '企業：バリュー (めっちゃ知りたい)',
                 '企業：バリュー (知りたい以上)',
+                '企業：パーソナリティ (めっちゃ知りたい)',
+                '企業：パーソナリティ (知りたい以上)',
                 '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：パーソナリティ (知りたい以上)',
                 '学生：バリュー (知りたい以上)',
-                '企業：パーソナリティ (知りたい以上)'
+                '学生：バリュー (めっちゃ知りたい)'
             ],
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    2.908,
-                    2.027,
-                    1.490,
-                    1.248,
-                    1.096
+                    {fmt_num(reg['overall']['company']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['company']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['company']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['company']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['multinomial']['personality_univ']['めっちゃ知りたい']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['binary']['personality_univ']['params']['personality_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['binary']['value_univ']['params']['value_fit']['or_10'], 3)},
+                    {fmt_num(reg['overall']['student']['multinomial']['value_univ']['めっちゃ知りたい']['value_fit']['or_10'], 3)}
                 ],
                 backgroundColor: [
                     '#4F46E5',
                     '#6366F1',
+                    '#CBD5E1',
+                    '#94A3B8',
+                    '#D97706',
                     '#F59E0B',
-                    '#06B6D4',
-                    '#94A3B8'
+                    '#0284C7',
+                    '#38BDF8'
                 ],
                 borderRadius: 4
             }}]
