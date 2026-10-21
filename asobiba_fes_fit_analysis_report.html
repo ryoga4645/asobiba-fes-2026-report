@@ -1563,7 +1563,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="background: #F0FDFA;">
+                                <tr style="background: #EEF2FF;">
+                                    <td>
+                                        <strong style="color: var(--primary);">💎 有料企業群</strong><br>
+                                        <span style="font-size: 10px; color: var(--gray-500);">(4社・122件)</span>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--primary); font-size: 13.5px; font-weight: 700;">知りたい以上：約 1.78 倍 (†)</span><br>
+                                        <span style="color: var(--primary); font-size: 13.5px; font-weight: 700;">めっちゃ知りたい：約 2.17 倍 (†)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            事前マッチングにより元々高バリュー層が集中的に配席されていたため、倍率効果はマイルドに表れる。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style="color: var(--gray-500); font-size: 12px;">約 0.98 倍（有意差なし）</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
+                                            企業アクションには有意差なし。一方、学生からのアクションではP平均が大きく押し上がる傾向。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>
                                         <strong style="color: #0F766E;">🌱 無料企業群</strong><br>
                                         <span style="font-size: 10px; color: var(--gray-500);">(8社・191件 / P有効164件)</span>
@@ -1579,25 +1598,6 @@
                                         <span style="color: var(--gray-500); font-size: 12px;">約 1.16 倍（有意差なし）</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
                                             パーソナリティは選択確率を左右しておらず、バリュー主導の選定傾向が鮮明。
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong style="color: var(--primary);">💎 有料企業群</strong><br>
-                                        <span style="font-size: 10px; color: var(--gray-500);">(4社・122件)</span>
-                                    </td>
-                                    <td>
-                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">知りたい以上：約 1.78 倍 (†)</span><br>
-                                        <span style="color: var(--primary); font-size: 13px; font-weight: 700;">めっちゃ知りたい：約 2.17 倍 (†)</span>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            事前マッチングにより元々高バリュー層が集中的に配席されていたため、倍率効果はマイルドに表れる。
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span style="color: var(--gray-500); font-size: 12px;">約 0.98 倍（有意差なし）</span>
-                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.35;">
-                                            企業アクションには有意差なし。一方、学生からのアクションではP平均が大きく押し上がる傾向。
                                         </div>
                                     </td>
                                 </tr>
@@ -2257,30 +2257,30 @@
         type: 'bar',
         data: {
             labels: [
-                '無料企業：バリュー (めっちゃ知りたい)',
                 '有料企業：バリュー (めっちゃ知りたい)',
-                '無料企業：バリュー (知りたい以上)',
+                '無料企業：バリュー (めっちゃ知りたい)',
                 '有料企業：バリュー (知りたい以上)',
-                '無料企業：パーソナリティ (知りたい以上)',
-                '有料企業：パーソナリティ (知りたい以上)'
+                '無料企業：バリュー (知りたい以上)',
+                '有料企業：パーソナリティ (知りたい以上)',
+                '無料企業：パーソナリティ (知りたい以上)'
             ],
             datasets: [{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    3.224,
                     2.170,
-                    2.059,
+                    3.224,
                     1.782,
-                    1.165,
-                    0.977
+                    2.059,
+                    0.977,
+                    1.165
                 ],
                 backgroundColor: [
-                    '#0D9488',
                     '#4F46E5',
-                    '#14B8A6',
+                    '#0D9488',
                     '#6366F1',
-                    '#94A3B8',
-                    '#CBD5E1'
+                    '#14B8A6',
+                    '#CBD5E1',
+                    '#94A3B8'
                 ],
                 borderRadius: 4
             }]
