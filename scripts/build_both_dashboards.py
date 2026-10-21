@@ -1028,36 +1028,35 @@ def build_html():
                 <span class="pill pill-slate">クロス集計 ＆ 行動推移</span>
             </div>
 
-            <!-- 上段：スッキリ整理された3×3マッチング成立率マトリクス -->
-            <div style="margin-bottom: 28px;">
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🤝 ① 【全体成否】マッチング成立率 3×3 マトリクス (N=286)</h3>
+            <!-- ① マッチング成立率 3x3 マトリクス (横幅いっぱい) -->
+            <div class="sub-card" style="margin-bottom: 28px;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin-bottom: 12px;">🤝 ① 【全体成否】マッチング成立率 3×3 マトリクス (N=286)</h3>
                 <div class="table-container">
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th style="width: 28%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
-                                <th style="width: 24%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                                <th style="width: 24%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                                <th style="width: 24%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
                             </tr>
                         </thead>
                         <tbody>'''
 
     for r_idx, row in enumerate(m3x3):
         raw_p_lbl = row[0]['p_label']
-        # 正式名称「パーソナリティ高 / 中 / 低」に統一
         p_lbl = raw_p_lbl if raw_p_lbl.startswith('パーソナリティ') else f'パーソナリティ{raw_p_lbl}'
         bg_col = '#D1FAE5' if r_idx == 0 else ('#FEF3C7' if r_idx == 1 else '#FEE2E2')
         html += f'''
                             <tr>
-                                <th style="background: {bg_col};">{p_lbl}</th>'''
+                                <th style="background: {bg_col}; padding: 14px 10px;">{p_lbl}</th>'''
         for c in row:
             mr = c['match_rate']
             heat_cls = 'heat-high' if mr >= 50.0 else ('heat-mid-high' if mr >= 40.0 else ('heat-mid' if mr >= 30.0 else 'heat-low'))
             html += f'''
-                                <td class="matrix-cell {heat_cls}">
-                                    <div class="cell-rate">{fmt_pct(mr)}</div>
-                                    <div class="cell-sub">成立 {c['match_count']}/{c['count']}件</div>
+                                <td class="matrix-cell {heat_cls}" style="padding: 16px 10px;">
+                                    <div class="cell-rate" style="font-size: 20px;">{fmt_pct(mr)}</div>
+                                    <div class="cell-sub" style="font-size: 12px; margin-top: 4px;">成立 {c['match_count']}/{c['count']}件</div>
                                 </td>'''
         html += '''
                             </tr>'''
@@ -1068,31 +1067,32 @@ def build_html():
                 </div>
             </div>
 
-            <!-- 下段：企業用 ＆ 学生用 3×3 アクションマトリクス（2カラム） -->
-            <div class="grid-2">
-                <!-- 左：企業用 3×3 マトリクス -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🏢 ② 【企業アクション】3×3 推移マトリクス (実数値 ＆ %)</h3>
-                    <div class="table-container">
-                        <table class="matrix-table" style="font-size: 11px;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 28%; background: var(--gray-100);">P ＼ V</th>
-                                    <th style="width: 24%; background: #FEE2E2;">低 (&lt;58.0)</th>
-                                    <th style="width: 24%; background: #FEF3C7;">中 (58〜63.9)</th>
-                                    <th style="width: 24%; background: #D1FAE5;">高 (≥64.0)</th>
-                                </tr>
-                            </thead>
-                            <tbody>'''
+            <!-- ② 企業アクション 3x3 マトリクス (横幅いっぱい・広々スペース) -->
+            <div class="sub-card" style="margin-bottom: 28px;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin-bottom: 6px;">🏢 ② 【企業アクション】3×3 推移マトリクス (実数値 ＆ %)</h3>
+                <div style="font-size: 12.5px; color: var(--gray-500); margin-bottom: 12px;">
+                    バリュー水準の上昇に伴い、企業の「知りたい以上」および「めっちゃ知りたい」がどのセルで跳ね上がるかの全容実態
+                </div>
+                <div class="table-container">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                            </tr>
+                        </thead>
+                        <tbody>'''
 
-    # Company Matrix Generation
+    # Company Matrix Generation (Full-width with spacious cells)
     for r_idx, row in enumerate(m3x3):
         raw_p_lbl = row[0]['p_label']
         p_lbl = raw_p_lbl if raw_p_lbl.startswith('パーソナリティ') else f'パーソナリティ{raw_p_lbl}'
         bg_col = '#D1FAE5' if r_idx == 0 else ('#FEF3C7' if r_idx == 1 else '#FEE2E2')
         html += f'''
-                                <tr>
-                                    <th style="background: {bg_col};">{p_lbl}</th>'''
+                            <tr>
+                                <th style="background: {bg_col}; padding: 14px 10px;">{p_lbl}</th>'''
         for c in row:
             n = c['count']
             any_pct = c['company_any_pct']
@@ -1104,52 +1104,51 @@ def build_html():
 
             heat_bg = '#EEF2FF' if any_pct >= 80.0 else ('#F8FAFC' if any_pct >= 65.0 else '#FFFBEB')
             html += f'''
-                                    <td style="background: {heat_bg}; padding: 8px 6px; text-align: center; vertical-align: middle; border: 1px solid var(--gray-200);">
-                                        <div style="font-weight: 800; font-size: 11.5px; color: #1E293B; margin-bottom: 3px;">
-                                            知りたい以上<br>
-                                            <span style="color: var(--primary); font-size: 13px;">{any_cnt}件 ({fmt_pct(any_pct)})</span>
-                                        </div>
-                                        <div style="font-size: 10px; color: #475569; border-top: 1px dashed #CBD5E1; padding-top: 3px; line-height: 1.35;">
-                                            知りたい: {mid_cnt}件 ({fmt_pct(mid_pct)})<br>
-                                            めっちゃ知りたい: <strong style="color: #0F172A;">{high_cnt}件 ({fmt_pct(high_pct)})</strong>
-                                        </div>
-                                        <div style="font-size: 9px; color: #94A3B8; margin-top: 2px;">(母数 N={n}件)</div>
-                                    </td>'''
+                                <td style="background: {heat_bg}; padding: 12px 16px; text-align: left; vertical-align: middle; border: 1px solid var(--gray-200);">
+                                    <div style="font-weight: 800; font-size: 13.5px; color: #1E293B; margin-bottom: 6px;">
+                                        知りたい以上: <span style="color: var(--primary); font-size: 15px;">{any_cnt}件 ({fmt_pct(any_pct)})</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #475569; border-top: 1px dashed #CBD5E1; padding-top: 6px; line-height: 1.55;">
+                                        ・知りたい: <strong>{mid_cnt}件 ({fmt_pct(mid_pct)})</strong><br>
+                                        ・めっちゃ知りたい: <strong style="color: #0F172A;">{high_cnt}件 ({fmt_pct(high_pct)})</strong>
+                                    </div>
+                                    <div style="font-size: 10.5px; color: #94A3B8; margin-top: 5px; text-align: right;">(セル母数 N={n}件)</div>
+                                </td>'''
         html += '''
-                                </tr>'''
+                            </tr>'''
 
     html += f'''
-                            </tbody>
-                        </table>
-                    </div>
-                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.4;">
-                        ※各マスの上段：知りたい以上（合計）、中段：内訳（知りたい / めっちゃ知りたい）、下段：セル該当母数（N）。
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- 右：学生用 3×3 マトリクス -->
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">🎓 ③ 【学生アクション】3×3 推移マトリクス (実数値 ＆ %)</h3>
-                    <div class="table-container">
-                        <table class="matrix-table" style="font-size: 11px;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 28%; background: var(--gray-100);">P ＼ V</th>
-                                    <th style="width: 24%; background: #FEE2E2;">低 (&lt;58.0)</th>
-                                    <th style="width: 24%; background: #FEF3C7;">中 (58〜63.9)</th>
-                                    <th style="width: 24%; background: #D1FAE5;">高 (≥64.0)</th>
-                                </tr>
-                            </thead>
-                            <tbody>'''
+            <!-- ③ 学生アクション 3x3 マトリクス (横幅いっぱい・広々スペース) -->
+            <div class="sub-card" style="margin-bottom: 24px;">
+                <h3 style="font-size: 15px; font-weight: 700; color: #1E293B; margin-bottom: 6px;">🎓 ③ 【学生アクション】3×3 推移マトリクス (実数値 ＆ %)</h3>
+                <div style="font-size: 12.5px; color: var(--gray-500); margin-bottom: 12px;">
+                    パーソナリティ水準およびバリュー水準における学生の関心度（知りたい以上）と最優先選択（めっちゃ知りたい）の分布実態
+                </div>
+                <div class="table-container">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                            </tr>
+                        </thead>
+                        <tbody>'''
 
-    # Student Matrix Generation
+    # Student Matrix Generation (Full-width with spacious cells)
     for r_idx, row in enumerate(m3x3):
         raw_p_lbl = row[0]['p_label']
         p_lbl = raw_p_lbl if raw_p_lbl.startswith('パーソナリティ') else f'パーソナリティ{raw_p_lbl}'
         bg_col = '#D1FAE5' if r_idx == 0 else ('#FEF3C7' if r_idx == 1 else '#FEE2E2')
         html += f'''
-                                <tr>
-                                    <th style="background: {bg_col};">{p_lbl}</th>'''
+                            <tr>
+                                <th style="background: {bg_col}; padding: 14px 10px;">{p_lbl}</th>'''
         for c in row:
             n = c['count']
             any_pct = c['student_any_pct']
@@ -1161,27 +1160,22 @@ def build_html():
 
             heat_bg = '#ECFDF5' if any_pct >= 60.0 else ('#F8FAFC' if any_pct >= 48.0 else '#FFFBEB')
             html += f'''
-                                    <td style="background: {heat_bg}; padding: 8px 6px; text-align: center; vertical-align: middle; border: 1px solid var(--gray-200);">
-                                        <div style="font-weight: 800; font-size: 11.5px; color: #1E293B; margin-bottom: 3px;">
-                                            知りたい以上<br>
-                                            <span style="color: #047857; font-size: 13px;">{any_cnt}件 ({fmt_pct(any_pct)})</span>
-                                        </div>
-                                        <div style="font-size: 10px; color: #475569; border-top: 1px dashed #CBD5E1; padding-top: 3px; line-height: 1.35;">
-                                            知りたい: {mid_cnt}件 ({fmt_pct(mid_pct)})<br>
-                                            めっちゃ知りたい: <strong style="color: #0F172A;">{high_cnt}件 ({fmt_pct(high_pct)})</strong>
-                                        </div>
-                                        <div style="font-size: 9px; color: #94A3B8; margin-top: 2px;">(母数 N={n}件)</div>
-                                    </td>'''
+                                <td style="background: {heat_bg}; padding: 12px 16px; text-align: left; vertical-align: middle; border: 1px solid var(--gray-200);">
+                                    <div style="font-weight: 800; font-size: 13.5px; color: #1E293B; margin-bottom: 6px;">
+                                        知りたい以上: <span style="color: #047857; font-size: 15px;">{any_cnt}件 ({fmt_pct(any_pct)})</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #475569; border-top: 1px dashed #CBD5E1; padding-top: 6px; line-height: 1.55;">
+                                        ・知りたい: <strong>{mid_cnt}件 ({fmt_pct(mid_pct)})</strong><br>
+                                        ・めっちゃ知りたい: <strong style="color: #0F172A;">{high_cnt}件 ({fmt_pct(high_pct)})</strong>
+                                    </div>
+                                    <div style="font-size: 10.5px; color: #94A3B8; margin-top: 5px; text-align: right;">(セル母数 N={n}件)</div>
+                                </td>'''
         html += '''
-                                </tr>'''
+                            </tr>'''
 
     html += f'''
-                            </tbody>
-                        </table>
-                    </div>
-                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.4;">
-                        ※各マスの上段：知りたい以上（合計）、中段：内訳（知りたい / めっちゃ知りたい）、下段：セル該当母数（N）。
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
