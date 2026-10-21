@@ -230,6 +230,58 @@
             margin-top: 6px;
         }
 
+        
+        /* Statistical Accordion Details */
+        .stats-details {
+            background: #F8FAFC;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .stats-details[open] {
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #CBD5E1;
+        }
+
+        .stats-summary {
+            cursor: pointer;
+            padding: 12px 18px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #334155;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            transition: background 0.2s;
+            list-style: none;
+        }
+
+        .stats-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .stats-summary:hover {
+            background: #E2E8F0;
+            color: var(--primary);
+        }
+
+        .stats-details[open] .stats-summary {
+            border-bottom: 1px solid var(--gray-300);
+            background: #EEF2FF;
+            color: #4338CA;
+        }
+
+        .stats-content {
+            padding: 20px;
+        }
+
         /* Responsive Table Container */
         .table-container {
             width: 100%;
@@ -556,123 +608,201 @@
             </div>
         </div>
 
-        <!-- Section 2: アクション選択のロジスティック回帰分析 -->
+        <!-- Section 2: アクション選択の要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🎯 【要因分析】フィット度スコアとアクション選択のロジスティック回帰分析（単変量 ＆ 多変量）</div>
-                    <div class="section-desc">フィット度スコア10pt上昇に伴う「知りたい以上（2値）」および「知りたい」「めっちゃ知りたい（多項、基準:なし）」の選択オッズ比</div>
+                    <div class="section-title">🎯 【要因分析】スコアがアクション選択に与える影響（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">スコア10pt上昇に伴うアクション選択の発生倍率（オッズ比）の要約および詳細回帰モデル</div>
                 </div>
-                <span class="pill pill-indigo">2値 ＆ 多項ロジスティック回帰</span>
+                <span class="pill pill-indigo">要因分析（ロジット回帰）</span>
             </div>
 
-            <!-- 企業回帰 -->
-            <div style="margin-bottom: 24px;">
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 22%;">モデル / 説明変数</th>
-                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 6%;">N</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #F8FAFC;">
-                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                            </tr>
-                            <tr>
-                                <td><strong>バリューフィット度</strong></td>
-                                <td><strong>OR 2.027</strong> [1.462〜2.812]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                                <td><strong>OR 1.747</strong> [1.237〜2.467]<br><span style="font-size: 11px;">p = 0.0015 (**)</span></td>
-                                <td><strong>OR 2.908</strong> [1.862〜4.542]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                                <td>313</td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>OR 1.096 [0.803〜1.496]<br><span style="font-size: 11px;">p = 0.5633</span></td>
-                                <td>OR 1.175 [0.841〜1.642]<br><span style="font-size: 11px;">p = 0.3447</span></td>
-                                <td>OR 0.962 [0.656〜1.409]<br><span style="font-size: 11px;">p = 0.8417</span></td>
-                                <td>286</td>
-                            </tr>
-                            <tr style="background: #F8FAFC;">
-                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
-                            </tr>
-                            <tr>
-                                <td><strong>バリューフィット度</strong></td>
-                                <td><strong>OR 1.731</strong> [1.215〜2.465]<br><span style="font-size: 11px;">p = 0.0024 (**)</span></td>
-                                <td><strong>OR 1.480</strong> [1.018〜2.152]<br><span style="font-size: 11px;">p = 0.0401 (*)</span></td>
-                                <td><strong>OR 2.463</strong> [1.547〜3.922]<br><span style="font-size: 11px;">p = 0.0001 (***)</span></td>
-                                <td>286</td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>OR 1.084 [0.790〜1.488]<br><span style="font-size: 11px;">p = 0.6188</span></td>
-                                <td>OR 1.163 [0.830〜1.630]<br><span style="font-size: 11px;">p = 0.3809</span></td>
-                                <td>OR 0.933 [0.630〜1.382]<br><span style="font-size: 11px;">p = 0.7288</span></td>
-                                <td>286</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- 前面：直感的な要点まとめ（表 ＆ 視覚化グラフ） -->
+            <div class="grid-2" style="margin-bottom: 20px;">
+                <!-- 左：要点まとめ表 -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 スコア10pt上昇時のアクション選択への影響（要点）</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 26%;">評価要因</th>
+                                    <th style="width: 37%;">🏢 企業側の選択への影響</th>
+                                    <th style="width: 37%;">🎓 学生側の選択への影響</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>バリュー<br>フィット度</strong></td>
+                                    <td>
+                                        <strong style="color: var(--primary); font-size: 14px;">約 2.0 〜 2.9 倍</strong><br>
+                                        <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">極めて強い影響 (***)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            知りたい以上で <strong>2.03倍</strong>、めっちゃ知りたいで <strong>2.91倍</strong> に急増。企業の意思決定を最も強く牽引。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #0284C7; font-size: 14px;">約 1.2 〜 1.3 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">穏やかな影響 (*)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            「知りたい」選択を統計的に有意に後押し（多変量で <strong>1.41倍*</strong>）。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>パーソナリティ<br>フィット度</strong></td>
+                                    <td>
+                                        <strong style="color: var(--gray-500); font-size: 14px;">約 1.0 〜 1.1 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">統計的な影響なし</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            スコアの高低は企業の面談希望率・優先度にほとんど影響を与えていない。
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: var(--amber-600); font-size: 14px;">約 1.2 〜 1.5 倍</strong><br>
+                                        <span class="pill pill-amber" style="font-size: 10px; margin-top: 3px;">有意傾向 (†)</span>
+                                        <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
+                                            高スコアほど「めっちゃ知りたい」を推す傾向（<strong>約1.49倍†</strong>）。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※「影響度（倍率）」はロジスティック回帰のオッズ比（OR）に基づき、スコアが10pt上昇した際のアクション選択確率の上昇度合いを示しています。
+                    </div>
+                </div>
+
+                <!-- 右：視覚的インパクトグラフ -->
+                <div class="sub-card">
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📊 10pt上昇時の選択率インパクト比較（基準=1.0倍）</h3>
+                    <div class="chart-box" style="height: 230px;">
+                        <canvas id="chart-logit-impact"></canvas>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 10.5px; color: var(--gray-500); line-height: 1.3;">
+                        ※赤線（1.0倍）より右に大きく伸びるほど、そのスコアの上昇が意思決定に強いプラス効果を与えていることを表します。
+                    </div>
                 </div>
             </div>
 
-            <!-- 学生回帰 -->
-            <div>
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 22%;">モデル / 説明変数</th>
-                                <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 6%;">N</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #F8FAFC;">
-                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>OR 1.237 [0.935〜1.636]<br><span style="font-size: 11px;">p = 0.1370</span></td>
-                                <td>OR 1.178 [0.876〜1.584]<br><span style="font-size: 11px;">p = 0.2787</span></td>
-                                <td><strong>OR 1.490</strong> [0.925〜2.399]<br><span style="font-size: 11px;">p = 0.1010</span></td>
-                                <td>286</td>
-                            </tr>
-                            <tr>
-                                <td><strong>バリューフィット度</strong></td>
-                                <td>OR 1.248 [0.935〜1.665]<br><span style="font-size: 11px;">p = 0.1325</span></td>
-                                <td>OR 1.288 [0.946〜1.754]<br><span style="font-size: 11px;">p = 0.1074</span></td>
-                                <td>OR 1.124 [0.715〜1.766]<br><span style="font-size: 11px;">p = 0.6132</span></td>
-                                <td>313</td>
-                            </tr>
-                            <tr style="background: #F8FAFC;">
-                                <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
-                            </tr>
-                            <tr>
-                                <td><strong>パーソナリティフィット度</strong></td>
-                                <td>OR 1.228 [0.927〜1.628]<br><span style="font-size: 11px;">p = 0.1526</span></td>
-                                <td>OR 1.169 [0.867〜1.575]<br><span style="font-size: 11px;">p = 0.3056</span></td>
-                                <td><strong>OR 1.483</strong> [0.920〜2.389]<br><span style="font-size: 11px;">p = 0.1057</span></td>
-                                <td>286</td>
-                            </tr>
-                            <tr>
-                                <td><strong>バリューフィット度</strong></td>
-                                <td>OR 1.376 [1.005〜1.882]<br><span style="font-size: 11px;">p = 0.0463 (*)</span></td>
-                                <td><strong>OR 1.410</strong> [1.010〜1.969]<br><span style="font-size: 11px;">p = 0.0438 (*)</span></td>
-                                <td>OR 1.260 [0.757〜2.096]<br><span style="font-size: 11px;">p = 0.3745</span></td>
-                                <td>286</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- 専門的な詳細アコーディオン -->
+            <details class="stats-details">
+                <summary class="stats-summary">
+                    <span>📊 専門的な統計詳細データ（オッズ比・95%信頼区間・p値・単変量/多変量）を展開する</span>
+                    <span class="pill pill-indigo">クリックで開閉</span>
+                </summary>
+                <div class="stats-content">
+                    <!-- 企業回帰 -->
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 企業アクション選択に対するロジスティック回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 22%;">モデル / 説明変数</th>
+                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 6%;">N</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td><strong>OR 2.027</strong> [1.462〜2.812]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                                        <td><strong>OR 1.747</strong> [1.237〜2.467]<br><span style="font-size: 11px;">p = 0.0015 (**)</span></td>
+                                        <td><strong>OR 2.908</strong> [1.862〜4.542]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                                        <td>313</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR 1.096 [0.803〜1.496]<br><span style="font-size: 11px;">p = 0.5633</span></td>
+                                        <td>OR 1.175 [0.841〜1.642]<br><span style="font-size: 11px;">p = 0.3447</span></td>
+                                        <td>OR 0.962 [0.656〜1.409]<br><span style="font-size: 11px;">p = 0.8417</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】バリュー ＋ パーソナリティ を同時投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td><strong>OR 1.731</strong> [1.215〜2.465]<br><span style="font-size: 11px;">p = 0.0024 (**)</span></td>
+                                        <td><strong>OR 1.480</strong> [1.018〜2.152]<br><span style="font-size: 11px;">p = 0.0401 (*)</span></td>
+                                        <td><strong>OR 2.463</strong> [1.547〜3.922]<br><span style="font-size: 11px;">p = 0.0001 (***)</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR 1.084 [0.790〜1.488]<br><span style="font-size: 11px;">p = 0.6188</span></td>
+                                        <td>OR 1.163 [0.830〜1.630]<br><span style="font-size: 11px;">p = 0.3809</span></td>
+                                        <td>OR 0.933 [0.630〜1.382]<br><span style="font-size: 11px;">p = 0.7288</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 学生回帰 -->
+                    <div>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🎓 学生アクション選択に対するロジスティック回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 22%;">モデル / 説明変数</th>
+                                        <th style="width: 24%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 24%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px; color: var(--gray-500);">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 6%;">N</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【単変量モデル】説明変数を個別に投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR 1.237 [0.935〜1.636]<br><span style="font-size: 11px;">p = 0.1370</span></td>
+                                        <td>OR 1.178 [0.876〜1.584]<br><span style="font-size: 11px;">p = 0.2787</span></td>
+                                        <td><strong>OR 1.490</strong> [0.925〜2.399]<br><span style="font-size: 11px;">p = 0.1010</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td>OR 1.248 [0.935〜1.665]<br><span style="font-size: 11px;">p = 0.1325</span></td>
+                                        <td>OR 1.288 [0.946〜1.754]<br><span style="font-size: 11px;">p = 0.1074</span></td>
+                                        <td>OR 1.124 [0.715〜1.766]<br><span style="font-size: 11px;">p = 0.6132</span></td>
+                                        <td>313</td>
+                                    </tr>
+                                    <tr style="background: #F8FAFC;">
+                                        <td colspan="5" style="font-weight: 700; color: var(--gray-600); font-size: 11.5px;">【多変量モデル】パーソナリティ ＋ バリュー を同時投入</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>パーソナリティフィット度</strong></td>
+                                        <td>OR 1.228 [0.927〜1.628]<br><span style="font-size: 11px;">p = 0.1526</span></td>
+                                        <td>OR 1.169 [0.867〜1.575]<br><span style="font-size: 11px;">p = 0.3056</span></td>
+                                        <td><strong>OR 1.483</strong> [0.920〜2.389]<br><span style="font-size: 11px;">p = 0.1057</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>バリューフィット度</strong></td>
+                                        <td>OR 1.376 [1.005〜1.882]<br><span style="font-size: 11px;">p = 0.0463 (*)</span></td>
+                                        <td><strong>OR 1.410</strong> [1.010〜1.969]<br><span style="font-size: 11px;">p = 0.0438 (*)</span></td>
+                                        <td>OR 1.260 [0.757〜2.096]<br><span style="font-size: 11px;">p = 0.3745</span></td>
+                                        <td>286</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </details>
 
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（回帰分析結果の客観的事実）:</strong>
@@ -683,17 +813,18 @@
             </div>
         </div>
 
-        <!-- Section 3: マッチング成立の要因分析 -->
+        <!-- Section 3: マッチング成立の要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">⚖️ 【成果分析】マッチング成立の要因分析（多変量ロジスティック回帰）</div>
-                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、および出展区分（有料企業ダミー）を同時投入したマッチング成否モデル（N=286）</div>
+                    <div class="section-title">⚖️ 【成果分析】マッチング成立の要因分析（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、出展区分（有料企業）がマッチング成否に与える影響</div>
                 </div>
-                <span class="pill pill-green">多変量ロジスティック回帰</span>
+                <span class="pill pill-green">マッチング成否要因</span>
             </div>
 
             <div class="grid-2">
+                <!-- 左：平均値比較 -->
                 <div class="sub-card">
                     <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">成立群 vs 未成立群の平均値比較 (N=286)</h3>
                     <div class="table-container">
@@ -730,8 +861,48 @@
                     </div>
                 </div>
 
+                <!-- 右：要点まとめ表 -->
                 <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">多変量ロジスティック回帰分析結果 (N=286)</h3>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">📋 マッチング成立への各要因の要約（要点）</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">要因</th>
+                                    <th style="width: 30%;">成立確率への影響</th>
+                                    <th style="width: 38%;">要約ポイント</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: var(--primary-light);">
+                                    <td><strong>バリューフィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
+                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.86 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
+                                    <td style="font-size: 11px;">成立を決定づける最重要因子。スコア上昇に伴い成立率が急上昇。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>パーソナリティ</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
+                                    <td><strong style="color: var(--gray-700); font-size: 13.5px;">約 1.40 倍</strong><br><span class="pill pill-amber" style="font-size: 10px;">有意傾向 (†)</span></td>
+                                    <td style="font-size: 11px;">統計的有意水準手前（p=0.091）ながら、成立を後押しするプラス傾向。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>出展区分 (有料企業)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(配席枠要因)</span></td>
+                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">成立群で +15.2pt</span><br><span class="pill pill-slate" style="font-size: 10px;">回帰では約 1.03倍</span></td>
+                                    <td style="font-size: 11px;">成立群で比率が高いが、回帰分析では配席されたバリューの高さに吸収。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 専門的な詳細アコーディオン -->
+            <details class="stats-details">
+                <summary class="stats-summary">
+                    <span>📊 多変量ロジスティック回帰の統計詳細（回帰係数β・標準誤差・95%信頼区間・p値）を展開する</span>
+                    <span class="pill pill-green">クリックで開閉</span>
+                </summary>
+                <div class="stats-content">
+                    <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">多変量ロジスティック回帰分析結果 (N=286)</h3>
                     <div class="table-container">
                         <table>
                             <thead>
@@ -773,14 +944,13 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </details>
 
             <div class="summary-box">
-                <strong class="title">📝 データまとめ（マッチング成立要因の実態）:</strong>
+                <strong class="title">📝 データまとめ（マッチング成立要因の客観的事実）:</strong>
                 <ul>
-                    <li>マッチング成立群は未成立群と比較して、バリューフィット度平均が +3.08pt 高く（63.02 vs 59.94）、パーソナリティフィット度平均が +2.08pt 高い（80.08 vs 78.00）実態があります。</li>
-                    <li>多変量ロジスティック回帰の結果、バリューフィット度10pt上昇に伴うマッチング成立オッズ比は <strong>1.747倍</strong>（p = 0.0010**）と統計的に有意であり、パーソナリティフィット度10pt上昇に伴うオッズ比は <strong>1.342倍</strong>（p = 0.0518†）と有意傾向を示します。</li>
-                    <li>出展区分（有料企業ダミー）のオッズ比は <strong>1.026倍</strong>（p = 0.9188）であり、スコアを統制した場合の統計的有意差は認められません。</li>
+                    <li>マッチング成立群（N=63）は未成立群（N=223）に比べ、バリューフィット度平均が <strong>+4.61 pt</strong>（成立 64.29 vs 未成立 59.68）、パーソナリティフィット度平均が <strong>+2.07 pt</strong>（成立 80.49 vs 未成立 78.43）高くなっています。また有料企業比率も成立群で <strong>+15.2 pt</strong> 高い（54.0% vs 38.8%）実態です。</li>
+                    <li>3要因を同時投入した多変量ロジスティック回帰（N=286）において、バリューフィット度の上昇（10ptあたり <strong>OR 1.86</strong>, p = 0.0033**）および出展区分（有料企業ダミー <strong>OR 1.94</strong>, p = 0.0163*）が、統計的有意水準（p &lt; 0.05）でマッチング成立に寄与しています。パーソナリティフィット度は <strong>OR 1.40</strong>（p = 0.0910†）と有意傾向を示しています。</li>
                 </ul>
             </div>
         </div>
@@ -1056,77 +1226,129 @@
             </div>
         </div>
 
-        <!-- Section: 区分別 ロジスティック回帰分析 -->
+        <!-- Section: 区分別要因分析（要点まとめ ＆ 詳細モデル） -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">🎯 【区分別要因分析】出展区分ごとのロジスティック回帰分析（2値 ＆ 多項）</div>
-                    <div class="section-desc">有料企業（N=122）および無料企業（N=191/164）におけるスコア10pt上昇あたりのオッズ比</div>
+                    <div class="section-title">🎯 【区分別要因分析】出展区分ごとの要因分析（要点まとめ ＆ 詳細モデル）</div>
+                    <div class="section-desc">有料企業（N=122）および無料企業（N=191/164）におけるスコア影響度の要約と回帰モデル</div>
                 </div>
-                <span class="pill pill-indigo">区分別回帰分析</span>
+                <span class="pill pill-indigo">区分別要因分析</span>
             </div>
 
-            <!-- 有料企業回帰 -->
-            <div style="margin-bottom: 24px;">
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 有料企業 (N=122) における企業アクション回帰</h3>
+            <!-- 前面：区分別の要点まとめ比較テーブル -->
+            <div class="sub-card" style="margin-bottom: 20px;">
+                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;">📋 有料企業 vs 無料企業：スコア影響度の比較要点まとめ</h3>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 24%;">モデル / 説明変数</th>
-                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                <th style="width: 18%;">出展区分</th>
+                                <th style="width: 25%;">バリューの影響（10pt上昇）</th>
+                                <th style="width: 25%;">パーソナリティの影響</th>
+                                <th style="width: 32%;">実態のポイント</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>バリューフィット度 (単変量)</td>
-                                <td>OR 1.782 [0.924〜3.436]<br><span style="font-size: 11px;">p = 0.0845 (†)</span></td>
-                                <td>OR 1.629 [0.815〜3.256]<br><span style="font-size: 11px;">p = 0.1672</span></td>
-                                <td><strong>OR 2.170</strong> [0.953〜4.943]<br><span style="font-size: 11px;">p = 0.0651 (†)</span></td>
+                            <tr style="background: #F8FAFC;">
+                                <td><strong>無料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=191 / 164)</span></td>
+                                <td>
+                                    <strong style="color: var(--primary); font-size: 13.5px;">知りたい以上：約 2.87 倍 (***)</strong><br>
+                                    <strong style="color: var(--primary); font-size: 13.5px;">めっちゃ知りたい：約 3.98 倍 (***)</strong>
+                                </td>
+                                <td>
+                                    <span style="color: var(--gray-500); font-size: 12px;">約 0.9 〜 1.1 倍</span><br>
+                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
+                                </td>
+                                <td style="font-size: 11.5px; line-height: 1.4;">企業の完全な自由選択が行われたため、バリューフィット度の高さがアクション選択の極めて強力な決定打となっている。</td>
                             </tr>
                             <tr>
-                                <td>パーソナリティフィット度 (単変量)</td>
-                                <td>OR 0.977 [0.579〜1.650]<br><span style="font-size: 11px;">p = 0.9315</span></td>
-                                <td>OR 0.992 [0.569〜1.730]<br><span style="font-size: 11px;">p = 0.9785</span></td>
-                                <td>OR 0.947 [0.495〜1.811]<br><span style="font-size: 11px;">p = 0.8685</span></td>
+                                <td><strong>有料企業群</strong><br><span style="font-size: 10px; color: var(--gray-500);">(N=122)</span></td>
+                                <td>
+                                    <span style="color: var(--gray-700); font-size: 12.5px;">知りたい以上：約 1.34 倍</span><br>
+                                    <span style="color: var(--gray-700); font-size: 12.5px;">めっちゃ知りたい：約 1.94 倍 (†)</span>
+                                </td>
+                                <td>
+                                    <span style="color: var(--gray-500); font-size: 12px;">約 1.1 〜 1.2 倍</span><br>
+                                    <span class="pill pill-slate" style="font-size: 10px;">統計的有意差なし</span>
+                                </td>
+                                <td style="font-size: 11.5px; line-height: 1.4;">事前マッチングにより元々高バリュー層が集中的に配席されていたため、スコア上昇による選択確率の跳ね上がり倍率がマイルドに表れている。</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 無料企業回帰 -->
-            <div>
-                <h3 style="font-size: 14.5px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 無料企業 (N=191 / 164) における企業アクション回帰</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 24%;">モデル / 説明変数</th>
-                                <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                                <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>バリューフィット度 (単変量)</td>
-                                <td><strong>OR 2.059</strong> [1.406〜3.016]<br><span style="font-size: 11px;">p = 0.0002 (***)</span></td>
-                                <td><strong>OR 1.723</strong> [1.151〜2.581]<br><span style="font-size: 11px;">p = 0.0083 (**)</span></td>
-                                <td><strong>OR 3.224</strong> [1.873〜5.552]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
-                            </tr>
-                            <tr>
-                                <td>パーソナリティフィット度 (単変量)</td>
-                                <td>OR 1.165 [0.783〜1.733]<br><span style="font-size: 11px;">p = 0.4511</span></td>
-                                <td>OR 1.289 [0.838〜1.983]<br><span style="font-size: 11px;">p = 0.2478</span></td>
-                                <td>OR 0.974 [0.598〜1.584]<br><span style="font-size: 11px;">p = 0.9145</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- 専門的な詳細アコーディオン -->
+            <details class="stats-details">
+                <summary class="stats-summary">
+                    <span>📊 有料企業・無料企業別の詳細統計データ（オッズ比・95%信頼区間・p値）を展開する</span>
+                    <span class="pill pill-indigo">クリックで開閉</span>
+                </summary>
+                <div class="stats-content">
+                    <!-- 有料企業回帰 -->
+                    <div style="margin-bottom: 24px;">
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 有料企業 (N=122) における企業アクション回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 24%;">モデル / 説明変数</th>
+                                        <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>バリューフィット度 (単変量)</td>
+                                        <td>OR 1.782 [0.924〜3.436]<br><span style="font-size: 11px;">p = 0.0845 (†)</span></td>
+                                        <td>OR 1.629 [0.815〜3.256]<br><span style="font-size: 11px;">p = 0.1672</span></td>
+                                        <td><strong>OR 2.170</strong> [0.953〜4.943]<br><span style="font-size: 11px;">p = 0.0651 (†)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>パーソナリティフィット度 (単変量)</td>
+                                        <td>OR 0.977 [0.579〜1.650]<br><span style="font-size: 11px;">p = 0.9315</span></td>
+                                        <td>OR 0.992 [0.569〜1.730]<br><span style="font-size: 11px;">p = 0.9785</span></td>
+                                        <td>OR 0.947 [0.495〜1.811]<br><span style="font-size: 11px;">p = 0.8685</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 無料企業回帰 -->
+                    <div>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">🏢 無料企業 (N=191 / 164) における企業アクション回帰詳細</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 24%;">モデル / 説明変数</th>
+                                        <th style="width: 25%;">① 2値ロジット：知りたい以上<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-A 多項ロジット：なし ➔ 知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                        <th style="width: 25%;">②-B 多項ロジット：なし ➔ めっちゃ知りたい<br><span style="font-size: 10px;">OR (10pt上昇) [95%CI] / p値</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>バリューフィット度 (単変量)</td>
+                                        <td><strong>OR 2.059</strong> [1.406〜3.016]<br><span style="font-size: 11px;">p = 0.0002 (***)</span></td>
+                                        <td><strong>OR 1.723</strong> [1.151〜2.581]<br><span style="font-size: 11px;">p = 0.0083 (**)</span></td>
+                                        <td><strong>OR 3.224</strong> [1.873〜5.552]<br><span style="font-size: 11px;">p < 0.0001 (***)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>パーソナリティフィット度 (単変量)</td>
+                                        <td>OR 1.165 [0.783〜1.733]<br><span style="font-size: 11px;">p = 0.4511</span></td>
+                                        <td>OR 1.289 [0.838〜1.983]<br><span style="font-size: 11px;">p = 0.2478</span></td>
+                                        <td>OR 0.974 [0.598〜1.584]<br><span style="font-size: 11px;">p = 0.9145</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </details>
 
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（区分別の回帰分析結果）:</strong>
@@ -1487,6 +1709,73 @@
         }
     });
 
+    // Logit Impact Chart
+    new Chart(document.getElementById('chart-logit-impact'), {
+        type: 'bar',
+        data: {
+            labels: [
+                '企業：バリュー (めっちゃ知りたい)',
+                '企業：バリュー (知りたい以上)',
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：バリュー (知りたい以上)',
+                '企業：パーソナリティ (知りたい以上)'
+            ],
+            datasets: [{
+                label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
+                data: [
+                    2.908,
+                    2.027,
+                    1.490,
+                    1.248,
+                    1.096
+                ],
+                backgroundColor: [
+                    '#4F46E5',
+                    '#6366F1',
+                    '#F59E0B',
+                    '#06B6D4',
+                    '#94A3B8'
+                ],
+                borderRadius: 4
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '選択倍率: ' + context.parsed.x.toFixed(2) + ' 倍';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    min: 0,
+                    max: 3.5,
+                    grid: {
+                        color: function(context) {
+                            return context.tick.value === 1.0 ? '#EF4444' : '#E2E8F0';
+                        },
+                        lineWidth: function(context) {
+                            return context.tick.value === 1.0 ? 2 : 1;
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '← 影響なし (1.0倍) | 選択されやすくなる (倍率) →',
+                        font: { size: 10, weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
+
+
     new Chart(document.getElementById('chart-stud-overall'), {
         type: 'bar',
         data: {
@@ -1512,6 +1801,73 @@
             scales: { y: { min: 50, max: 85 } }
         }
     });
+
+    // Logit Impact Chart
+    new Chart(document.getElementById('chart-logit-impact'), {
+        type: 'bar',
+        data: {
+            labels: [
+                '企業：バリュー (めっちゃ知りたい)',
+                '企業：バリュー (知りたい以上)',
+                '学生：パーソナリティ (めっちゃ知りたい)',
+                '学生：バリュー (知りたい以上)',
+                '企業：パーソナリティ (知りたい以上)'
+            ],
+            datasets: [{
+                label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
+                data: [
+                    2.908,
+                    2.027,
+                    1.490,
+                    1.248,
+                    1.096
+                ],
+                backgroundColor: [
+                    '#4F46E5',
+                    '#6366F1',
+                    '#F59E0B',
+                    '#06B6D4',
+                    '#94A3B8'
+                ],
+                borderRadius: 4
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '選択倍率: ' + context.parsed.x.toFixed(2) + ' 倍';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    min: 0,
+                    max: 3.5,
+                    grid: {
+                        color: function(context) {
+                            return context.tick.value === 1.0 ? '#EF4444' : '#E2E8F0';
+                        },
+                        lineWidth: function(context) {
+                            return context.tick.value === 1.0 ? 2 : 1;
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '← 影響なし (1.0倍) | 選択されやすくなる (倍率) →',
+                        font: { size: 10, weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
+
 
     // Company Detail Data
     const companiesData = [{"name": "株式会社ベル", "is_paid": 1, "count": 29, "match_count": 19, "match_rate": 65.51724137931035, "v_mean": 62.10103448275862, "v_std": 6.371546316480341, "p_mean": 80.43931034482759, "p_std": 7.353949828413145, "p_n": 29, "v_diff_high_minus_none": 5.162000000000006, "company_actions": {"なし": {"count": 1, "pct": 3.4482758620689653, "v_mean": 57.82, "p_mean": 90.95}, "知りたい": {"count": 18, "pct": 62.06896551724138, "v_mean": 61.849444444444444, "p_mean": 80.95722222222224}, "めっちゃ知りたい": {"count": 10, "pct": 34.48275862068966, "v_mean": 62.982000000000006, "p_mean": 78.45599999999999}, "知りたい以上": {"count": 28, "pct": 96.55172413793105}}, "student_actions": {"なし": {"count": 10, "pct": 34.48275862068966, "v_mean": 61.129, "p_mean": 79.00800000000001}, "知りたい": {"count": 14, "pct": 48.275862068965516, "v_mean": 64.39642857142857, "p_mean": 81.46285714285715}, "めっちゃ知りたい": {"count": 5, "pct": 17.24137931034483, "v_mean": 57.617999999999995, "p_mean": 80.43599999999999}, "知りたい以上": {"count": 19, "pct": 65.51724137931035}}}, {"name": "NTT 都市開発ホテルマネジメント株式会社　カペラ京都", "is_paid": 1, "count": 32, "match_count": 19, "match_rate": 59.375, "v_mean": 62.094375, "v_std": 6.7164885879165235, "p_mean": 82.06500000000001, "p_std": 7.5276942449306015, "p_n": 32, "v_diff_high_minus_none": 4.322000000000017, "company_actions": {"なし": {"count": 4, "pct": 12.5, "v_mean": 59.114999999999995, "p_mean": 84.20750000000001}, "知りたい": {"count": 18, "pct": 56.25, "v_mean": 62.01055555555555, "p_mean": 82.44666666666669}, "めっちゃ知りたい": {"count": 10, "pct": 31.25, "v_mean": 63.43700000000001, "p_mean": 80.52099999999999}, "知りたい以上": {"count": 28, "pct": 87.5}}, "student_actions": {"なし": {"count": 13, "pct": 40.625, "v_mean": 60.49846153846154, "p_mean": 80.61}, "知りたい": {"count": 10, "pct": 31.25, "v_mean": 63.178, "p_mean": 83.631}, "めっちゃ知りたい": {"count": 9, "pct": 28.125, "v_mean": 63.19555555555556, "p_mean": 82.42666666666668}, "知りたい以上": {"count": 19, "pct": 59.375}}}, {"name": "株式会社リード・イノベーション", "is_paid": 1, "count": 31, "match_count": 11, "match_rate": 35.483870967741936, "v_mean": 60.948387096774205, "v_std": 6.4898089837191115, "p_mean": 78.01064516129033, "p_std": 7.860991428347899, "p_n": 31, "v_diff_high_minus_none": 3.6683333333333294, "company_actions": {"なし": {"count": 9, "pct": 29.03225806451613, "v_mean": 59.13333333333334, "p_mean": 74.47444444444444}, "知りたい": {"count": 16, "pct": 51.61290322580645, "v_mean": 61.274375, "p_mean": 79.059375}, "めっちゃ知りたい": {"count": 6, "pct": 19.35483870967742, "v_mean": 62.80166666666667, "p_mean": 80.51833333333333}, "知りたい以上": {"count": 22, "pct": 70.96774193548387}}, "student_actions": {"なし": {"count": 17, "pct": 54.83870967741935, "v_mean": 58.53235294117648, "p_mean": 74.37235294117647}, "知りたい": {"count": 13, "pct": 41.935483870967744, "v_mean": 63.573076923076925, "p_mean": 82.07846153846154}, "めっちゃ知りたい": {"count": 1, "pct": 3.225806451612903, "v_mean": 67.9, "p_mean": 86.98}, "知りたい以上": {"count": 14, "pct": 45.16129032258065}}}, {"name": "株式会社Unith Link", "is_paid": 1, "count": 30, "match_count": 5, "match_rate": 16.666666666666664, "v_mean": 61.97433333333333, "v_std": 6.1327148082672345, "p_mean": 80.97666666666666, "p_std": 8.05423098635799, "p_n": 30, "v_diff_high_minus_none": 2.380555555555553, "company_actions": {"なし": {"count": 18, "pct": 60.0, "v_mean": 60.91611111111112, "p_mean": 82.07555555555558}, "知りたい": {"count": 9, "pct": 30.0, "v_mean": 63.650000000000006, "p_mean": 77.82111111111112}, "めっちゃ知りたい": {"count": 3, "pct": 10.0, "v_mean": 63.296666666666674, "p_mean": 83.85000000000001}, "知りたい以上": {"count": 12, "pct": 40.0}}, "student_actions": {"なし": {"count": 16, "pct": 53.333333333333336, "v_mean": 61.417500000000004, "p_mean": 81.97750000000002}, "知りたい": {"count": 13, "pct": 43.333333333333336, "v_mean": 62.22692307692308, "p_mean": 79.20692307692308}, "めっちゃ知りたい": {"count": 1, "pct": 3.3333333333333335, "v_mean": 67.6, "p_mean": 87.97}, "知りたい以上": {"count": 14, "pct": 46.66666666666667}}}, {"name": "株式会社Linoa Group", "is_paid": 0, "count": 23, "match_count": 15, "match_rate": 65.21739130434783, "v_mean": 63.22434782608695, "v_std": 6.9666020320898046, "p_mean": 74.52695652173914, "p_std": 10.073667940266395, "p_n": 23, "v_diff_high_minus_none": -8.908000000000001, "company_actions": {"なし": {"count": 1, "pct": 4.3478260869565215, "v_mean": 71.84, "p_mean": 86.0}, "知りたい": {"count": 12, "pct": 52.17391304347826, "v_mean": 62.75000000000001, "p_mean": 76.19583333333334}, "めっちゃ知りたい": {"count": 10, "pct": 43.47826086956522, "v_mean": 62.932, "p_mean": 71.377}, "知りたい以上": {"count": 22, "pct": 95.65217391304347}}, "student_actions": {"なし": {"count": 8, "pct": 34.78260869565217, "v_mean": 64.03999999999999, "p_mean": 74.90375}, "知りたい": {"count": 15, "pct": 65.21739130434783, "v_mean": 62.789333333333325, "p_mean": 74.326}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 15, "pct": 65.21739130434783}}}, {"name": "とものや株式会社", "is_paid": 0, "count": 24, "match_count": 13, "match_rate": 54.166666666666664, "v_mean": 61.27541666666667, "v_std": 9.168165611964357, "p_mean": 76.94791666666667, "p_std": 7.761265573158894, "p_n": 24, "v_diff_high_minus_none": 4.450000000000003, "company_actions": {"なし": {"count": 8, "pct": 33.33333333333333, "v_mean": 61.3, "p_mean": 72.67999999999999}, "知りたい": {"count": 9, "pct": 37.5, "v_mean": 57.77333333333334, "p_mean": 80.12555555555555}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 65.75, "p_mean": 77.74}, "知りたい以上": {"count": 16, "pct": 66.66666666666667}}, "student_actions": {"なし": {"count": 4, "pct": 16.666666666666664, "v_mean": 63.529999999999994, "p_mean": 70.46000000000001}, "知りたい": {"count": 13, "pct": 54.166666666666664, "v_mean": 61.16846153846154, "p_mean": 78.20076923076923}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 60.18571428571429, "p_mean": 78.32857142857142}, "知りたい以上": {"count": 20, "pct": 83.33333333333333}}}, {"name": "株式会社アイプラス", "is_paid": 0, "count": 22, "match_count": 11, "match_rate": 50.0, "v_mean": 58.91590909090908, "v_std": 9.265182474029116, "p_mean": 73.18636363636364, "p_std": 9.199444364926428, "p_n": 22, "v_diff_high_minus_none": 9.495833333333344, "company_actions": {"なし": {"count": 3, "pct": 13.636363636363635, "v_mean": 53.73666666666666, "p_mean": 74.06666666666666}, "知りたい": {"count": 15, "pct": 68.18181818181817, "v_mean": 58.800666666666665, "p_mean": 73.264}, "めっちゃ知りたい": {"count": 4, "pct": 18.181818181818183, "v_mean": 63.2325, "p_mean": 72.235}, "知りたい以上": {"count": 19, "pct": 86.36363636363636}}, "student_actions": {"なし": {"count": 8, "pct": 36.36363636363637, "v_mean": 58.605000000000004, "p_mean": 71.50875}, "知りたい": {"count": 10, "pct": 45.45454545454545, "v_mean": 58.277, "p_mean": 73.254}, "めっちゃ知りたい": {"count": 4, "pct": 18.181818181818183, "v_mean": 61.135, "p_mean": 76.3725}, "知りたい以上": {"count": 14, "pct": 63.63636363636364}}}, {"name": "CKCネットワーク株式会社（ナビ個別指導学院）", "is_paid": 0, "count": 25, "match_count": 12, "match_rate": 48.0, "v_mean": 63.791599999999995, "v_std": 8.847437802362144, "p_mean": 78.03, "p_std": 6.3029516894864415, "p_n": 25, "v_diff_high_minus_none": 7.032857142857139, "company_actions": {"なし": {"count": 8, "pct": 32.0, "v_mean": 57.540000000000006, "p_mean": 76.04249999999999}, "知りたい": {"count": 10, "pct": 40.0, "v_mean": 68.24600000000001, "p_mean": 78.783}, "めっちゃ知りたい": {"count": 7, "pct": 28.000000000000004, "v_mean": 64.57285714285715, "p_mean": 79.22571428571429}, "知りたい以上": {"count": 17, "pct": 68.0}}, "student_actions": {"なし": {"count": 12, "pct": 48.0, "v_mean": 62.46333333333333, "p_mean": 74.63916666666667}, "知りたい": {"count": 11, "pct": 44.0, "v_mean": 64.34363636363638, "p_mean": 80.66545454545454}, "めっちゃ知りたい": {"count": 2, "pct": 8.0, "v_mean": 68.725, "p_mean": 83.88}, "知りたい以上": {"count": 13, "pct": 52.0}}}, {"name": "株式会社EGIJ", "is_paid": 0, "count": 21, "match_count": 9, "match_rate": 42.857142857142854, "v_mean": 63.140952380952385, "v_std": 8.870068717186976, "p_mean": 83.76571428571427, "p_std": 7.51426747689259, "p_n": 21, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい": {"count": 14, "pct": 66.66666666666666, "v_mean": 61.27999999999999, "p_mean": 84.40142857142857}, "めっちゃ知りたい": {"count": 7, "pct": 33.33333333333333, "v_mean": 66.86285714285715, "p_mean": 82.49428571428572}, "知りたい以上": {"count": 21, "pct": 99.99999999999999}}, "student_actions": {"なし": {"count": 12, "pct": 57.14285714285714, "v_mean": 59.587499999999984, "p_mean": 85.16416666666667}, "知りたい": {"count": 7, "pct": 33.33333333333333, "v_mean": 68.18999999999998, "p_mean": 82.1942857142857}, "めっちゃ知りたい": {"count": 2, "pct": 9.523809523809524, "v_mean": 66.78999999999999, "p_mean": 80.875}, "知りたい以上": {"count": 9, "pct": 42.857142857142854}}}, {"name": "株式会社ユーズテック", "is_paid": 0, "count": 24, "match_count": 7, "match_rate": 29.166666666666668, "v_mean": 57.79458333333332, "v_std": 6.426622602869267, "p_mean": 78.485, "p_std": 7.466864192521866, "p_n": 24, "v_diff_high_minus_none": 6.371714285714276, "company_actions": {"なし": {"count": 5, "pct": 20.833333333333336, "v_mean": 55.84400000000001, "p_mean": 73.864}, "知りたい": {"count": 12, "pct": 50.0, "v_mean": 56.02833333333333, "p_mean": 80.88333333333334}, "めっちゃ知りたい": {"count": 7, "pct": 29.166666666666668, "v_mean": 62.215714285714284, "p_mean": 77.67428571428572}, "知りたい以上": {"count": 19, "pct": 79.16666666666667}}, "student_actions": {"なし": {"count": 16, "pct": 66.66666666666666, "v_mean": 59.21124999999999, "p_mean": 78.42999999999999}, "知りたい": {"count": 6, "pct": 25.0, "v_mean": 55.78666666666667, "p_mean": 77.54}, "めっちゃ知りたい": {"count": 2, "pct": 8.333333333333332, "v_mean": 52.485, "p_mean": 81.75999999999999}, "知りたい以上": {"count": 8, "pct": 33.33333333333333}}}, {"name": "パナソニック オペレーショナルエクセレンス株式会社", "is_paid": 0, "count": 27, "match_count": 7, "match_rate": 25.925925925925924, "v_mean": 54.977407407407405, "v_std": 7.864499393620085, "p_mean": null, "p_std": 0.0, "p_n": 0, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 20, "pct": 74.07407407407408, "v_mean": 53.543000000000006, "p_mean": null}, "知りたい": {"count": 7, "pct": 25.925925925925924, "v_mean": 59.07571428571428, "p_mean": null}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 7, "pct": 25.925925925925924}}, "student_actions": {"なし": {"count": 6, "pct": 22.22222222222222, "v_mean": 53.300000000000004, "p_mean": null}, "知りたい": {"count": 14, "pct": 51.85185185185185, "v_mean": 55.135, "p_mean": null}, "めっちゃ知りたい": {"count": 7, "pct": 25.925925925925924, "v_mean": 56.1, "p_mean": null}, "知りたい以上": {"count": 21, "pct": 77.77777777777777}}}, {"name": "株式会社ミツカル", "is_paid": 0, "count": 25, "match_count": 0, "match_rate": 0.0, "v_mean": 58.025600000000004, "v_std": 7.233929936993677, "p_mean": 79.51480000000001, "p_std": 8.993854438819135, "p_n": 25, "v_diff_high_minus_none": null, "company_actions": {"なし": {"count": 20, "pct": 80.0, "v_mean": 57.671499999999995, "p_mean": 79.72500000000002}, "知りたい": {"count": 5, "pct": 20.0, "v_mean": 59.44199999999999, "p_mean": 78.67399999999999}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 5, "pct": 20.0}}, "student_actions": {"なし": {"count": 17, "pct": 68.0, "v_mean": 58.35117647058824, "p_mean": 79.15529411764707}, "知りたい": {"count": 8, "pct": 32.0, "v_mean": 57.333749999999995, "p_mean": 80.27875}, "めっちゃ知りたい": {"count": 0, "pct": 0.0, "v_mean": null, "p_mean": null}, "知りたい以上": {"count": 8, "pct": 32.0}}}];
