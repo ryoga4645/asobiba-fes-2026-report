@@ -207,6 +207,104 @@
             margin-bottom: 24px;
         }
 
+/* Executive Summary Hero Card */
+        .exec-summary-card {
+            background: #FFFFFF;
+            border: 1px solid #E0E7FF;
+            border-left: 6px solid var(--primary);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .exec-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .exec-summary-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exec-summary-desc {
+            font-size: 13.5px;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+
+        .exec-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .exec-item-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .exec-item-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .exec-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .exec-item-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .exec-item-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .exec-item-body {
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        .exec-item-highlight {
+            background: #EEF2FF;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #3730A3;
+            font-weight: 600;
+            line-height: 1.45;
+            border-left: 3px solid var(--primary);
+        }
+
         .kpi-card {
             background: white;
             border: 1px solid var(--gray-200);
@@ -511,6 +609,99 @@
     <!-- TAB 1: 全体実態分析 -->
     <!-- ============================================================= -->
     <div id="tab-overall" class="tab-pane active">
+        <!-- Executive Summary: このレポートで分かること -->
+        <div class="exec-summary-card">
+            <div class="exec-summary-header">
+                <div>
+                    <div class="exec-summary-title">
+                        <span>💡</span>
+                        <span>【要約】このレポートで分かること（サマリーハイライト）</span>
+                    </div>
+                    <div class="exec-summary-desc">
+                        専門用語を使わずに、当日の客観的事実から明らかになった「4つの主要な実態」を簡潔にまとめています。
+                    </div>
+                </div>
+                <span class="pill pill-indigo" style="font-size: 12px; padding: 6px 12px;">ひと目でわかる全体像</span>
+            </div>
+
+            <div class="exec-summary-grid">
+                <!-- Point 1 -->
+                <div class="exec-item-card">
+                    <div>
+                        <div class="exec-item-header">
+                            <span class="exec-item-icon">🏢</span>
+                            <div class="exec-item-title">重視するポイントの違い</div>
+                        </div>
+                        <div class="exec-item-body">
+                            ・<strong>企業側</strong>：自社の理念やカルチャーへの共感度（バリュー）が高い学生ほど、「知りたい」「めっちゃ知りたい」と選ぶ傾向が顕著でした。<br>
+                            ・<strong>学生側</strong>：面談で実際に話したときの相性や雰囲気（パーソナリティ）が良い企業ほど、「知りたい」と選ぶ傾向が見られました。
+                        </div>
+                    </div>
+                    <div class="exec-item-highlight">
+                        💡 企業は「カルチャー」、学生は「対話の相性・居心地」を重視する自然な役割分担が数字に表れています。
+                    </div>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="exec-item-card">
+                    <div>
+                        <div class="exec-item-header">
+                            <span class="exec-item-icon">🤝</span>
+                            <div class="exec-item-title">マッチング成立の条件</div>
+                        </div>
+                        <div class="exec-item-body">
+                            双方が「知りたい」となってマッチングが成立したのは全体の約4割（40.9%）。<br>
+                            ・「価値観」と「性格」が<strong>両方高いペア</strong>：成立率 <strong>約6割（55〜61%）</strong><br>
+                            ・<strong>両方低いペア</strong>：成立率 <strong>約2割（18.9%）</strong><br>
+                            どちらか片方だけが高くても成立率は伸び悩む傾向が確認されました。
+                        </div>
+                    </div>
+                    <div class="exec-item-highlight">
+                        💡 「企業が求める価値観」と「学生が感じる対話の相性」の双方が揃うことがマッチングの鍵です。
+                    </div>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="exec-item-card">
+                    <div>
+                        <div class="exec-item-header">
+                            <span class="exec-item-icon">⏱️</span>
+                            <div class="exec-item-title">面談ターンに伴う行動変化</div>
+                        </div>
+                        <div class="exec-item-body">
+                            ・<strong>企業側</strong>：面談の回数（ターン）が進むにつれて「知りたい」と選ぶ枠を広げていく傾向（後半ほど積極的：約59% ➔ 77%）がありました。<br>
+                            ・<strong>学生側</strong>：逆に面談を重ねるにつれて、選択肢を慎重に絞り込む傾向（約60% ➔ 44%）が見られました。
+                        </div>
+                    </div>
+                    <div class="exec-item-highlight">
+                        💡 後半になるほど企業の受入枠が広がる一方、学生は厳選する行動の推移が生じていました。
+                    </div>
+                </div>
+
+                <!-- Point 4 -->
+                <div class="exec-item-card">
+                    <div>
+                        <div class="exec-item-header">
+                            <span class="exec-item-icon">🎯</span>
+                            <div class="exec-item-title">事前診断の客観性と実効性</div>
+                        </div>
+                        <div class="exec-item-body">
+                            イベント当日、企業も学生もお互いの診断スコアを一切知らない（見えない）ブラインド環境で面談を行っていました。<br>
+                            それにもかかわらず、事前の診断スコアが高かったペアほど当日に高く評価し合い、実際にマッチングしていました。
+                        </div>
+                    </div>
+                    <div class="exec-item-highlight">
+                        💡 事前の診断スコアが、当日のリアルな対話や相性を先入観なく捉えていたことが窺えます。
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 14px; font-size: 12px; color: var(--gray-500); text-align: right; display: flex; justify-content: flex-end; align-items: center; gap: 4px;">
+                <span>※各項目の詳細な数値分布や統計分析モデルは、以下の各セクションでご確認いただけます。</span>
+                <span>👇</span>
+            </div>
+        </div>
+
         <!-- Top KPI Cards: 基本統計量 (実測値) -->
         <div class="grid-3">
             <div class="kpi-card">
