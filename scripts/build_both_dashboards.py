@@ -1642,14 +1642,12 @@ def build_html():
                             <th>企業 知りたい以上</th>
                             <th>学生 めっちゃ知りたい</th>
                             <th>学生 知りたい以上</th>
-                            <th>めっちゃ知りたい群 − なし群 バリュー差</th>
                         </tr>
                     </thead>
                     <tbody>'''
 
     for c in comps:
         plan_badge = '<span class="pill pill-indigo">有料</span>' if c['is_paid'] == 1 else '<span class="pill pill-slate">無料</span>'
-        v_diff_str = f"+{fmt_num(c['v_diff_high_minus_none'])} pt" if (c['v_diff_high_minus_none'] is not None and c['v_diff_high_minus_none'] >= 0) else (f"{fmt_num(c['v_diff_high_minus_none'])} pt" if c['v_diff_high_minus_none'] is not None else '-')
         html += f'''
                         <tr>
                             <td><strong>{c['name']}</strong></td>
@@ -1663,7 +1661,6 @@ def build_html():
                             <td>{c['company_actions']['知りたい以上']['count']}件 ({fmt_pct(c['company_actions']['知りたい以上']['pct'])})</td>
                             <td>{c['student_actions']['めっちゃ知りたい']['count']}件 ({fmt_pct(c['student_actions']['めっちゃ知りたい']['pct'])})</td>
                             <td>{c['student_actions']['知りたい以上']['count']}件 ({fmt_pct(c['student_actions']['知りたい以上']['pct'])})</td>
-                            <td><strong>{v_diff_str}</strong></td>
                         </tr>'''
 
     html += f'''
