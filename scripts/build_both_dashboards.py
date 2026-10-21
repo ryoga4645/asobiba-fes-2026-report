@@ -711,9 +711,9 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（アクション別の記述統計実態）:</strong>
                 <ul>
-                    <li><strong>企業側</strong>：バリューフィット度平均は「なし（57.84）」から「知りたい（61.11）」、「めっちゃ知りたい（63.79）」へと数値が高くなっています（差 +5.95pt）。一方、パーソナリティフィット度平均は 78.13 〜 79.53 の間でほぼ同等です。</li>
-                    <li><strong>学生側</strong>：パーソナリティフィット度平均は「なし（78.07）」から「知りたい（78.96）」、「めっちゃ知りたい（81.41）」へと数値が高くなっています（差 +3.34pt）。バリューフィット度平均は 60.15 〜 61.34 の範囲で推移しています。</li>
-                    <li><strong>2値（なし vs 知りたい以上）</strong>：企業は全体の 69.0%（216件）、学生は 55.6%（174件）が「知りたい以上」のアクションを選択しています。</li>
+                    <li><strong>企業側</strong>：バリューフィット度平均は「なし（{fmt_num(ov_act['company']['three_cats'][0]['v_mean'])}）」から「知りたい（{fmt_num(ov_act['company']['three_cats'][1]['v_mean'])}）」、「めっちゃ知りたい（{fmt_num(ov_act['company']['three_cats'][2]['v_mean'])}）」へと数値が高くなっています（差 +{fmt_num(ov_act['company']['three_cats'][2]['v_mean'] - ov_act['company']['three_cats'][0]['v_mean'])}pt）。一方、パーソナリティフィット度平均は {fmt_num(min(x['p_mean'] for x in ov_act['company']['three_cats']))} 〜 {fmt_num(max(x['p_mean'] for x in ov_act['company']['three_cats']))} の間でほぼ同等です。</li>
+                    <li><strong>学生側</strong>：パーソナリティフィット度平均は「なし（{fmt_num(ov_act['student']['three_cats'][0]['p_mean'])}）」から「知りたい（{fmt_num(ov_act['student']['three_cats'][1]['p_mean'])}）」、「めっちゃ知りたい（{fmt_num(ov_act['student']['three_cats'][2]['p_mean'])}）」へと数値が高くなっています（差 +{fmt_num(ov_act['student']['three_cats'][2]['p_mean'] - ov_act['student']['three_cats'][0]['p_mean'])}pt）。バリューフィット度平均は {fmt_num(min(x['v_mean'] for x in ov_act['student']['three_cats']))} 〜 {fmt_num(max(x['v_mean'] for x in ov_act['student']['three_cats']))} の範囲で推移しています。</li>
+                    <li><strong>2値（なし vs 知りたい以上）</strong>：企業は全体の {fmt_pct(ov_act['company']['binary'][1]['pct'])}（{ov_act['company']['binary'][1]['count']}件）、学生は {fmt_pct(ov_act['student']['binary'][1]['pct'])}（{ov_act['student']['binary'][1]['count']}件）が「知りたい以上」のアクションを選択しています。</li>
                 </ul>
             </div>
         </div>
@@ -753,10 +753,10 @@ def build_html():
                                         </div>
                                     </td>
                                     <td>
-                                        <strong style="color: #0284C7; font-size: 14px;">約 1.1 〜 1.3 倍</strong><br>
-                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">穏やかな影響 (*)</span>
+                                        <strong style="color: #0284C7; font-size: 14px;">約 1.1 〜 1.4 倍</strong><br>
+                                        <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">多変量で有意 (*)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>1.25倍*</strong>、めっちゃ知りたいで <strong>1.12倍</strong> と一定の選好を後押し。
+                                            知りたい以上で <strong>1.25倍</strong>、多変量「知りたい」で <strong>1.41倍*</strong>（p=0.044）。選考関心を後押し。
                                         </div>
                                     </td>
                                 </tr>
@@ -986,18 +986,18 @@ def build_html():
                             <tbody>
                                 <tr style="background: var(--primary-light);">
                                     <td><strong>バリューフィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
-                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.86 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
-                                    <td style="font-size: 11px;">成立を決定づける最重要因子。スコア上昇に伴い成立率が急上昇。</td>
+                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 {fmt_num(match_comp['regression']['params']['value_fit']['or_10'], 2)} 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
+                                    <td style="font-size: 11px;">成立を決定づける最重要因子（p=0.0010**）。スコア上昇に伴い成立率が急上昇。</td>
                                 </tr>
                                 <tr>
                                     <td><strong>パーソナリティ</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
-                                    <td><strong style="color: var(--gray-700); font-size: 13.5px;">約 1.40 倍</strong><br><span class="pill pill-amber" style="font-size: 10px;">有意傾向 (†)</span></td>
-                                    <td style="font-size: 11px;">統計的有意水準手前（p=0.091）ながら、成立を後押しするプラス傾向。</td>
+                                    <td><strong style="color: var(--gray-700); font-size: 13.5px;">約 {fmt_num(match_comp['regression']['params']['personality_fit']['or_10'], 2)} 倍</strong><br><span class="pill pill-amber" style="font-size: 10px;">有意傾向 (†)</span></td>
+                                    <td style="font-size: 11px;">統計的有意水準手前（p=0.0518†）で、成立を後押しするプラス傾向。</td>
                                 </tr>
                                 <tr>
                                     <td><strong>出展区分 (有料企業)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(配席枠要因)</span></td>
-                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">成立群で +15.2pt</span><br><span class="pill pill-slate" style="font-size: 10px;">回帰では約 1.03倍</span></td>
-                                    <td style="font-size: 11px;">成立群で比率が高いが、回帰分析では配席されたバリューの高さに吸収。</td>
+                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">成立群で +{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)}pt</span><br><span class="pill pill-slate" style="font-size: 10px;">回帰では約 {fmt_num(match_comp['regression']['params']['is_paid']['or_10'], 2)}倍</span></td>
+                                    <td style="font-size: 11px;">スコア統制後のオッズ比は1.03倍（p=0.919）。配席されたバリューの高さに吸収。</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1059,8 +1059,8 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（マッチング成立要因の客観的事実）:</strong>
                 <ul>
-                    <li>マッチング成立群（N=63）は未成立群（N=223）に比べ、バリューフィット度平均が <strong>+4.61 pt</strong>（成立 64.29 vs 未成立 59.68）、パーソナリティフィット度平均が <strong>+2.07 pt</strong>（成立 80.49 vs 未成立 78.43）高くなっています。また有料企業比率も成立群で <strong>+15.2 pt</strong> 高い（54.0% vs 38.8%）実態です。</li>
-                    <li>3要因を同時投入した多変量ロジスティック回帰（N=286）において、バリューフィット度の上昇（10ptあたり <strong>OR 1.86</strong>, p = 0.0033**）および出展区分（有料企業ダミー <strong>OR 1.94</strong>, p = 0.0163*）が、統計的有意水準（p &lt; 0.05）でマッチング成立に寄与しています。パーソナリティフィット度は <strong>OR 1.40</strong>（p = 0.0910†）と有意傾向を示しています。</li>
+                    <li>マッチング成立群（N={match_comp['matched_count']}）は未成立群（N={match_comp['unmatched_count']}）に比べ、バリューフィット度平均が <strong>+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_v_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_v_mean'])}）、パーソナリティフィット度平均が <strong>+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_p_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_p_mean'])}）高くなっています。また有料企業比率も成立群で <strong>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</strong> 高い（{fmt_pct(match_comp['matched_paid_pct'])} vs {fmt_pct(match_comp['unmatched_paid_pct'])}）実態です。</li>
+                    <li>3要因を同時投入した多変量ロジスティック回帰（N={match_comp['N_valid']}）において、バリューフィット度の上昇（10ptあたり <strong>OR {fmt_num(match_comp['regression']['params']['value_fit']['or_10'], 2)}</strong>, {fmt_p(match_comp['regression']['params']['value_fit']['p'])}) が、統計的有意水準（p &lt; 0.01**）でマッチング成立に強く寄与しています。パーソナリティフィット度は <strong>OR {fmt_num(match_comp['regression']['params']['personality_fit']['or_10'], 2)}</strong>（{fmt_p(match_comp['regression']['params']['personality_fit']['p'])}）と有意傾向を示し、出展区分（有料企業ダミー）のオッズ比は <strong>OR {fmt_num(match_comp['regression']['params']['is_paid']['or_10'], 2)}</strong>（{fmt_p(match_comp['regression']['params']['is_paid']['p'])}）で統計的影響は認められません。</li>
                 </ul>
             </div>
         </div>
@@ -1368,8 +1368,8 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">📝 有料出展企業（N=122）のデータまとめ:</strong>
                 <ul>
-                    <li><strong>企業側</strong>：事前マッチングにより全体的にベースが高く、バリュー平均は「なし（60.09）」から「知りたい（62.01）」、「めっちゃ知りたい（63.13）」と高水準で推移（差 +3.04pt）。パーソナリティ平均は 80.15 〜 80.48 と横ばいです。</li>
-                    <li><strong>学生側</strong>：パーソナリティ平均が「なし（78.82）」から「知りたい（81.47）」、「めっちゃ知りたい（82.44）」へと顕著に押し上がる傾向（差 +3.62pt）が見られます。</li>
+                    <li><strong>企業側</strong>：事前マッチングにより全体的にベースが高く、バリュー平均は「なし（{fmt_num(paid_act['company']['three_cats'][0]['v_mean'])}）」から「知りたい（{fmt_num(paid_act['company']['three_cats'][1]['v_mean'])}）」、「めっちゃ知りたい（{fmt_num(paid_act['company']['three_cats'][2]['v_mean'])}）」と高水準で推移（差 +{fmt_num(paid_act['company']['three_cats'][2]['v_mean'] - paid_act['company']['three_cats'][0]['v_mean'])}pt）。パーソナリティ平均は {fmt_num(min(x['p_mean'] for x in paid_act['company']['three_cats']))} 〜 {fmt_num(max(x['p_mean'] for x in paid_act['company']['three_cats']))} と横ばいです。</li>
+                    <li><strong>学生側</strong>：パーソナリティ平均が「なし（{fmt_num(paid_act['student']['three_cats'][0]['p_mean'])}）」から「知りたい（{fmt_num(paid_act['student']['three_cats'][1]['p_mean'])}）」、「めっちゃ知りたい（{fmt_num(paid_act['student']['three_cats'][2]['p_mean'])}）」へと顕著に押し上がる傾向（差 +{fmt_num(paid_act['student']['three_cats'][2]['p_mean'] - paid_act['student']['three_cats'][0]['p_mean'])}pt）が見られます。</li>
                 </ul>
             </div>
         </div>
@@ -1487,8 +1487,8 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">🌱 無料出展企業（N=191 / 164）のデータまとめ:</strong>
                 <ul>
-                    <li><strong>企業側</strong>：完全自由選択のためバリューフィット度との連動が極めて強く、「なし（56.73）」から「知りたい（60.46）」、「めっちゃ知りたい（64.24）」へと急激に上昇（差 +7.51pt）。パーソナリティ平均は 76.93 〜 78.43 の範囲で推移しています。</li>
-                    <li><strong>学生側</strong>：バリュー平均は「なし（59.08）」から「知りたい（60.43）」、「めっちゃ知りたい（61.85）」へと微増（差 +2.77pt）。パーソナリティ平均は 78.71 〜 79.60 と安定しています。</li>
+                    <li><strong>企業側</strong>：完全自由選択のためバリューフィット度との連動が極めて強く、「なし（{fmt_num(free_act['company']['three_cats'][0]['v_mean'])}）」から「知りたい（{fmt_num(free_act['company']['three_cats'][1]['v_mean'])}）」、「めっちゃ知りたい（{fmt_num(free_act['company']['three_cats'][2]['v_mean'])}）」へと急激に上昇（差 +{fmt_num(free_act['company']['three_cats'][2]['v_mean'] - free_act['company']['three_cats'][0]['v_mean'])}pt）。パーソナリティ平均は {fmt_num(min(x['p_mean'] for x in free_act['company']['three_cats']))} 〜 {fmt_num(max(x['p_mean'] for x in free_act['company']['three_cats']))} の範囲で推移しています。</li>
+                    <li><strong>学生側</strong>：バリュー平均は「なし（{fmt_num(free_act['student']['three_cats'][0]['v_mean'])}）」から「知りたい（{fmt_num(free_act['student']['three_cats'][1]['v_mean'])}）」、「めっちゃ知りたい（{fmt_num(free_act['student']['three_cats'][2]['v_mean'])}）」とほぼ横ばいで推移（差 +{fmt_num(free_act['student']['three_cats'][2]['v_mean'] - free_act['student']['three_cats'][0]['v_mean'])}pt）。パーソナリティ平均は {fmt_num(min(x['p_mean'] for x in free_act['student']['three_cats']))} 〜 {fmt_num(max(x['p_mean'] for x in free_act['student']['three_cats']))} の範囲で推移しています。</li>
                 </ul>
             </div>
         </div>
