@@ -1092,7 +1092,7 @@ def build_html():
             <div class="section-header">
                 <div>
                     <div class="section-title">⚖️ 【成果分析】マッチング成立の要因分析（要点まとめ ＆ 詳細モデル）</div>
-                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、出展区分（有料企業）がマッチング成否に与える影響</div>
+                    <div class="section-desc">バリューフィット度、パーソナリティフィット度、および時間経過・企業間差がマッチング成否に与える影響（N=286）</div>
                 </div>
                 <span class="pill pill-green">マッチング成否要因</span>
             </div>
@@ -1124,12 +1124,7 @@ def build_html():
                                     <td>{fmt_num(match_comp['unmatched_p_mean'])}</td>
                                     <td><strong style="color: var(--success);">+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong></td>
                                 </tr>
-                                <tr>
-                                    <td>出展区分（有料企業比率）</td>
-                                    <td>{fmt_pct(match_comp['matched_paid_pct'])}</td>
-                                    <td>{fmt_pct(match_comp['unmatched_paid_pct'])}</td>
-                                    <td>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -1164,7 +1159,7 @@ def build_html():
                                     <td style="font-size: 11px;">時間帯（疲労や焦り）を統制しても、マッチング成否には中立（p=0.5683）でスコア効果は不変。</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>企業間ベース差</strong><br><span style="font-size: 10px; color: var(--gray-500);">(出展区分・知名度)</span></td>
+                                    <td><strong>企業間ベース差</strong><br><span style="font-size: 10px; color: var(--gray-500);">(人気・選考基準)</span></td>
                                     <td><span style="color: var(--gray-600); font-size: 12.5px;">全社統制</span><br><span class="pill pill-green" style="font-size: 10px;">固定効果</span></td>
                                     <td style="font-size: 11px;">各社の人気や選考基準の甘辛を完全補正し、<strong>同一企業内での純粋な相性</strong>を抽出。</td>
                                 </tr>
@@ -1244,7 +1239,7 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（マッチング成立要因の客観的事実）:</strong>
                 <ul>
-                    <li>マッチング成立群（N={match_comp['matched_count']}）は未成立群（N={match_comp['unmatched_count']}）に比べ、バリューフィット度平均が <strong>+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_v_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_v_mean'])}）、パーソナリティフィット度平均が <strong>+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_p_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_p_mean'])}）高くなっています。また有料企業比率も成立群で <strong>+{fmt_num(match_comp['matched_paid_pct'] - match_comp['unmatched_paid_pct'], 1)} pt</strong> 高い（{fmt_pct(match_comp['matched_paid_pct'])} vs {fmt_pct(match_comp['unmatched_paid_pct'])}）実態です。</li>
+                    <li>マッチング成立群（N={match_comp['matched_count']}）は未成立群（N={match_comp['unmatched_count']}）に比べ、バリューフィット度平均が <strong>+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_v_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_v_mean'])}）、パーソナリティフィット度平均が <strong>+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_p_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_p_mean'])}）高くなっています。</li>
                     <li>時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制した最高精度のロジスティック回帰（N={match_comp['N_valid']}）において、パーソナリティフィット度（10ptあたり <strong>OR 1.72</strong>, p = 0.0028**）およびバリューフィット度（10ptあたり <strong>OR 1.65</strong>, p = 0.0073**）の<strong>双方が1%有意水準（p &lt; 0.01**）でマッチング成立に極めて強く寄与</strong>しています。時間経過（ターン番号 OR 0.96, p = 0.5683）は成立成否には中立であり、時間を統制しても両スコアの決定力は一切揺るがないことが実証されました。</li>
                 </ul>
             </div>
