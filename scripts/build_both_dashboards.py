@@ -202,6 +202,82 @@ def build_html():
         .tab-pane.active {{
             display: block;
         }}
+        /* 12社テーブル ソート＆連動スタイル */
+        th.sortable {{
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s ease, color 0.15s ease;
+            white-space: nowrap;
+        }}
+        th.sortable:hover {{
+            background: #E2E8F0 !important;
+            color: var(--primary-dark) !important;
+        }}
+        th.sortable .sort-icon {{
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 11px;
+            color: var(--gray-400);
+            transition: color 0.15s;
+        }}
+        th.sortable.active-sort {{
+            background: #EEF2FF !important;
+            color: var(--primary) !important;
+            border-bottom: 2px solid var(--primary);
+        }}
+        th.sortable.active-sort .sort-icon {{
+            color: var(--primary);
+            font-weight: 800;
+        }}
+        tr.company-row {{
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }}
+        tr.company-row:hover {{
+            background: #F1F5F9 !important;
+        }}
+        tr.company-row.selected-company {{
+            background: #EEF2FF !important;
+            border-left: 4px solid var(--primary) !important;
+        }}
+        .plan-filter-btn {{
+            padding: 6px 12px;
+            border: none;
+            background: white;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.15s;
+        }}
+        .plan-filter-btn:not(:last-child) {{
+            border-right: 1px solid var(--gray-300);
+        }}
+        .plan-filter-btn:hover {{
+            background: var(--gray-50);
+            color: var(--primary);
+        }}
+        .plan-filter-btn.active {{
+            background: var(--primary);
+            color: white;
+        }}
+        .nav-mini-btn {{
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--gray-700);
+            font-weight: 700;
+            transition: all 0.15s;
+        }}
+        .nav-mini-btn:hover {{
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }}
+
 
         /* Cards & Grids */
         .section-card {{
@@ -607,12 +683,12 @@ def build_html():
         }}
     
         /* Raw CSV Download Button */
-        .header-actions {
+        .header-actions {{
             display: flex;
             align-items: center;
-        }
+        }}
 
-        .btn-download {
+        .btn-download {{
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -627,17 +703,17 @@ def build_html():
             box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
             cursor: pointer;
             transition: all 0.2s ease;
-        }
+        }}
 
-        .btn-download:hover {
+        .btn-download:hover {{
             background: #059669;
             box-shadow: 0 6px 18px rgba(16, 185, 129, 0.55);
             transform: translateY(-1px);
-        }
+        }}
 
-        .btn-download:active {
+        .btn-download:active {{
             transform: translateY(0);
-        }
+        }}
 
     </style>
 </head>
@@ -2414,29 +2490,58 @@ def build_html():
                 <span class="pill pill-slate">12社全件一覧</span>
             </div>
 
+            <!-- ソート・フィルタ コントロールバー -->
+            <div style="background: #F8FAFC; border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">並び替え:</span>
+                    <select id="company-quick-sort" onchange="applyQuickSort(this.value)" style="padding: 6px 12px; font-size: 13px; font-weight: 600; border-radius: 6px; border: 1px solid var(--gray-300); background: white; color: var(--gray-800); cursor: pointer;">
+                        <option value="match_rate_desc">👑 マッチ成立率が高い順</option>
+                        <option value="match_rate_asc">マッチ成立率が低い順</option>
+                        <option value="v_mean_desc">🎯 バリュー平均が高い順</option>
+                        <option value="v_mean_asc">バリュー平均が低い順</option>
+                        <option value="p_mean_desc">💖 パーソナリティ平均が高い順</option>
+                        <option value="p_mean_asc">パーソナリティ平均が低い順</option>
+                        <option value="comp_plus_desc">🏢 企業熱量（知りたい以上）が高い順</option>
+                        <option value="stud_plus_desc">🎓 学生人気（知りたい以上）が高い順</option>
+                        <option value="count_desc">👥 接触数が多い順</option>
+                        <option value="name_asc">🔤 企業名（50音順）</option>
+                        <option value="is_paid_desc">🏷️ 出展区分順（有料 ➔ 無料）</option>
+                    </select>
+                    <span style="font-size: 11.5px; color: var(--gray-500);">※表の列ヘッダーをクリックしても並び替えられます</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--gray-700);">出展区分:</span>
+                    <div style="display: inline-flex; border-radius: 6px; overflow: hidden; border: 1px solid var(--gray-300);">
+                        <button class="plan-filter-btn active" onclick="setPlanFilter('all', this)">全て (12社)</button>
+                        <button class="plan-filter-btn" onclick="setPlanFilter('paid', this)">有料のみ (4社)</button>
+                        <button class="plan-filter-btn" onclick="setPlanFilter('free', this)">無料のみ (8社)</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>企業名</th>
-                            <th>区分</th>
-                            <th>接触数</th>
-                            <th>マッチ成立</th>
-                            <th>成立率</th>
-                            <th>バリュー平均</th>
-                            <th>P平均</th>
-                            <th>企業 めっちゃ知りたい</th>
-                            <th>企業 知りたい以上</th>
-                            <th>学生 めっちゃ知りたい</th>
-                            <th>学生 知りたい以上</th>
+                            <th class="sortable" onclick="handleCompanySort('name')">企業名 <span class="sort-icon" id="sort-icon-name">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('is_paid')">区分 <span class="sort-icon" id="sort-icon-is_paid">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('count')">接触数 <span class="sort-icon" id="sort-icon-count">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('match_count')">マッチ成立 <span class="sort-icon" id="sort-icon-match_count">⇅</span></th>
+                            <th class="sortable active-sort" onclick="handleCompanySort('match_rate')">成立率 <span class="sort-icon" id="sort-icon-match_rate">▼</span></th>
+                            <th class="sortable" onclick="handleCompanySort('v_mean')">バリュー平均 <span class="sort-icon" id="sort-icon-v_mean">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('p_mean')">P平均 <span class="sort-icon" id="sort-icon-p_mean">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('comp_high')">企業 めっちゃ知りたい <span class="sort-icon" id="sort-icon-comp_high">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('comp_plus')">企業 知りたい以上 <span class="sort-icon" id="sort-icon-comp_plus">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('stud_high')">学生 めっちゃ知りたい <span class="sort-icon" id="sort-icon-stud_high">⇅</span></th>
+                            <th class="sortable" onclick="handleCompanySort('stud_plus')">学生 知りたい以上 <span class="sort-icon" id="sort-icon-stud_plus">⇅</span></th>
                         </tr>
                     </thead>
-                    <tbody>'''
+                    <tbody id="company-table-body">'''
 
-    for c in comps:
+    for idx, c in enumerate(comps):
         plan_badge = '<span class="pill pill-indigo">有料</span>' if c['is_paid'] == 1 else '<span class="pill pill-slate">無料</span>'
         html += f'''
-                        <tr>
+                        <tr class="company-row" onclick="selectCompany({idx}, true)">
                             <td><strong>{c['name']}</strong></td>
                             <td>{plan_badge}</td>
                             <td>{c['count']}名</td>
@@ -2457,18 +2562,23 @@ def build_html():
         </div>
 
         <!-- 🔍 個別企業カルテ -->
-        <div class="section-card">
+        <div class="section-card" id="company-detail-card">
             <div class="section-header">
-                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                     <div class="section-title">🔍 【個別カルテ】</div>
-                    <select id="company-select" onchange="renderCompanyDetail(this.value)" style="padding: 6px 12px; font-size: 14px; font-weight: 700; border-radius: 6px; border: 1px solid var(--gray-300);">'''
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button onclick="prevCompany()" class="nav-mini-btn" title="前の企業へ">◀</button>
+                        <select id="company-select" onchange="selectCompany(parseInt(this.value), false)" style="padding: 6px 12px; font-size: 13.5px; font-weight: 700; border-radius: 6px; border: 1px solid var(--gray-300); background: white; cursor: pointer;">'''
 
     for idx, c in enumerate(comps):
         html += f'''
-                        <option value="{idx}">{c['name']} ({'有料' if c['is_paid']==1 else '無料'})</option>'''
+                            <option value="{idx}">{c['name']} ({'有料' if c['is_paid']==1 else '無料'} | 成立率 {fmt_pct(c['match_rate'])})</option>'''
 
     html += f'''
-                    </select>
+                        </select>
+                        <button onclick="nextCompany()" class="nav-mini-btn" title="次の企業へ">▶</button>
+                    </div>
+                    <span style="font-size: 11.5px; color: var(--gray-500);">※上のテーブルで行をクリックしても切り替わります</span>
                 </div>
                 <div id="cd-plan-badge"></div>
             </div>
@@ -3063,7 +3173,177 @@ def build_html():
         }});
     }}
 
-    // Init first company
+    // =============================================================
+    // Company Table Sorting & Interactive Logic
+    // =============================================================
+    let currentSortKey = 'match_rate';
+    let currentSortDir = 'desc';
+    let currentPlanFilter = 'all';
+    let selectedCompanyOrigIdx = 0;
+
+    // Attach original index
+    companiesData.forEach((c, idx) => {{
+        c.origIndex = idx;
+    }});
+
+    function getSortValue(c, key) {{
+        if (key === 'name') return c.name;
+        if (key === 'is_paid') return c.is_paid;
+        if (key === 'count') return c.count;
+        if (key === 'match_count') return c.match_count;
+        if (key === 'match_rate') return c.match_rate;
+        if (key === 'v_mean') return c.v_mean !== null ? c.v_mean : -999;
+        if (key === 'p_mean') return c.p_mean !== null ? c.p_mean : -999;
+        if (key === 'comp_high') return c.company_actions['めっちゃ知りたい'].pct;
+        if (key === 'comp_plus') return c.company_actions['知りたい以上'].pct;
+        if (key === 'stud_high') return c.student_actions['めっちゃ知りたい'].pct;
+        if (key === 'stud_plus') return c.student_actions['知りたい以上'].pct;
+        return 0;
+    }}
+
+    function renderCompanyTable() {{
+        const tbody = document.getElementById('company-table-body');
+        if (!tbody) return;
+
+        // Filter
+        let list = companiesData.filter(c => {{
+            if (currentPlanFilter === 'paid') return c.is_paid === 1;
+            if (currentPlanFilter === 'free') return c.is_paid === 0;
+            return true;
+        }});
+
+        // Sort
+        list.sort((a, b) => {{
+            let va = getSortValue(a, currentSortKey);
+            let vb = getSortValue(b, currentSortKey);
+            if (typeof va === 'string') {{
+                return currentSortDir === 'asc' ? va.localeCompare(vb, 'ja') : vb.localeCompare(va, 'ja');
+            }}
+            return currentSortDir === 'asc' ? va - vb : vb - va;
+        }});
+
+        // Update headers icon
+        const keys = ['name', 'is_paid', 'count', 'match_count', 'match_rate', 'v_mean', 'p_mean', 'comp_high', 'comp_plus', 'stud_high', 'stud_plus'];
+        keys.forEach(k => {{
+            const iconEl = document.getElementById('sort-icon-' + k);
+            const thEl = iconEl ? iconEl.closest('th') : null;
+            if (iconEl && thEl) {{
+                if (k === currentSortKey) {{
+                    thEl.classList.add('active-sort');
+                    iconEl.innerText = currentSortDir === 'asc' ? '▲' : '▼';
+                }} else {{
+                    thEl.classList.remove('active-sort');
+                    iconEl.innerText = '⇅';
+                }}
+            }}
+        }});
+
+        // Render rows
+        let rowsHtml = '';
+        list.forEach(c => {{
+            const isSelected = c.origIndex === selectedCompanyOrigIdx;
+            const planBadge = c.is_paid === 1 
+                ? '<span class="pill pill-indigo">有料</span>' 
+                : '<span class="pill pill-slate">無料</span>';
+            const pMeanStr = c.p_mean !== null ? c.p_mean.toFixed(2) : '-';
+            const vMeanStr = c.v_mean !== null ? c.v_mean.toFixed(2) : '-';
+
+            rowsHtml += `<tr class="company-row ${{isSelected ? 'selected-company' : ''}}" onclick="selectCompany(${{c.origIndex}}, true)">
+                <td><strong>${{c.name}}</strong></td>
+                <td>${{planBadge}}</td>
+                <td>${{c.count}}名</td>
+                <td>${{c.match_count}}件</td>
+                <td><strong>${{c.match_rate.toFixed(1)}}%</strong></td>
+                <td>${{vMeanStr}}</td>
+                <td>${{pMeanStr}}</td>
+                <td>${{c.company_actions['めっちゃ知りたい'].count}}件 (${{c.company_actions['めっちゃ知りたい'].pct.toFixed(1)}}%)</td>
+                <td>${{c.company_actions['知りたい以上'].count}}件 (${{c.company_actions['知りたい以上'].pct.toFixed(1)}}%)</td>
+                <td>${{c.student_actions['めっちゃ知りたい'].count}}件 (${{c.student_actions['めっちゃ知りたい'].pct.toFixed(1)}}%)</td>
+                <td>${{c.student_actions['知りたい以上'].count}}件 (${{c.student_actions['知りたい以上'].pct.toFixed(1)}}%)</td>
+            </tr>`;
+        }});
+        tbody.innerHTML = rowsHtml;
+    }}
+
+    function handleCompanySort(key) {{
+        if (currentSortKey === key) {{
+            currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
+        }} else {{
+            currentSortKey = key;
+            currentSortDir = (key === 'name' || key === 'is_paid') ? 'asc' : 'desc';
+        }}
+        // Sync quick sort dropdown
+        const quickSelect = document.getElementById('company-quick-sort');
+        const matchVal = currentSortKey + '_' + currentSortDir;
+        if (quickSelect) {{
+            for (let opt of quickSelect.options) {{
+                if (opt.value === matchVal) {{
+                    quickSelect.value = matchVal;
+                    break;
+                }}
+            }}
+        }}
+        renderCompanyTable();
+    }}
+
+    function applyQuickSort(val) {{
+        const parts = val.split('_');
+        const dir = parts.pop();
+        const key = parts.join('_');
+        currentSortKey = key;
+        currentSortDir = dir;
+        renderCompanyTable();
+    }}
+
+    function setPlanFilter(plan, btnEl) {{
+        currentPlanFilter = plan;
+        document.querySelectorAll('.plan-filter-btn').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active');
+        renderCompanyTable();
+    }}
+
+    function initCompanySelect() {{
+        const sel = document.getElementById('company-select');
+        if (!sel) return;
+        let optHtml = '';
+        companiesData.forEach((c, idx) => {{
+            const planText = c.is_paid === 1 ? '有料' : '無料';
+            optHtml += `<option value="${{idx}}">${{c.name}} (${{planText}} | 成立率 ${{c.match_rate.toFixed(1)}}%)</option>`;
+        }});
+        sel.innerHTML = optHtml;
+    }}
+
+    function selectCompany(origIdx, shouldScroll = false) {{
+        selectedCompanyOrigIdx = origIdx;
+        const sel = document.getElementById('company-select');
+        if (sel) sel.value = origIdx;
+        renderCompanyTable();
+        renderCompanyDetail(origIdx);
+
+        if (shouldScroll) {{
+            const card = document.getElementById('company-detail-card');
+            if (card) {{
+                card.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+            }}
+        }}
+    }}
+
+    function prevCompany() {{
+        let cur = selectedCompanyOrigIdx;
+        let prev = cur - 1;
+        if (prev < 0) prev = companiesData.length - 1;
+        selectCompany(prev, false);
+    }}
+
+    function nextCompany() {{
+        let cur = selectedCompanyOrigIdx;
+        let next = (cur + 1) % companiesData.length;
+        selectCompany(next, false);
+    }}
+
+    // Init UI
+    initCompanySelect();
+    renderCompanyTable();
     renderCompanyDetail(0);
 </script>
 
