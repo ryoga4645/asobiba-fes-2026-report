@@ -1503,11 +1503,22 @@ def build_html():
                 <div style="font-size: 12.5px; color: var(--gray-500); margin-bottom: 12px;">
                     バリュー水準の上昇に伴い、企業の「知りたい以上」および「めっちゃ知りたい」がどのセルで跳ね上がるかの全容実態
                 </div>
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid var(--primary); border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; color: var(--gray-700); line-height: 1.6;">
+                    <div style="font-weight: 700; color: var(--gray-900); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        <span>💡</span> <strong>各セルの数値の見方 ＆ 読み取れる実態:</strong>
+                    </div>
+                    <div>
+                        ・<strong>知りたい以上</strong>：その枠の中で、企業が学生に対して「知りたい」または「めっちゃ知りたい」を選択した件数と割合（関心度）です。<br>
+                        ・<strong>内訳（知りたい／めっちゃ知りたい）</strong>：より強い関心である「めっちゃ知りたい」がどの条件で増えるかを示しています。<br>
+                        ・<strong>注目の実態</strong>：バリュー（横軸）が高くなるにつれ、「めっちゃ知りたい」が <strong>10%台 ➔ 最大45.9% へと急増</strong> しており、企業がカルチャー合致（価値観）を主軸に選別していた傾向が明確に表れています。<br>
+                        <span style="font-size: 11.5px; color: var(--gray-500);">※マッチング成立（表①）は、この企業選択と次の学生選択（表③）の双方が合致した時にのみ成立します。</span>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ（縦軸） ＼ バリュー（横軸）</th>
                                 <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
                                 <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
                                 <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
@@ -1559,11 +1570,22 @@ def build_html():
                 <div style="font-size: 12.5px; color: var(--gray-500); margin-bottom: 12px;">
                     パーソナリティ水準およびバリュー水準における学生の関心度（知りたい以上）と最優先選択（めっちゃ知りたい）の分布実態
                 </div>
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-left: 4px solid #10B981; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; color: var(--gray-700); line-height: 1.6;">
+                    <div style="font-weight: 700; color: var(--gray-900); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                        <span>💡</span> <strong>各セルの数値の見方 ＆ 読み取れる実態:</strong>
+                    </div>
+                    <div>
+                        ・<strong>知りたい以上</strong>：その枠の中で、学生が企業に対して「知りたい」または「めっちゃ知りたい」を選択した件数と割合です。<br>
+                        ・<strong>注目の実態</strong>：学生の「めっちゃ知りたい」は全体的に 6〜19% と厳選傾向ですが、<strong>バリュー高かつパーソナリティ中〜高の枠で「知りたい以上」が約67%と最高水準</strong> に達しています。<br>
+                        ・<strong>表①との関係</strong>：学生が最も前向きになる右上の枠（バリュー高×パーソナリティ高）において、企業の高い関心（表②）と合致し、<strong>表①のマッチング成立率が最高（61.2%）</strong> に達しています。<br>
+                        <span style="font-size: 11.5px; color: var(--gray-500);">※企業と学生で重視する軸が異なるため、双方が高水準で揃うことがマッチング成立の鍵となります。</span>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ ＼ バリュー</th>
+                                <th style="width: 22%; background: var(--gray-100);">パーソナリティ（縦軸） ＼ バリュー（横軸）</th>
                                 <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
                                 <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
                                 <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
