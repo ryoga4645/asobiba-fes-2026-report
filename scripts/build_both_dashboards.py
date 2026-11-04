@@ -70,9 +70,9 @@ def render_academic_tab(acad):
             <div class="section-header">
                 <div>
                     <div class="section-title">🔬 【学術発展分析】マルチレベルモデル（GLMM）＆ 順序ロジスティック回帰分析</div>
-                    <div class="section-desc">大学教授からの3つの専門的ご指摘（企業・個人のネスト構造、3段階順序尺度、4尺度距離）に応え、学会発表・論文投稿水準の高度計量モデルで再推計（パーソナリティ有効 N=286、学生58名、企業11社）</div>
+                    <div class="section-desc">大学教授からの3つの専門的ご指摘（企業・個人のネスト構造、3段階順序尺度、4尺度距離）に応え、交差分類マルチレベルモデル（GLMM）および順序ロジスティック回帰により推計（パーソナリティ有効 N=286、学生58名、企業11社）</div>
                 </div>
-                <span class="pill pill-indigo" style="font-size: 12px; padding: 6px 12px;">査読論文・学会発表水準</span>
+                
             </div>
 
             <!-- 教授からの所感と学術的アプローチの対比表 -->
@@ -94,17 +94,17 @@ def render_academic_tab(acad):
                             <tr>
                                 <td><strong>①「データは企業と個人にネストされていると思われるのでマルチレベルモデルで分析することが適切」</strong></td>
                                 <td>同一学生が複数社、同一企業が複数学生と接触する交差構造（Dyadic Data）のため、通常回帰では標準誤差が過小評価されるリスクがある。</td>
-                                <td><strong>交差分類GLMM（PQL推計）</strong> を構築。企業間分散（37.2%）と学生間分散（21.3%）の非対称性を解明し、ネストを統制してもバリュー（OR 1.61*）とPF（OR 1.61*）が完全同等にマッチングを決定づけることを実証。</td>
+                                <td><strong>交差分類GLMM（PQL推計）</strong> を構築。企業間分散（37.2%）と学生間分散（21.3%）の非対称性を解明し、二重ネストを統制したモデルでもバリュー（OR 1.61*）とPF（OR 1.61*）がマッチング成立に寄与している傾向を確認。</td>
                             </tr>
                             <tr>
                                 <td><strong>②「3段階の知りたい度は順序ロジスティックができる」</strong></td>
                                 <td>従来の2値ロジット（知りたい以上 vs なし）では「めっちゃ知りたい」の強度差が捨象され、情報損失が生じていた。</td>
-                                <td><strong>比例オッズ累積ロジットモデル</strong> を構築。3段階の順序性を活かすことで情報損失がなくなり、企業側のバリュー有意確率が <strong>p = 0.0040 ➔ p = 0.0002*** へと1桁以上向上</strong>。</td>
+                                <td><strong>比例オッズ累積ロジットモデル</strong> を構築。3段階の順序性を考慮したモデル化により、企業側のバリュー適合度の上昇に伴う選択確率の上昇（p = 0.0002***）を確認。</td>
                             </tr>
                             <tr>
                                 <td><strong>③「より深掘りするならば，パーソナリティは4尺度それぞれの距離を使う方法もある」</strong></td>
                                 <td>総合スコア（1次元）だけでなく、因子別の多次元ベクトル距離（類似性 vs 相補性）を分析することで、より精緻な心理メカニズムに迫れる。</td>
-                                <td>現有データセットの実態（総合スコアのみ収録）を客観報告。将来4尺度生データが入手できた際に直ちに適用できる <strong>多次元距離交差分類GLMM</strong> の数理モデル式と研究計画を提示。</td>
+                                <td>現有データセットの実態（総合スコアのみ収録）を報告。今後4尺度生データが入手できた場合に適用可能な <strong>多次元距離交差分類GLMM</strong> の数理モデル式と分析アプローチを整理。</td>
                             </tr>
                         </tbody>
                     </table>
@@ -133,10 +133,10 @@ def render_academic_tab(acad):
 
                 <div class="kpi-card" style="border-top: 4px solid #10B981;">
                     <div class="kpi-title">マッチング成立 (交差分類GLMM)</div>
-                    <div class="kpi-value" style="color: #10B981;">完全対等</div>
+                    <div class="kpi-value" style="color: #10B981;">両スコア有意</div>
                     <div class="kpi-sub">バリュー OR __GM_V_OR__* × PF OR __GM_P_OR__*</div>
                     <div style="margin-top: 6px; font-size: 11px; color: var(--gray-600); line-height: 1.4;">
-                        二重ネストを完全統制したGLMMで、両スコアが<strong>ほぼ完全一致するオッズ比（約1.61倍）</strong>で成立に寄与。
+                        二重ネストを統制したGLMMにおいて、両スコアが同等のオッズ比（約1.61倍、共にp < 0.05）で寄与。
                     </div>
                 </div>
 
@@ -342,7 +342,7 @@ def render_academic_tab(acad):
                                 <td><strong>OR 1.837 (p = 0.0002***)</strong></td>
                                 <td>OR 0.958 (p = 0.7754)</td>
                                 <td>OR 1.230 (p = 0.0033**)</td>
-                                <td><strong>情報損失ゼロ。有意確率が1桁以上向上し頑健性を証明</strong></td>
+                                <td>順序尺度を考慮した推計。企業側のバリュー重視の傾向を確認</td>
                             </tr>
                             <tr>
                                 <td><strong>学生 従来の2値モデル</strong></td>
@@ -358,7 +358,7 @@ def render_academic_tab(acad):
                                 <td>OR 1.242 (p = 0.1751)</td>
                                 <td><strong>OR 1.439 (p = 0.0164*)</strong></td>
                                 <td>OR 0.878 (p = 0.0594†)</td>
-                                <td><strong>順序性を考慮した厳密推計でもパーソナリティ重視を再確認</strong></td>
+                                <td>順序尺度を考慮した推計。学生側のパーソナリティ重視の傾向を確認</td>
                             </tr>
                         </tbody>
                     </table>
@@ -381,7 +381,7 @@ def render_academic_tab(acad):
                 <div style="font-weight: 800; font-size: 14px; color: #1E293B; margin-bottom: 8px;">二面市場における交差ネスト構造（Cross-Classified Structure）</div>
                 <div style="font-size: 13px; color: var(--gray-600); line-height: 1.6;">
                     一般的な学校・生徒モデル（生徒が1つの学校に所属する純粋な2階層）とは異なり、就業イベントの面談データ（Dyad）は、<strong>1人の学生が複数社と接触し、1つの企業が複数学生と接触する交差構造</strong>を持ちます。<br>
-                    GLMMは、学生ランダム切片 u_i ~ N(0, σ²_s) と 企業ランダム切片 v_j ~ N(0, σ²_c) を同時に推計することで、クラスター相関に伴う標準誤差の過小評価（第一種の過誤）を完全に防ぎます。
+                    GLMMは、学生ランダム切片 u_i ~ N(0, σ²_s) と 企業ランダム切片 v_j ~ N(0, σ²_c) を同時に推計することで、クラスター相関に伴う標準誤差の偏りを考慮して推計を行います。
                 </div>
             </div>
 
@@ -452,7 +452,7 @@ def render_academic_tab(acad):
                         <div style="font-size: 15px; font-weight: 800; color: #065F46;">⚖️ マッチング成立に対する交差分類GLMM推計結果（N=286）</div>
                         <div style="font-size: 12px; color: var(--gray-600);">学生ランダム切片（58名）および企業ランダム切片（11社）を統制した最終成果モデル</div>
                     </div>
-                    <span class="pill pill-green" style="font-size: 12px; padding: 6px 12px;">完全対等なオッズ比</span>
+                    <span class="pill pill-green" style="font-size: 12px; padding: 6px 12px;">双方向の有意性確認</span>
                 </div>
                 <div class="table-container">
                     <table>
@@ -508,7 +508,7 @@ def render_academic_tab(acad):
                     </table>
                 </div>
                 <div style="background: #ECFDF5; border-radius: 6px; padding: 12px 14px; margin-top: 12px; font-size: 12.5px; color: #065F46; line-height: 1.6;">
-                    🎯 <strong>学術的インサイト</strong>: 学生・企業双方のクラスタリング効果を統制した最高水準のGLMMにおいて、<strong>バリューオッズ比 1.612*（p=0.0261*）とパーソナリティオッズ比 1.607*（p=0.0193*）が奇跡的なまでに完全一致</strong>しました。これは、マッチング成立には「企業が求めるカルチャー適合」と「学生が求める対人相性適合」が、全く同一の重みで不可欠であることを証明しています。
+                    💡 <strong>分析結果の考察</strong>: 学生・企業双方のクラスタリング効果を統制した交差分類GLMMにおいて、<strong>バリューオッズ比 1.612（p=0.0261*）とパーソナリティオッズ比 1.607（p=0.0193*）がほぼ同等の数値</strong>を示しました。マッチング成立においては、企業の求めるバリュー適合と学生の求めるパーソナリティ適合の双方が、同等の重みで寄与している傾向が示されています。
                 </div>
             </div>
         </div>
@@ -563,65 +563,31 @@ def render_academic_tab(acad):
                 </table>
             </div>
             <div style="font-size: 12.5px; color: var(--gray-700); margin-top: 12px; line-height: 1.6;">
-                📌 <strong>総括</strong>: 単純プール回帰から企業固定効果、そして最高精度の交差分類GLMMに至るまで、バリューフィット度のオッズ比は <strong>1.57 ➔ 1.65 ➔ 1.61</strong>、パーソナリティフィット度のオッズ比は <strong>1.34 ➔ 1.72 ➔ 1.61</strong> と極めて安定して推移しています。モデルの指定や仮定を変えても結論が全く揺らがない「驚異的な頑健性（Robustness）」が立証されました。
+                📌 <strong>総括</strong>: 単純プール回帰、企業固定効果モデル、交差分類GLMMの各モデルにおいて、バリューフィット度のオッズ比は <strong>1.57 ➔ 1.65 ➔ 1.61</strong>、パーソナリティフィット度のオッズ比は <strong>1.34 ➔ 1.72 ➔ 1.61</strong> と推移しています。モデルの指定を変えても係数の符号や傾向に大きなブレは見られず、一定の頑健性（Robustness）が確認されます。
             </div>
         </div>
 
-        <!-- Section D: パーソナリティ4尺度距離への回答と今後の展望 -->
+        <!-- Section D: パーソナリティ4尺度距離への回答と今後の課題 -->
         <div class="section-card">
             <div class="section-header">
                 <div>
-                    <div class="section-title">💡 4. パーソナリティ4尺度距離への回答 ＆ 学会発表ロードマップ</div>
-                    <div class="section-desc">教授からの第3のご指摘（因子別距離の活用）に対する実態報告と、今後の学術研究展開</div>
+                    <div class="section-title">💡 4. パーソナリティ4尺度距離への回答と今後の課題</div>
+                    <div class="section-desc">教授からの第3のご指摘（因子別距離の活用）に対する実態報告と、今後の分析設計</div>
                 </div>
-                <span class="pill pill-indigo">将来展望</span>
             </div>
 
-            <div class="grid-2">
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 800; color: #1E293B; margin-bottom: 8px;">📐 多次元距離GLMMの数理定式化</h3>
-                    <div style="font-size: 12.5px; color: var(--gray-600); line-height: 1.6;">
-                        現有の確定データセット（313件）には合算された総合スコアのみが収録されていますが、今後4尺度（例: 自己表現、協調性、論理性、活動性）の素点が入手できた場合、以下のモデルで「似た者同士」か「相補性」かを世界で初めて検証可能です：
-                    </div>
-                    <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 6px; padding: 10px 12px; margin: 10px 0; font-family: monospace; font-size: 11.5px; color: #334155;">
-                        logit(P_ij) = β0 + β_V Value_ij + Σ γ_k |s_ik - c_jk| + β_T Turn_ij + u_i + v_j
-                    </div>
-                    <ul style="font-size: 12px; color: var(--gray-700); margin-left: 18px; line-height: 1.5;">
-                        <li>γ_k &lt; 0 の場合: <strong>類似性引力効果</strong>（性格が近いほどマッチ）</li>
-                        <li>γ_k &gt; 0 の場合: <strong>相補性効果</strong>（異なる性格同士が補完し合ってマッチ）</li>
-                    </ul>
+            <div style="background: #F8FAFC; border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 18px 20px;">
+                <h3 style="font-size: 14px; font-weight: 700; color: #1E293B; margin-bottom: 8px;">現有データセットの状況と多次元距離モデルの定式化</h3>
+                <div style="font-size: 12.5px; color: var(--gray-700); line-height: 1.6;">
+                    当イベントで集計された確定データセット（313件）には、事前に合算・指数化された「パーソナリティフィット度（総合スコア）」のみが格納されており、各因子の素点（4尺度の生スコア）は含まれておりません。<br>
+                    今後、診断元データ等から4尺度の素点が入手できた場合、各因子の距離（マンハッタン距離 |s_ik - c_jk| やユークリッド距離）を説明変数として投入する以下のモデルにより、「性格が似ているペアほどマッチするのか（類似性）」、あるいは「異なる性格が補完し合ってマッチするのか（相補性）」を検証することが可能です。
                 </div>
-
-                <div class="sub-card">
-                    <h3 style="font-size: 14.5px; font-weight: 800; color: #1E293B; margin-bottom: 8px;">🎓 想定される学会発表・論文投稿先</h3>
-                    <div class="table-container" style="margin: 0;">
-                        <table style="font-size: 11.5px;">
-                            <thead>
-                                <tr>
-                                    <th>学会 / 投稿先</th>
-                                    <th>学術領域</th>
-                                    <th>本研究のアピールポイント</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>日本労務学会 / JAAS</strong></td>
-                                    <td>人的資源管理 / 組織行動</td>
-                                    <td>ブラインド環境下での二面市場マッチング実証データ</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>産業・組織心理学会</strong></td>
-                                    <td>産業心理 / 計量心理</td>
-                                    <td>累積ロジット ＆ 交差分類GLMMによるDyadicデータ解析</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>行動経済学会</strong></td>
-                                    <td>行動経済 / 応用計量</td>
-                                    <td>就職活動における探索行動の時間推移とマッチング摩擦</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div style="background: white; border: 1px solid var(--gray-300); border-radius: 6px; padding: 10px 14px; margin: 12px 0; font-family: monospace; font-size: 12px; color: #334155;">
+                    logit(P_ij) = β0 + β_V Value_ij + Σ γ_k |s_ik - c_jk| + β_T Turn_ij + u_i + v_j
+                </div>
+                <div style="font-size: 12px; color: var(--gray-600); line-height: 1.5;">
+                    ・γ_k &lt; 0 の場合: 類似性効果（性格が近いほどマッチしやすい傾向）<br>
+                    ・γ_k &gt; 0 の場合: 相補性効果（性格が異なるペアほどマッチしやすい傾向）
                 </div>
             </div>
         </div>
@@ -1571,8 +1537,8 @@ def build_html():
                 <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 280px;">
                     <span style="font-size: 26px;">🔬</span>
                     <div>
-                        <div style="font-size: 13.5px; font-weight: 800; color: #312E81;">大学教授からの所感を受け、学術発展モデル（交差分類マルチレベル ＆ 順序ロジット）でも完全検証済み</div>
-                        <div style="font-size: 12px; color: #4338CA; margin-top: 2px;">学生・企業の二重ネスト（GLMM）や3段階の志望度推移（累積ロジット）を統制しても、上記4つのファクトが学術的・統計的に強固に裏付けられました。</div>
+                        <div style="font-size: 13.5px; font-weight: 800; color: #312E81;">大学教授からの所感に基づき、交差分類マルチレベルモデルおよび順序ロジスティック回帰で再分析を実施</div>
+                        <div style="font-size: 12px; color: #4338CA; margin-top: 2px;">学生・企業の二重ネストや3段階の志望度推移を考慮したモデルにおいても、同様の傾向が確認されています。</div>
                     </div>
                 </div>
                 <button onclick="switchTab('tab-academic')" style="background: #4F46E5; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);">
