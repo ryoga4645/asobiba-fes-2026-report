@@ -3350,7 +3350,7 @@ def build_html():
 
 <!-- Raw CSV Data & Download Script -->
 <script id="raw-csv-data" type="text/plain">
-""" + raw_csv_text + """
+{raw_csv_text}
 </script>
 
 <script>
