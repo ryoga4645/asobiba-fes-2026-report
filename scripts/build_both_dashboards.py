@@ -94,12 +94,12 @@ def render_academic_tab(acad):
                             <tr>
                                 <td><strong>①「データは企業と個人にネストされていると思われるのでマルチレベルモデルで分析することが適切」</strong></td>
                                 <td>同一学生が複数社、同一企業が複数学生と接触する交差構造（Dyadic Data）のため、通常回帰では標準誤差が過小評価されるリスクがある。</td>
-                                <td><strong>交差分類GLMM（PQL推計）</strong> を構築。企業間分散（37.2%）と学生間分散（21.3%）の非対称性を解明し、二重ネストを統制したモデルでもバリュー（OR 1.61*）とPF（OR 1.61*）がマッチング成立に寄与している傾向を確認。</td>
+                                <td><strong>交差分類GLMM（PQL推計）</strong> を構築。企業間分散（38.4%）と学生間分散（20.8%）の非対称性を解明し、二重ネストを統制したモデルでもPF（OR 1.61*）が有意、バリュー（OR 1.38†）も有意傾向を示し、双方がマッチング成立に寄与している傾向を確認。</td>
                             </tr>
                             <tr>
                                 <td><strong>②「3段階の知りたい度は順序ロジスティックができる」</strong></td>
                                 <td>従来の2値ロジット（知りたい以上 vs なし）では「めっちゃ知りたい」の強度差が捨象され、情報損失が生じていた。</td>
-                                <td><strong>比例オッズ累積ロジットモデル</strong> を構築。3段階の順序性を考慮したモデル化により、企業側のバリュー適合度の上昇に伴う選択確率の上昇（p = 0.0002***）を確認。</td>
+                                <td><strong>比例オッズ累積ロジットモデル</strong> を構築。3段階の順序性を考慮したモデル化により、企業側のバリュー適合度の上昇に伴う選択確率の上昇（p = 0.0022**）を確認。</td>
                             </tr>
                             <tr>
                                 <td><strong>③「より深掘りするならば，パーソナリティは4尺度それぞれの距離を使う方法もある」</strong></td>
@@ -116,9 +116,9 @@ def render_academic_tab(acad):
                 <div class="kpi-card" style="border-top: 4px solid #4F46E5;">
                     <div class="kpi-title">企業アクション (順序ロジット)</div>
                     <div class="kpi-value" style="color: #4F46E5;">OR __OC_OR__</div>
-                    <div class="kpi-sub">バリュー 10pt上昇ごと (p = __OC_P__***)</div>
+                    <div class="kpi-sub">バリュー 10pt上昇ごと (p = __OC_P__**)</div>
                     <div style="margin-top: 6px; font-size: 11px; color: var(--gray-600); line-height: 1.4;">
-                        カルチャー適合が高いほど志望度ランクが<strong>約1.84倍</strong>急上昇。パーソナリティは中立（p=__OC_P_PF__）。
+                        カルチャー適合が高いほど志望度ランクが<strong>約1.56倍</strong>上昇。パーソナリティは中立（p=__OC_P_PF__）。
                     </div>
                 </div>
 
@@ -133,17 +133,17 @@ def render_academic_tab(acad):
 
                 <div class="kpi-card" style="border-top: 4px solid #10B981;">
                     <div class="kpi-title">マッチング成立 (交差分類GLMM)</div>
-                    <div class="kpi-value" style="color: #10B981;">両スコア有意</div>
-                    <div class="kpi-sub">バリュー OR __GM_V_OR__* × PF OR __GM_P_OR__*</div>
+                    <div class="kpi-value" style="color: #10B981;">両スコア寄与</div>
+                    <div class="kpi-sub">バリュー OR __GM_V_OR__† × PF OR __GM_P_OR__*</div>
                     <div style="margin-top: 6px; font-size: 11px; color: var(--gray-600); line-height: 1.4;">
-                        二重ネストを統制したGLMMにおいて、両スコアが同等のオッズ比（約1.61倍、共にp < 0.05）で寄与。
+                        二重ネストを統制したGLMMにおいて、PF（OR 1.61*）が有意、バリュー（OR 1.38†）も有意傾向を示し、双方がマッチング成立を後押し。
                     </div>
                 </div>
 
                 <div class="kpi-card" style="border-top: 4px solid #F59E0B;">
                     <div class="kpi-title">級内相関係数 (ICC) の対比</div>
                     <div class="kpi-value" style="color: #D97706;">非対称</div>
-                    <div class="kpi-sub">企業差 37.2% vs 学生個人差 21.3%</div>
+                    <div class="kpi-sub">企業差 38.4% vs 学生個人差 20.9%</div>
                     <div style="margin-top: 6px; font-size: 11px; color: var(--gray-600); line-height: 1.4;">
                         企業側は「選考基準の厳格さ」が大半を占め、学生側は「個人の積極性・慎重さ」が選択を支配。
                     </div>
@@ -236,7 +236,7 @@ def render_academic_tab(acad):
                         </table>
                     </div>
                     <div style="font-size: 12px; color: var(--gray-700); margin-top: 10px; line-height: 1.5;">
-                        📌 <strong>インサイト</strong>: バリューフィット度が10pt上がるごとに、企業が学生を1段階上位に評価するオッズ比が <strong>1.837倍（p = 0.0002***）</strong> と極めて強く有意です。パーソナリティは評価に影響していません（p = 0.7754）。
+                        📌 <strong>インサイト</strong>: バリューフィット度が10pt上がるごとに、企業が学生を1段階上位に評価するオッズ比が <strong>1.564倍（p = 0.0022**）</strong> と有意に上昇します。パーソナリティは評価に寄与していません（p = 0.7461）。
                     </div>
                 </div>
 
@@ -331,33 +331,33 @@ def render_academic_tab(acad):
                             <tr>
                                 <td><strong>企業 従来の2値モデル</strong></td>
                                 <td>知りたい以上 (0 vs 1,2)</td>
-                                <td>OR 1.931 (p = 0.0040**)</td>
-                                <td>OR 1.181 (p = 0.4279)</td>
-                                <td>OR 1.334 (p = 0.0043**)</td>
+                                <td>OR 1.740 (p = 0.0062**)</td>
+                                <td>OR 1.186 (p = 0.4135)</td>
+                                <td>OR 1.319 (p = 0.0057**)</td>
                                 <td>高熱量（めっちゃ知りたい）を二値化で丸めた推計</td>
                             </tr>
                             <tr style="background: #EEF2FF; font-weight: 700;">
                                 <td><strong>企業 順序ロジット (今回)</strong></td>
                                 <td>3段階 (0 ➔ 1 ➔ 2)</td>
-                                <td><strong>OR 1.837 (p = 0.0002***)</strong></td>
-                                <td>OR 0.958 (p = 0.7754)</td>
-                                <td>OR 1.230 (p = 0.0033**)</td>
+                                <td><strong>OR 1.564 (p = 0.0022**)</strong></td>
+                                <td>OR 0.952 (p = 0.7461)</td>
+                                <td>OR 1.222 (p = 0.0042**)</td>
                                 <td>順序尺度を考慮した推計。企業側のバリュー重視の傾向を確認</td>
                             </tr>
                             <tr>
                                 <td><strong>学生 従来の2値モデル</strong></td>
                                 <td>知りたい以上 (0 vs 1,2)</td>
-                                <td>OR 1.318 (p = 0.1140)</td>
-                                <td>OR 1.510 (p = 0.0136*)</td>
-                                <td>OR 0.827 (p = 0.0117*)</td>
+                                <td>OR 1.282 (p = 0.1088)</td>
+                                <td>OR 1.510 (p = 0.0137*)</td>
+                                <td>OR 0.825 (p = 0.0110*)</td>
                                 <td>高熱量（めっちゃ知りたい）を二値化で丸めた推計</td>
                             </tr>
                             <tr style="background: #ECFEFF; font-weight: 700;">
                                 <td><strong>学生 順序ロジット (今回)</strong></td>
                                 <td>3段階 (0 ➔ 1 ➔ 2)</td>
-                                <td>OR 1.242 (p = 0.1751)</td>
-                                <td><strong>OR 1.439 (p = 0.0164*)</strong></td>
-                                <td>OR 0.878 (p = 0.0594†)</td>
+                                <td>OR 1.194 (p = 0.2104)</td>
+                                <td><strong>OR 1.439 (p = 0.0165*)</strong></td>
+                                <td>OR 0.877 (p = 0.0576†)</td>
                                 <td>順序尺度を考慮した推計。学生側のパーソナリティ重視の傾向を確認</td>
                             </tr>
                         </tbody>
@@ -403,7 +403,7 @@ def render_academic_tab(acad):
                             <span style="color: #06B6D4;">学生差: __GC_ICC_S__% (σ²=__GC_SIGMA_S__)</span>
                         </div>
                         <div style="margin-top: 8px; font-size: 11.5px; color: var(--gray-600); line-height: 1.4;">
-                            💡 <strong>企業差が37.2%と支配的</strong>。各企業の採用方針・枠数の厳格さが選択行動の大半を規定しています。
+                            💡 <strong>企業差が38.4%と支配的</strong>。各企業の採用方針・枠数の厳格さが選択行動の大半を規定しています。
                         </div>
                     </div>
 
@@ -421,7 +421,7 @@ def render_academic_tab(acad):
                             <span style="color: #4F46E5;">企業差: __GS_ICC_C__% (σ²=__GS_SIGMA_C__)</span>
                         </div>
                         <div style="margin-top: 8px; font-size: 11.5px; color: var(--gray-600); line-height: 1.4;">
-                            💡 <strong>学生個人差が21.3%と支配的</strong>。企業の人気以上に「誰にでも出すか/絞り込むか」という個人の性格差が反映されています。
+                            💡 <strong>学生個人差が20.9%と支配的</strong>。企業の人気以上に「誰にでも出すか/絞り込むか」という個人の性格差が反映されています。
                         </div>
                     </div>
 
@@ -508,7 +508,7 @@ def render_academic_tab(acad):
                     </table>
                 </div>
                 <div style="background: #ECFDF5; border-radius: 6px; padding: 12px 14px; margin-top: 12px; font-size: 12.5px; color: #065F46; line-height: 1.6;">
-                    💡 <strong>分析結果の考察</strong>: 学生・企業双方のクラスタリング効果を統制した交差分類GLMMにおいて、<strong>バリューオッズ比 1.612（p=0.0261*）とパーソナリティオッズ比 1.607（p=0.0193*）がほぼ同等の数値</strong>を示しました。マッチング成立においては、企業の求めるバリュー適合と学生の求めるパーソナリティ適合の双方が、同等の重みで寄与している傾向が示されています。
+                    💡 <strong>分析結果の考察</strong>: 学生・企業双方のクラスタリング効果を統制した交差分類GLMMにおいて、<strong>PFオッズ比 1.611（p=0.0186*）が有意、バリューオッズ比 1.376（p=0.0881†）も有意傾向</strong>を示しました。マッチング成立においては、企業の求めるバリュー適合と学生の求めるパーソナリティ適合の双方が、重要な寄与要因となっている傾向が示されています。
                 </div>
             </div>
         </div>
@@ -538,32 +538,32 @@ def render_academic_tab(acad):
                         <tr>
                             <td><strong>1. 単純プールロジット</strong></td>
                             <td>通常最尤法 (MLE)</td>
-                            <td>OR 1.571 (p = 0.0011**)</td>
-                            <td>OR 1.341 (p = 0.0518†)</td>
-                            <td>OR 0.985 (p = 0.8188)</td>
+                            <td>OR 1.472 (p = 0.0082**)</td>
+                            <td>OR 1.346 (p = 0.0464*)</td>
+                            <td>OR 0.964 (p = 0.6033)</td>
                             <td>統制なし（独立と仮定）</td>
                         </tr>
                         <tr>
                             <td><strong>2. 企業固定効果ロジット</strong></td>
                             <td>LSDV (ダミー投入)</td>
-                            <td>OR 1.651 (p = 0.0073**)</td>
-                            <td>OR 1.723 (p = 0.0028**)</td>
-                            <td>OR 0.955 (p = 0.5683)</td>
+                            <td>OR 1.461 (p = 0.0203*)</td>
+                            <td>OR 1.718 (p = 0.0029**)</td>
+                            <td>OR 0.950 (p = 0.5225)</td>
                             <td>企業間差のみ固定効果で統制</td>
                         </tr>
                         <tr style="background: #D1FAE5; font-weight: 700;">
                             <td><strong>3. 交差分類GLMM (今回)</strong></td>
                             <td>PQL / MME推計</td>
-                            <td><strong>OR 1.612 (p = 0.0261*)</strong></td>
-                            <td><strong>OR 1.607 (p = 0.0193*)</strong></td>
-                            <td>OR 0.948 (p = 0.5042)</td>
+                            <td><strong>OR 1.376 (p = 0.0881†)</strong></td>
+                            <td><strong>OR 1.611 (p = 0.0186*)</strong></td>
+                            <td>OR 0.944 (p = 0.4677)</td>
                             <td><strong>学生(58) ＆ 企業(11)の二重ネストを完全統制</strong></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div style="font-size: 12.5px; color: var(--gray-700); margin-top: 12px; line-height: 1.6;">
-                📌 <strong>総括</strong>: 単純プール回帰、企業固定効果モデル、交差分類GLMMの各モデルにおいて、バリューフィット度のオッズ比は <strong>1.57 ➔ 1.65 ➔ 1.61</strong>、パーソナリティフィット度のオッズ比は <strong>1.34 ➔ 1.72 ➔ 1.61</strong> と推移しています。モデルの指定を変えても係数の符号や傾向に大きなブレは見られず、一定の頑健性（Robustness）が確認されます。
+                📌 <strong>総括</strong>: 単純プール回帰、企業固定効果モデル、交差分類GLMMの各モデルにおいて、バリューフィット度のオッズ比は <strong>1.47 ➔ 1.46 ➔ 1.38</strong>、パーソナリティフィット度のオッズ比は <strong>1.35 ➔ 1.72 ➔ 1.61</strong> と推移しています。モデルの指定を変えても係数の符号や傾向に大きなブレは見られず、一定の頑健性（Robustness）が確認されます。
             </div>
         </div>
 
@@ -1482,8 +1482,8 @@ def build_html():
                         </div>
                         <div class="exec-item-body">
                             双方が「知りたい」となってマッチングが成立したのは全体の約4割（40.9%）。<br>
-                            ・「価値観」と「性格」が<strong>両方高いペア</strong>：成立率 <strong>約6割（55〜61%）</strong><br>
-                            ・<strong>両方低いペア</strong>：成立率 <strong>約2割（18.9%）</strong><br>
+                            ・「価値観」と「性格」が<strong>両方高いペア</strong>：成立率 <strong>約6割（57.1%）</strong><br>
+                            ・<strong>両方低いペア</strong>：成立率 <strong>約2割（19.0%）</strong><br>
                             どちらか片方だけが高くても成立率は伸び悩む傾向が確認されました。
                         </div>
                     </div>
@@ -1763,17 +1763,17 @@ def build_html():
                                 <tr style="background: var(--primary-light);">
                                     <td><strong>バリュー<br>フィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
                                     <td>
-                                        <strong style="color: var(--primary); font-size: 14px;">約 1.8 〜 1.9 倍</strong><br>
+                                        <strong style="color: var(--primary); font-size: 14px;">約 1.5 〜 1.7 倍</strong><br>
                                         <span class="pill pill-indigo" style="font-size: 10px; margin-top: 3px;">有意 (**)</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>1.93倍**</strong>（p=0.0040）、めっちゃ知りたいで <strong>1.84倍**</strong>（p=0.0042）。企業の選択確率が有意に上昇。
+                                            知りたい以上で <strong>1.74倍**</strong>（p=0.0062）、めっちゃ知りたいで <strong>1.46倍*</strong>（p=0.0365）。企業の選択確率が有意に上昇。
                                         </div>
                                     </td>
                                     <td>
                                         <strong style="color: var(--gray-600); font-size: 14px;">約 1.0 〜 1.3 倍</strong><br>
                                         <span class="pill pill-slate" style="font-size: 10px; margin-top: 3px;">有意差なし</span>
                                         <div style="font-size: 11px; color: var(--gray-600); margin-top: 4px; line-height: 1.4;">
-                                            知りたい以上で <strong>1.32倍</strong>（p=0.1140）、めっちゃ知りたいで <strong>1.05倍</strong>（p=0.8537）。企業間差統制後は統計的有意差なし。
+                                            知りたい以上で <strong>1.28倍</strong>（p=0.1088）、めっちゃ知りたいで <strong>0.98倍</strong>（p=0.9255）。企業間差統制後は統計的有意差なし。
                                         </div>
                                     </td>
                                 </tr>
@@ -1859,26 +1859,26 @@ def build_html():
                                     </tr>
                                     <tr style="background: var(--primary-light);">
                                         <td><strong>バリューフィット度 (10pt)</strong></td>
-                                        <td>+0.0658</td>
-                                        <td>0.0229</td>
-                                        <td><strong>OR 1.931</strong><br><span style="font-size: 10px;">[1.233〜3.025]</span></td>
-                                        <td>p = 0.0040 (**)</td>
+                                        <td>+0.0554</td>
+                                        <td>0.0203</td>
+                                        <td><strong>OR 1.740</strong><br><span style="font-size: 10px;">[1.170〜2.588]</span></td>
+                                        <td>p = 0.0062 (**)</td>
                                         <td><span class="pill pill-green">有意 (**)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>パーソナリティフィット度 (10pt)</strong></td>
-                                        <td>+0.0166</td>
-                                        <td>0.0209</td>
-                                        <td>OR 1.181<br><span style="font-size: 10px;">[0.784〜1.778]</span></td>
-                                        <td>p = 0.4279</td>
+                                        <td>+0.0170</td>
+                                        <td>0.0208</td>
+                                        <td>OR 1.186<br><span style="font-size: 10px;">[0.788〜1.783]</span></td>
+                                        <td>p = 0.4135</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
-                                        <td>+0.2882</td>
-                                        <td>0.1009</td>
-                                        <td><strong>OR 1.334</strong><br><span style="font-size: 10px;">[1.095〜1.626]</span></td>
-                                        <td>p = 0.0043 (**)</td>
+                                        <td>+0.2769</td>
+                                        <td>0.1001</td>
+                                        <td><strong>OR 1.319</strong><br><span style="font-size: 10px;">[1.084〜1.605]</span></td>
+                                        <td>p = 0.0057 (**)</td>
                                         <td><span class="pill pill-indigo">有意 (**)</span></td>
                                     </tr>
                                     <tr>
@@ -1892,26 +1892,26 @@ def build_html():
                                     </tr>
                                     <tr style="background: var(--primary-light);">
                                         <td><strong>バリューフィット度 (10pt)</strong></td>
-                                        <td>+0.0608</td>
-                                        <td>0.0212</td>
-                                        <td><strong>OR 1.837</strong><br><span style="font-size: 10px;">[1.212〜2.783]</span></td>
-                                        <td>p = 0.0042 (**)</td>
-                                        <td><span class="pill pill-green">有意 (**)</span></td>
+                                        <td>+0.0381</td>
+                                        <td>0.0182</td>
+                                        <td><strong>OR 1.463</strong><br><span style="font-size: 10px;">[1.024〜2.090]</span></td>
+                                        <td>p = 0.0365 (*)</td>
+                                        <td><span class="pill pill-green">有意 (*)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>パーソナリティフィット度 (10pt)</strong></td>
-                                        <td>-0.0185</td>
-                                        <td>0.0189</td>
-                                        <td>OR 0.831<br><span style="font-size: 10px;">[0.574〜1.204]</span></td>
-                                        <td>p = 0.3266</td>
+                                        <td>-0.0187</td>
+                                        <td>0.0187</td>
+                                        <td>OR 0.830<br><span style="font-size: 10px;">[0.575〜1.197]</span></td>
+                                        <td>p = 0.3181</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
-                                        <td>+0.1600</td>
-                                        <td>0.0863</td>
-                                        <td>OR 1.174<br><span style="font-size: 10px;">[0.991〜1.390]</span></td>
-                                        <td>p = 0.0639</td>
+                                        <td>+0.1530</td>
+                                        <td>0.0854</td>
+                                        <td>OR 1.165<br><span style="font-size: 10px;">[0.986〜1.378]</span></td>
+                                        <td>p = 0.0731</td>
                                         <td><span class="pill pill-amber">有意傾向 (†)</span></td>
                                     </tr>
                                     <tr>
@@ -1948,23 +1948,23 @@ def build_html():
                                         <td>+0.0412</td>
                                         <td>0.0167</td>
                                         <td><strong>OR 1.510</strong><br><span style="font-size: 10px;">[1.088〜2.095]</span></td>
-                                        <td>p = 0.0136 (*)</td>
+                                        <td>p = 0.0137 (*)</td>
                                         <td><span class="pill pill-green">有意 (*)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>バリューフィット度 (10pt)</strong></td>
-                                        <td>+0.0276</td>
-                                        <td>0.0175</td>
-                                        <td>OR 1.318<br><span style="font-size: 10px;">[0.935〜1.857]</span></td>
-                                        <td>p = 0.1140</td>
+                                        <td>+0.0248</td>
+                                        <td>0.0155</td>
+                                        <td>OR 1.282<br><span style="font-size: 10px;">[0.946〜1.736]</span></td>
+                                        <td>p = 0.1088</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
-                                        <td>-0.1903</td>
-                                        <td>0.0755</td>
-                                        <td><strong>OR 0.827</strong><br><span style="font-size: 10px;">[0.713〜0.959]</span></td>
-                                        <td>p = 0.0117 (*)</td>
+                                        <td>-0.1923</td>
+                                        <td>0.0756</td>
+                                        <td><strong>OR 0.825</strong><br><span style="font-size: 10px;">[0.711〜0.957]</span></td>
+                                        <td>p = 0.0110 (*)</td>
                                         <td><span class="pill pill-red">有意 (*)</span></td>
                                     </tr>
                                     <tr>
@@ -1978,26 +1978,26 @@ def build_html():
                                     </tr>
                                     <tr>
                                         <td><strong>パーソナリティフィット度 (10pt)</strong></td>
-                                        <td>+0.0351</td>
-                                        <td>0.0271</td>
-                                        <td>OR 1.420<br><span style="font-size: 10px;">[0.835〜2.416]</span></td>
-                                        <td>p = 0.1948</td>
+                                        <td>+0.0354</td>
+                                        <td>0.0270</td>
+                                        <td>OR 1.424<br><span style="font-size: 10px;">[0.838〜2.419]</span></td>
+                                        <td>p = 0.1908</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>バリューフィット度 (10pt)</strong></td>
-                                        <td>+0.0047</td>
-                                        <td>0.0257</td>
-                                        <td>OR 1.048<br><span style="font-size: 10px;">[0.633〜1.735]</span></td>
-                                        <td>p = 0.8537</td>
+                                        <td>-0.0021</td>
+                                        <td>0.0225</td>
+                                        <td>OR 0.979<br><span style="font-size: 10px;">[0.630〜1.522]</span></td>
+                                        <td>p = 0.9255</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
-                                        <td>+0.0570</td>
-                                        <td>0.1170</td>
-                                        <td>OR 1.059<br><span style="font-size: 10px;">[0.842〜1.332]</span></td>
-                                        <td>p = 0.6262</td>
+                                        <td>+0.0550</td>
+                                        <td>0.1169</td>
+                                        <td>OR 1.057<br><span style="font-size: 10px;">[0.840〜1.329]</span></td>
+                                        <td>p = 0.6381</td>
                                         <td><span class="pill pill-slate">有意差なし</span></td>
                                     </tr>
                                     <tr>
@@ -2029,7 +2029,7 @@ def build_html():
                                 <strong style="color: #1D4ED8; font-size: 12.5px; display: block; margin-bottom: 4px;">
                                     💡 【実証環境】スコア非閲覧（ブラインド環境）下での意思決定
                                 </strong>
-                                イベント当日、企業側および学生側は自他のフィット度スコア（数値）を閲覧できない状態で面談およびアクション選択を行いました。この条件下において、企業側のアクションはバリューフィット度と統計的有意に連動（OR 1.931**）し、学生側のアクションはパーソナリティフィット度と統計的有意に連動（OR 1.510*）する結果が得られています。
+                                イベント当日、企業側および学生側は自他のフィット度スコア（数値）を閲覧できない状態で面談およびアクション選択を行いました。この条件下において、企業側のアクションはバリューフィット度と統計的有意に連動（OR 1.740**）し、学生側のアクションはパーソナリティフィット度と統計的有意に連動（OR 1.510*）する結果が得られています。
                             </div>
                         </div>
 
@@ -2038,7 +2038,7 @@ def build_html():
                             <strong style="color: #B45309; font-size: 12.5px; display: block; margin-bottom: 4px;">
                                 ⏱️ 【推移実態】ターン進行（時間経過）に伴う選択率の変動データ
                             </strong>
-                            面談ターンの進行に伴い、企業側と学生側で統計的に有意な異なる推移が記録されています。<strong>企業側の選択率（知りたい以上）は第1〜2ターンの58.8%から第6ターンには77.2%へと推移（1ターンあたり OR 1.334**, p = 0.0043**）</strong>する一方、<strong>学生側の選択率は第1〜2ターンの60%台から第6ターンには43.9%へと推移（1ターンあたり OR 0.827*, p = 0.0117*、未回答率は倍増）</strong>しました。本モデルではこれら時間経過の変動量を説明変数として投入し、スコア本来の寄与度を統制推計しています。
+                            面談ターンの進行に伴い、企業側と学生側で統計的に有意な異なる推移が記録されています。<strong>企業側の選択率（知りたい以上）は第1〜2ターンの58.8%から第6ターンには77.2%へと推移（1ターンあたり OR 1.319**, p = 0.0057**）</strong>する一方、<strong>学生側の選択率は第1〜2ターンの60%台から第6ターンには43.9%へと推移（1ターンあたり OR 0.825*, p = 0.0110*、未回答率は倍増）</strong>しました。本モデルではこれら時間経過の変動量を説明変数として投入し、スコア本来の寄与度を統制推計しています。
                         </div>
                     </div>
                 </div>
@@ -2047,10 +2047,10 @@ def build_html():
             <div class="summary-box">
                 <strong class="title">📝 データまとめ（回帰分析結果の客観的事実 ＆ 実態ストーリー）:</strong>
                 <ul>
-                    <li><strong>客観的事実（企業側）</strong>：時間経過および企業固定効果を統制したモデルにおいて、バリューフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.931</strong>（p = 0.0040**）、「めっちゃ知りたい」が <strong>OR 1.837</strong>（p = 0.0042**）と統計的有意に高くなっています。またターン進行に伴い選択確率が有意に上昇（1ターンあたり <strong>OR 1.334</strong>, p = 0.0043**）しています。パーソナリティフィット度の上昇に伴う有意差は認められません（OR 1.181, p = 0.4279）。</li>
-                    <li><strong>客観的事実（学生側）</strong>：時間経過および企業固定効果を統制した同一企業内比較において、パーソナリティフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.510</strong>（p = 0.0136*）と統計的有意に高くなっています。またターン進行に伴い選択確率は有意に低下（1ターンあたり <strong>OR 0.827</strong>, p = 0.0117*）しています。企業間差統制後のバリューフィット度の上昇に伴う有意差は認められません（OR 1.318, p = 0.1140）。</li>
+                    <li><strong>客観的事実（企業側）</strong>：時間経過および企業固定効果を統制したモデルにおいて、バリューフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.740</strong>（p = 0.0062**）、「めっちゃ知りたい」が <strong>OR 1.463</strong>（p = 0.0365*）と統計的有意に高くなっています。またターン進行に伴い選択確率が有意に上昇（1ターンあたり <strong>OR 1.319</strong>, p = 0.0057**）しています。パーソナリティフィット度の上昇に伴う有意差は認められません（OR 1.186, p = 0.4135）。</li>
+                    <li><strong>客観的事実（学生側）</strong>：時間経過および企業固定効果を統制した同一企業内比較において、パーソナリティフィット度の上昇に伴い「知りたい以上」の選択オッズ比が <strong>OR 1.510</strong>（p = 0.0137*）と統計的有意に高くなっています。またターン進行に伴い選択確率は有意に低下（1ターンあたり <strong>OR 0.825</strong>, p = 0.0110*）しています。企業間差統制後のバリューフィット度の上昇に伴う有意差は認められません（OR 1.282, p = 0.1088）。</li>
                     <li><strong>実態把握から導かれるストーリー（両面マッチングの成立構造）</strong>：
-                        本分析の実態から、<strong>企業側は「自社のカルチャー・理念への合致（バリューフィット度）」を重視して学生を選択</strong>し、<strong>学生側は「ブースでの実際の対話を通じた相性や自分らしさ（パーソナリティフィット度）」を重視して企業を選択</strong>していたことが明確に裏付けられます。後半ターンにおける行動推移（企業は選択枠を拡大し、学生は選択を絞り込む実態）を統制しても、この「企業＝バリュー」「学生＝パーソナリティ」という評価軸の分担傾向が安定して見られます。その結果、次セクション（Section 3）で示される通り、<strong>双方が揃ったペアにおいてマッチング成立（PF: OR 1.723**, バリュー: OR 1.651**）へと結実しやすい</strong>という、両面市場としての実態構造が統計的にも示唆されています。
+                        本分析の実態から、<strong>企業側は「自社のカルチャー・理念への合致（バリューフィット度）」を重視して学生を選択</strong>し、<strong>学生側は「ブースでの実際の対話を通じた相性や自分らしさ（パーソナリティフィット度）」を重視して企業を選択</strong>していたことが明確に裏付けられます。後半ターンにおける行動推移（企業は選択枠を拡大し、学生は選択を絞り込む実態）を統制しても、この「企業＝バリュー」「学生＝パーソナリティ」という評価軸の分担傾向が安定して見られます。その結果、次セクション（Section 3）で示される通り、<strong>双方が揃ったペアにおいてマッチング成立（PF: OR 1.718**, バリュー: OR 1.461*）へと結実しやすい</strong>という、両面市場としての実態構造が統計的にも示唆されています。
                     </li>
                 </ul>
             </div>
@@ -2116,17 +2116,17 @@ def build_html():
                                 <tr style="background: #FAF5FF;">
                                     <td><strong>パーソナリティ</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
                                     <td><strong style="color: #7E22CE; font-size: 13.5px;">約 1.72 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
-                                    <td style="font-size: 11px;">時間・企業差を統制した同一企業内比較で<strong>成立を大きく後押しする重要因子</strong>（p=0.0028**）。</td>
+                                    <td style="font-size: 11px;">時間・企業差を統制した同一企業内比較で<strong>成立を大きく後押しする重要因子</strong>（p=0.0029**）。</td>
                                 </tr>
                                 <tr style="background: var(--primary-light);">
                                     <td><strong>バリューフィット度</strong><br><span style="font-size: 10px; color: var(--gray-500);">(10pt上昇)</span></td>
-                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.65 倍</strong><br><span class="pill pill-indigo" style="font-size: 10px;">有意 (**)</span></td>
-                                    <td style="font-size: 11px;">パーソナリティと並ぶ重要因子（p=0.0073**）。自社の価値観に合う学生ほどマッチしやすい傾向。</td>
+                                    <td><strong style="color: var(--primary); font-size: 13.5px;">約 1.46 倍</strong><br><span class="pill pill-green" style="font-size: 10px;">有意 (*)</span></td>
+                                    <td style="font-size: 11px;">パーソナリティと並ぶ重要因子（p=0.0203*）。自社の価値観に合う学生ほどマッチしやすい傾向。</td>
                                 </tr>
                                 <tr>
                                     <td><strong>時間経過要因 (ターン)</strong><br><span style="font-size: 10px; color: var(--gray-500);">(第1〜第6ターン)</span></td>
-                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">約 0.96 倍</span><br><span class="pill pill-slate" style="font-size: 10px;">中立 (影響なし)</span></td>
-                                    <td style="font-size: 11px;">時間帯（疲労や焦り）を統制しても、マッチング成否には中立（p=0.5683）でスコア効果は不変。</td>
+                                    <td><span style="color: var(--gray-600); font-size: 12.5px;">約 0.95 倍</span><br><span class="pill pill-slate" style="font-size: 10px;">中立 (影響なし)</span></td>
+                                    <td style="font-size: 11px;">時間帯（疲労や焦り）を統制しても、マッチング成否には中立（p=0.5225）でスコア効果は不変。</td>
                                 </tr>
                                 <tr>
                                     <td><strong>企業間ベース差</strong><br><span style="font-size: 10px; color: var(--gray-500);">(人気・選考基準)</span></td>
@@ -2162,26 +2162,26 @@ def build_html():
                             <tbody>
                                 <tr style="background: #FAF5FF;">
                                     <td><strong>パーソナリティフィット度 (10pt)</strong></td>
-                                    <td>+0.0544</td>
+                                    <td>+0.0541</td>
                                     <td>0.0182</td>
-                                    <td><strong>OR 1.723</strong><br><span style="font-size: 10px;">[1.206〜2.462]</span></td>
-                                    <td>p = 0.0028 (**)</td>
+                                    <td><strong>OR 1.718</strong><br><span style="font-size: 10px;">[1.203〜2.454]</span></td>
+                                    <td>p = 0.0029 (**)</td>
                                     <td><span class="pill pill-green">有意 (**)</span></td>
                                 </tr>
                                 <tr style="background: var(--primary-light);">
                                     <td><strong>バリューフィット度 (10pt)</strong></td>
-                                    <td>+0.0501</td>
-                                    <td>0.0187</td>
-                                    <td><strong>OR 1.651</strong><br><span style="font-size: 10px;">[1.145〜2.381]</span></td>
-                                    <td>p = 0.0073 (**)</td>
-                                    <td><span class="pill pill-green">有意 (**)</span></td>
+                                    <td>+0.0379</td>
+                                    <td>0.0163</td>
+                                    <td><strong>OR 1.461</strong><br><span style="font-size: 10px;">[1.061〜2.012]</span></td>
+                                    <td>p = 0.0203 (*)</td>
+                                    <td><span class="pill pill-green">有意 (*)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>ターン番号 (1ターン進行ごと)</strong></td>
-                                    <td>-0.0455</td>
-                                    <td>0.0798</td>
-                                    <td>OR 0.955<br><span style="font-size: 10px;">[0.817〜1.117]</span></td>
-                                    <td>p = 0.5683</td>
+                                    <td>-0.0508</td>
+                                    <td>0.0795</td>
+                                    <td>OR 0.950<br><span style="font-size: 10px;">[0.813〜1.111]</span></td>
+                                    <td>p = 0.5225</td>
                                     <td><span class="pill pill-slate">中立</span></td>
                                 </tr>
                                 <tr>
@@ -2199,8 +2199,8 @@ def build_html():
                             <h4 style="font-size: 13.5px; font-weight: 800; color: #7E22CE; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
                                 <span>🏆</span> 【重要：同一企業内比較の実証結果】全体一括集計から何が変わったのか？
                             </h4>
-                            <p>全体一括集計（企業差を考慮しないプール回帰）では、パーソナリティフィット度のオッズ比は <strong>1.34倍</strong>（p = 0.0518†：有意傾向）にとどまっていました。これは「性格スコア低めの企業（とものや・Linoa・アイプラス等）が学生に大人気だった」という企業人気差（シンプソンのパラドックス）に隠れていたためです。</p>
-                            <p style="margin-top: 6px;">今回、時間経過（ターン数）と企業間差（企業固定効果）を統制したモデルで見ると、<strong>パーソナリティフィット度のオッズ比は 1.72倍（p = 0.0028**：1%水準で有意）へと高まり、バリューフィット度（1.65倍, p = 0.0073**）と並んでマッチング成立を大きく左右する重要因子である可能性</strong>が統計的にも示唆されます。</p>
+                            <p>全体一括集計（企業差を考慮しないプール回帰）では、パーソナリティフィット度のオッズ比は <strong>1.35倍</strong>（p = 0.0464*）でした。</p>
+                            <p style="margin-top: 6px;">今回、時間経過（ターン数）と企業間差（企業固定効果）を統制したモデルで見ると、<strong>パーソナリティフィット度のオッズ比は 1.72倍（p = 0.0029**：1%水準で有意）へと高まり、バリューフィット度（1.46倍, p = 0.0203*）とともにマッチング成立を大きく左右する重要因子である可能性</strong>が統計的にも示唆されます。</p>
                         </div>
                     </div>
                 </div>
@@ -2210,7 +2210,7 @@ def build_html():
                 <strong class="title">📝 データまとめ（マッチング成立要因の客観的事実）:</strong>
                 <ul>
                     <li>マッチング成立群（N={match_comp['matched_count']}）は未成立群（N={match_comp['unmatched_count']}）に比べ、バリューフィット度平均が <strong>+{fmt_num(match_comp['matched_v_mean'] - match_comp['unmatched_v_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_v_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_v_mean'])}）、パーソナリティフィット度平均が <strong>+{fmt_num(match_comp['matched_p_mean'] - match_comp['unmatched_p_mean'])} pt</strong>（成立 {fmt_num(match_comp['matched_p_mean'])} vs 未成立 {fmt_num(match_comp['unmatched_p_mean'])}）高くなっています。</li>
-                    <li>時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制した最高精度のロジスティック回帰（N={match_comp['N_valid']}）において、パーソナリティフィット度（10ptあたり <strong>OR 1.72</strong>, p = 0.0028**）およびバリューフィット度（10ptあたり <strong>OR 1.65</strong>, p = 0.0073**）の<strong>双方が1%有意水準（p &lt; 0.01**）でマッチング成立に極めて強く寄与</strong>しています。時間経過（ターン番号 OR 0.96, p = 0.5683）は成立成否には中立であり、時間を統制しても両スコアの重要性は堅牢に維持される傾向が窺えます。</li>
+                    <li>時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制したロジスティック回帰（N={match_comp['N_valid']}）において、パーソナリティフィット度（10ptあたり <strong>OR 1.72</strong>, p = 0.0029**）およびバリューフィット度（10ptあたり <strong>OR 1.46</strong>, p = 0.0203*）の<strong>双方が有意にマッチング成立に寄与</strong>しています。時間経過（ターン番号 OR 0.95, p = 0.5225）は成立成否には中立であり、時間を統制しても両スコアの重要性は堅牢に維持される傾向が窺えます。</li>
                 </ul>
             </div>
         </div>
@@ -2220,7 +2220,7 @@ def build_html():
             <div class="section-header">
                 <div>
                     <div class="section-title">🧱 【複合実態】バリュー × パーソナリティ 3×3 分割表（成立率 ＆ アクション推移）</div>
-                    <div class="section-desc">バリュー3分位水準（低: &lt;58.0, 中: 58.0〜63.9, 高: ≥64.0）× パーソナリティ3分位水準（低: &lt;76.0, 中: 76.0〜81.9, 高: ≥82.0）における実績（N=286）</div>
+                    <div class="section-desc">バリュー3分位水準（低: &lt;57.0, 中: 57.0〜62.9, 高: ≥63.0）× パーソナリティ3分位水準（低: &lt;76.0, 中: 76.0〜81.9, 高: ≥82.0）における実績（N=286）</div>
                 </div>
                 <span class="pill pill-slate">クロス集計 ＆ 行動推移</span>
             </div>
@@ -2233,8 +2233,8 @@ def build_html():
                         <span>💡</span> <strong>各セルの数値の見方:</strong>
                     </div>
                     <div>
-                        ・<strong>上の大きなパーセント（例: 61.2%）</strong>：その枠（バリュー水準 × パーソナリティ水準）における <strong>マッチング成立率</strong> です。<br>
-                        ・<strong>下の件数表示（例: 成立 30/49件）</strong>：<strong>マッチング成立ペア数（分子）／ その枠に該当する総面談ペア数（分母）</strong> を表しています。<br>
+                        ・<strong>上の大きなパーセント（例: 57.1%）</strong>：その枠（バリュー水準 × パーソナリティ水準）における <strong>マッチング成立率</strong> です。<br>
+                        ・<strong>下の件数表示（例: 成立 24/42件）</strong>：<strong>マッチング成立ペア数（分子）／ その枠に該当する総面談ペア数（分母）</strong> を表しています。<br>
                         <span style="font-size: 11.5px; color: var(--gray-500);">※全9枠の分母（総ペア数）を合算すると、パーソナリティ有効ペア全数 286件（成立全数 121件、全体成立率 42.3%）になります。</span>
                     </div>
                 </div>
@@ -2243,9 +2243,9 @@ def build_html():
                         <thead>
                             <tr>
                                 <th style="width: 22%; background: var(--gray-100);">パーソナリティ（縦軸） ＼ バリュー（横軸）</th>
-                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;57.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (57.0〜62.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥63.0)</th>
                             </tr>
                         </thead>
                         <tbody>'''
@@ -2298,18 +2298,18 @@ def build_html():
                                     <tr style="background: var(--primary-light);">
                                         <td><strong>3×3マトリクス全体 (9セル比較)</strong></td>
                                         <td>カイ二乗検定 (9×2 分割表)</td>
-                                        <td>χ² = 23.6565</td>
+                                        <td>χ² = 17.3065</td>
                                         <td>df = 8</td>
-                                        <td><strong>p = 0.0026</strong></td>
-                                        <td><span class="pill pill-indigo">非常に有意 (**)</span></td>
+                                        <td><strong>p = 0.0271</strong></td>
+                                        <td><span class="pill pill-green">有意 (*)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>横軸：バリュー水準別 (低・中・高)</strong></td>
                                         <td>カイ二乗検定 (3×2 分割表)</td>
-                                        <td>χ² = 19.5630</td>
+                                        <td>χ² = 11.1943</td>
                                         <td>df = 2</td>
-                                        <td><strong>p &lt; 0.0001</strong></td>
-                                        <td><span class="pill pill-indigo">極めて有意 (***)</span></td>
+                                        <td><strong>p = 0.0037</strong></td>
+                                        <td><span class="pill pill-green">有意 (**)</span></td>
                                     </tr>
                                     <tr>
                                         <td><strong>縦軸：パーソナリティ水準別 (低・中・高)</strong></td>
@@ -2320,22 +2320,22 @@ def build_html():
                                         <td><span class="pill pill-slate">有意差なし ※</span></td>
                                     </tr>
                                     <tr style="background: #FEF3C7;">
-                                        <td><strong>最高セル vs 最低セル の直接比較</strong><br><span style="font-size: 11px; color: var(--gray-500);">(高×高: 61.2% vs 低×低: 18.9%)</span></td>
+                                        <td><strong>最高セル vs 最低セル の直接比較</strong><br><span style="font-size: 11px; color: var(--gray-500);">(高×高: 57.1% vs 低×低: 19.0%)</span></td>
                                         <td>カイ二乗検定 (2×2, イェーツ補正)</td>
-                                        <td>χ² = 13.7145<br><span style="font-size: 11px; color: var(--gray-500);">(オッズ比 6.77倍)</span></td>
+                                        <td>χ² = 11.3582<br><span style="font-size: 11px; color: var(--gray-500);">(オッズ比 5.67倍)</span></td>
                                         <td>df = 1</td>
-                                        <td><strong>p = 0.0002</strong></td>
-                                        <td><span class="pill pill-amber">極めて有意 (***)</span></td>
+                                        <td><strong>p = 0.0008</strong></td>
+                                        <td><span class="pill pill-indigo">極めて有意 (***)</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div style="font-size: 12px; color: var(--gray-600); line-height: 1.6; background: #F8FAFC; padding: 10px 14px; border-radius: 6px; border: 1px solid var(--gray-200);">
                             <strong>💡 統計的考察:</strong><br>
-                            ・<strong>マトリクス全体の有意性 (p = 0.0026**)</strong>：9つのセルにおける成立率の差（18.9%〜61.2%）は偶然によるばらつきではなく、2つのスコアの配置によって有意に変動していることが示唆されます。<br>
-                            ・<strong>バリューの強い主効果 (p &lt; 0.0001***)</strong>：バリューが低(28.7%) ➔ 中(36.6%) ➔ 高(58.2%) と上がるにつれ成立率が劇的に上昇しています。<br>
-                            ・<strong>最高 vs 最低のオッズ比 6.77倍 (p = 0.0002***)</strong>：両スコアが高い組み合わせは、両スコアが低い組み合わせに比べてマッチング成立オッズが約6.8倍高く、統計的にも極めて顕著な差が認められます。<br>
-                            <span style="font-size: 11px; color: var(--gray-500);">※全体一括集計ではパーソナリティ単独の検定で有意差が出にくい（p=0.1204）背景には企業人気差の交絡があり、Section 3で示した企業固定効果モデルによって企業差を統制すると、パーソナリティもマッチング成立に有意（OR 1.723**）に寄与していることが明らかになっています。</span>
+                            ・<strong>マトリクス全体の有意性 (p = 0.0271*)</strong>：9つのセルにおける成立率の差（19.0%〜57.1%）は偶然によるばらつきではなく、2つのスコアの配置によって有意に変動していることが示唆されます。<br>
+                            ・<strong>バリューの主効果 (p = 0.0037**)</strong>：バリューが低(31.0%) ➔ 中(42.1%) ➔ 高(54.9%) と上がるにつれ成立率が有意に上昇しています。<br>
+                            ・<strong>最高 vs 最低のオッズ比 5.67倍 (p = 0.0008***)</strong>：両スコアが高い組み合わせは、両スコアが低い組み合わせに比べてマッチング成立オッズが約5.7倍高く、統計的にも顕著な差が認められます。<br>
+                            <span style="font-size: 11px; color: var(--gray-500);">※全体一括集計ではパーソナリティ単独の検定で有意差が出にくい（p=0.1204）背景には企業人気差の交絡があり、Section 3で示した企業固定効果モデルによって企業差を統制すると、パーソナリティもマッチング成立に有意（OR 1.718**）に寄与していることが明らかになっています。</span>
                         </div>
                     </div>
                 </details>
@@ -2354,7 +2354,7 @@ def build_html():
                     <div>
                         ・<strong>知りたい以上</strong>：その枠の中で、企業が学生に対して「知りたい」または「めっちゃ知りたい」を選択した件数と割合（関心度）です。<br>
                         ・<strong>内訳（知りたい／めっちゃ知りたい）</strong>：より強い関心である「めっちゃ知りたい」がどの条件で増えるかを示しています。<br>
-                        ・<strong>注目の実態</strong>：バリュー（横軸）が高くなるにつれ、「めっちゃ知りたい」が <strong>10%台 ➔ 最大45.9% へと急増</strong> しており、企業がカルチャー合致（価値観）を主軸に選別していた傾向が明確に表れています。<br>
+                        ・<strong>注目の実態</strong>：バリュー（横軸）が高くなるにつれ、「めっちゃ知りたい」が <strong>8%〜25% ➔ 最大37.9% へと増加</strong> しており、企業がカルチャー合致（価値観）を重視して選別していた傾向が表れています。<br>
                         <span style="font-size: 11.5px; color: var(--gray-500);">※マッチング成立（表①）は、この企業選択と次の学生選択（表③）の双方が合致した時にのみ成立します。</span>
                     </div>
                 </div>
@@ -2363,9 +2363,9 @@ def build_html():
                         <thead>
                             <tr>
                                 <th style="width: 22%; background: var(--gray-100);">パーソナリティ（縦軸） ＼ バリュー（横軸）</th>
-                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;57.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (57.0〜62.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥63.0)</th>
                             </tr>
                         </thead>
                         <tbody>'''
@@ -2420,8 +2420,8 @@ def build_html():
                     </div>
                     <div>
                         ・<strong>知りたい以上</strong>：その枠の中で、学生が企業に対して「知りたい」または「めっちゃ知りたい」を選択した件数と割合です。<br>
-                        ・<strong>注目の実態</strong>：学生の「めっちゃ知りたい」は全体的に 6〜19% と厳選傾向ですが、<strong>バリュー高かつパーソナリティ中〜高の枠で「知りたい以上」が約67%と最高水準</strong> に達しています。<br>
-                        ・<strong>表①との関係</strong>：学生が最も前向きになる右上の枠（バリュー高×パーソナリティ高）において、企業の高い関心（表②）と合致し、<strong>表①のマッチング成立率が最高（61.2%）</strong> に達しています。<br>
+                        ・<strong>注目の実態</strong>：学生の「めっちゃ知りたい」は全体的に 5〜20% と厳選傾向ですが、<strong>バリュー高かつパーソナリティ中〜高の枠で「知りたい以上」が 64.3%〜80.0%</strong> と高い関心を示しています。<br>
+                        ・<strong>表①との関係</strong>：学生の前向きな関心（表③）と企業の高い関心（表②）が合致する枠（バリュー高×パーソナリティ中〜高）において、<strong>表①のマッチング成立率が約6割（57.1%〜60.0%）</strong> に達しています。<br>
                         <span style="font-size: 11.5px; color: var(--gray-500);">※企業と学生で重視する軸が異なるため、双方が高水準で揃うことがマッチング成立の鍵となります。</span>
                     </div>
                 </div>
@@ -2430,9 +2430,9 @@ def build_html():
                         <thead>
                             <tr>
                                 <th style="width: 22%; background: var(--gray-100);">パーソナリティ（縦軸） ＼ バリュー（横軸）</th>
-                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;58.0)</th>
-                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (58.0〜63.9)</th>
-                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥64.0)</th>
+                                <th style="width: 26%; background: #FEE2E2;">バリュー低 (&lt;57.0)</th>
+                                <th style="width: 26%; background: #FEF3C7;">バリュー中 (57.0〜62.9)</th>
+                                <th style="width: 26%; background: #D1FAE5;">バリュー高 (≥63.0)</th>
                             </tr>
                         </thead>
                         <tbody>'''
@@ -2478,9 +2478,9 @@ def build_html():
             <div class="summary-box" style="margin-top: 24px;">
                 <strong class="title">📝 データまとめ（3×3 実態集計 ＆ アクション推移）:</strong>
                 <ul>
-                    <li><strong>マッチング成立率（表①）</strong>：バリュー高（≥64.0）の水準では、パーソナリティ水準に関わらず成立率が <strong>54.1% 〜 61.2%</strong> と高水準を維持しています。一方、バリュー低かつパーソナリティ低のセルでは、成立 7/37件（<strong>18.9%</strong>）と最低値を記録しています。</li>
-                    <li><strong>企業アクション推移（表②）</strong>：バリューが低➔高へ進むにつれ、「めっちゃ知りたい」の選択割合が <strong>10.8%（4件） ➔ 26.5%（13件）</strong>（パーソナリティ高の行）や、<strong>16.2%（6件） ➔ 45.9%（17件）</strong>（パーソナリティ低の行）へと急増し、企業の意思決定がバリュー水準に強く牽引されている実態が確認できます。</li>
-                    <li><strong>学生アクション推移（表③）</strong>：学生側の「めっちゃ知りたい」は全体的に 6.7% 〜 19.2% の範囲で推移し、パーソナリティ中〜高かつバリュー高のセルで <strong>18.4%（9件）</strong> と最大値を記録しています。「知りたい以上」の総関心度もバリュー高の列で <strong>59.5% 〜 67.3%</strong> へと上昇しています。</li>
+                    <li><strong>マッチング成立率（表①）</strong>：バリュー高（≥63.0）の水準では、パーソナリティ水準に関わらず成立率が <strong>48.3% 〜 60.0%</strong> と高水準を維持しています。一方、バリュー低かつパーソナリティ低のセルでは、成立 8/42件（<strong>19.0%</strong>）と最低値を記録しています。</li>
+                    <li><strong>企業アクション推移（表②）</strong>：バリューが低➔高へ進むにつれ、「めっちゃ知りたい」の選択割合が <strong>8.8%（3件） ➔ 23.8%（10件）</strong>（パーソナリティ高の行）や、<strong>19.0%（8件） ➔ 37.9%（11件）</strong>（パーソナリティ低の行）へと上昇し、企業の意思決定がバリュー水準に牽引されている実態が確認できます。</li>
+                    <li><strong>学生アクション推移（表③）</strong>：学生側の「めっちゃ知りたい」は全体的に 4.8% 〜 20.0% の範囲で推移し、パーソナリティ中かつバリュー高のセルで <strong>20.0%（4件）</strong>、パーソナリティ高かつバリュー高のセルで <strong>16.7%（7件）</strong> と高値を記録しています。「知りたい以上」の総関心度もパーソナリティ高の行で <strong>47.1% 〜 64.3%</strong>、パーソナリティ中×バリュー高で <strong>80.0%</strong> へと上昇しています。</li>
                 </ul>
             </div>
         </div>
@@ -2491,15 +2491,15 @@ def build_html():
             
             <p><strong>1. 企業と学生におけるアクション選択傾向の相違（両面市場の実態）:</strong><br>
             時間経過（ターン数）および企業間差（企業固定効果）を統計的に統制したモデル（N=286）により、企業側と学生側で評価軸の明確な役割分担が存在した実態が浮き彫りとなりました。<br>
-            ・<strong>企業側</strong>：バリューフィット度スコアに強く連動してアクションを選択しており、10pt上昇に伴い「知りたい以上」の選択オッズが <strong>1.93倍**</strong>（p = 0.0040）、「めっちゃ知りたい」が <strong>1.84倍**</strong>（p = 0.0042）へと上昇します（パーソナリティには有意差なし）。企業は自社のカルチャーや理念への合致度を主たる判断基準としていた傾向が窺えます。<br>
-            ・<strong>学生側</strong>：同一企業内での比較において、パーソナリティフィット度スコアの上昇に伴い「知りたい以上」の選択オッズが <strong>1.51倍*</strong>（p = 0.0136）へと有意に上昇します。学生はブースでの対話を通じた相性や自分らしさを肌で感じ取って意思決定を行っていた傾向が示唆されます。</p>
+            ・<strong>企業側</strong>：バリューフィット度スコアに強く連動してアクションを選択しており、10pt上昇に伴い「知りたい以上」の選択オッズが <strong>1.74倍**</strong>（p = 0.0062）、「めっちゃ知りたい」が <strong>1.46倍*</strong>（p = 0.0365）へと上昇します（パーソナリティには有意差なし）。企業は自社のカルチャーや理念への合致度を主たる判断基準としていた傾向が窺えます。<br>
+            ・<strong>学生側</strong>：同一企業内での比較において、パーソナリティフィット度スコアの上昇に伴い「知りたい以上」の選択オッズが <strong>1.51倍*</strong>（p = 0.0137）へと有意に上昇します。学生はブースでの対話を通じた相性や自分らしさを肌で感じ取って意思決定を行っていた傾向が示唆されます。</p>
             
             <p><strong>2. 時間経過（ターン進行）と企業間差（シンプソンのパラドックス）がもたらした影響:</strong><br>
-            ・<strong>時間経過の影響</strong>：面談ターンの進行に伴い、企業側は選択枠を広げる推移（1ターンあたり <strong>OR 1.334**</strong>：選択率 58.8% ➔ 77.2%）を示す一方、学生側は疲労等の影響により選択を絞る推移（1ターンあたり <strong>OR 0.827*</strong>：選択率 60%台 ➔ 43.9%）を示しました。この逆方向の行動推移を時間変数として統制することで、スコア本来の寄与度がクリアに抽出されました。<br>
-            ・<strong>企業間差の補正（シンプソンのパラドックスの解消）</strong>：全体一括集計ではパーソナリティの寄与が目立たなかった背景には、「性格スコアが控えめな一部企業に学生人気が集中した」という企業人気差が存在していました。企業固定効果により企業ごとのベース差を補正したことで、マッチング成立におけるパーソナリティの重要性が <strong>OR 1.72倍**</strong>（バリュー OR 1.65倍**）へと明確に浮かび上がりました。</p>
+            ・<strong>時間経過の影響</strong>：面談ターンの進行に伴い、企業側は選択枠を広げる推移（1ターンあたり <strong>OR 1.319**</strong>：選択率 58.8% ➔ 77.2%）を示す一方、学生側は疲労等の影響により選択を絞る推移（1ターンあたり <strong>OR 0.825*</strong>：選択率 60%台 ➔ 43.9%）を示しました。この逆方向の行動推移を時間変数として統制することで、スコア本来の寄与度がクリアに抽出されました。<br>
+            ・<strong>企業間差の補正（シンプソンのパラドックスの解消）</strong>：全体一括集計ではパーソナリティの寄与が目立たなかった背景には、「性格スコアが控えめな一部企業に学生人気が集中した」という企業人気差が存在していました。企業固定効果により企業ごとのベース差を補正したことで、マッチング成立におけるパーソナリティの重要性が <strong>OR 1.72倍**</strong>（バリュー OR 1.46倍*）へと明確に浮かび上がりました。</p>
 
             <p><strong>3. マッチング成立の要因と次回イベント配席設計へのデータ的示唆:</strong><br>
-            マッチング成立要因分析（Section 3）および 3×3分割表（Section 4）が示す通り、マッチング成立は「企業がバリューで選び、学生がパーソナリティで選ぶ」という双方向の合致によって初めて実現しています（両スコア高水準群で成立率約55〜61%、両スコア低水準群では18.9%）。<br>
+            マッチング成立要因分析（Section 3）および 3×3分割表（Section 4）が示す通り、マッチング成立は「企業がバリューで選び、学生がパーソナリティで選ぶ」という双方向の合致によって初めて実現しています（両スコア高水準群で成立率 57.1%、両スコア低水準群では 19.0%）。<br>
             したがって、次回イベントの配席設計においては、企業の要望（高バリュー層の配置）を満たすだけでなく、学生側のパーソナリティ適合度も同時に考慮した「複合的な最適配席アルゴリズム」を導入することで、イベント全体のマッチング総数および双方の満足度を最大化できる可能性が強く示唆されます。</p>
 
             <div style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 8px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #FFFFFF; line-height: 1.6;">
@@ -2507,7 +2507,7 @@ def build_html():
                     <span>💡</span> 【解釈・示唆の補足：ブラインド環境下での実証性について】
                 </div>
                 <p>本イベントの当日、企業側および学生側は自他のフィット度スコア（数値）を一切閲覧できない（見えない）状態で対話・意思決定を行っていました。</p>
-                <p style="margin-top: 6px;">そのようなブラインド環境下であったにもかかわらず、企業側のアクションはバリューフィット度と極めて高い連動性を示し（10pt上昇で選択オッズが約1.8〜1.9倍**）、学生側のアクションもパーソナリティフィット度と有意に連動（10pt上昇で選択オッズ約1.51倍*）し、最終的なマッチング成立にも両フィット度が同等に寄与していました。</p>
+                <p style="margin-top: 6px;">そのようなブラインド環境下であったにもかかわらず、企業側のアクションはバリューフィット度と連動性を示し（10pt上昇で選択オッズが約1.5〜1.7倍）、学生側のアクションもパーソナリティフィット度と有意に連動（10pt上昇で選択オッズ約1.51倍*）し、最終的なマッチング成立にも両フィット度が寄与していました。</p>
                 <p style="margin-top: 6px;">この事実は、数値を見たことによる「先入観（アンカリング効果）」や「確証バイアス」によって結果が作られたのではなく、事前診断されたフィット度スコアが、当日のリアルな対話や行動、そして本質的な相性を捉えていたことの有力な裏付け（示唆）といえます。</p>
             </div>
         </div>
@@ -3426,14 +3426,14 @@ def build_html():
             datasets: [{{
                 label: 'スコア10pt上昇時の選択倍率 (オッズ比)',
                 data: [
-                    1.931,
-                    1.837,
-                    1.181,
-                    0.831,
+                    1.740,
+                    1.463,
+                    1.186,
+                    0.830,
                     1.510,
-                    1.420,
-                    1.318,
-                    1.048
+                    1.424,
+                    1.282,
+                    0.979
                 ],
                 backgroundColor: [
                     '#4F46E5',

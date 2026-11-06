@@ -386,7 +386,7 @@ def main():
     matrix_cells = []
     for p_label, p_check in [('高 (≥82.0)', lambda p: p >= 82.0), ('中 (76.0〜81.9)', lambda p: 76.0 <= p < 82.0), ('低 (<76.0)', lambda p: p < 76.0)]:
         row_cells = []
-        for v_label, v_check in [('低 (<58.0)', lambda v: v < 58.0), ('中 (58.0〜63.9)', lambda v: 58.0 <= v < 64.0), ('高 (≥64.0)', lambda v: v >= 64.0)]:
+        for v_label, v_check in [('低 (<57.0)', lambda v: v < 57.0), ('中 (57.0〜62.9)', lambda v: 57.0 <= v < 63.0), ('高 (≥63.0)', lambda v: v >= 63.0)]:
             cell_items = [r for r in valid_p_df if p_check(r['personality_fit']) and v_check(r['value_fit'])]
             n = len(cell_items)
             m_cnt = sum(r['is_matched'] for r in cell_items)

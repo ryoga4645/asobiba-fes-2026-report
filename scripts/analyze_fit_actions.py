@@ -314,10 +314,9 @@ def logistic_regression(X, y, max_iter=25, tol=1e-6):
 # ==========================================
 
 def load_and_preprocess_data():
-    files = glob.glob('*全テ*')
-    if not files:
-        raise FileNotFoundError("データファイルが見つかりません。")
-    filename = files[0]
+    filename = 'asobiba_fes_raw_data_313.csv'
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"{filename} が見つかりません。")
     
     paid_companies = {
         '株式会社リード・イノベーション',
@@ -326,7 +325,7 @@ def load_and_preprocess_data():
         'NTT 都市開発ホテルマネジメント株式会社　カペラ京都'
     }
     
-    with open(filename, 'r', encoding='utf-8') as f:
+    with open(filename, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         raw_rows = list(reader)
         
